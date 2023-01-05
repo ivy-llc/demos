@@ -70,9 +70,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-path','listing-title','listing-author','listing-description','listing-filename','listing-file-modified','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] }],
+      valueNames: ['listing-path','listing-title','listing-author','listing-image','listing-description','listing-filename','listing-file-modified','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] }],
       
-      searchColumns: ["listing-path","listing-title","listing-author","listing-description","listing-filename","listing-file-modified","listing-reading-time"],
+      searchColumns: ["listing-path","listing-title","listing-author","listing-image","listing-description","listing-filename","listing-file-modified","listing-reading-time"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -267,6 +267,12 @@ ul.task-list li input[type="checkbox"] {
 <section id="dynamic-vs-static" class="level1">
 <h1>1.3: Dynamic vs Static</h1>
 <p>The functions <code>ivy.unify</code>, <code>ivy.compile</code> and <code>ivy.transpile</code> can all be executed either in <em>dynamic</em> mode or <em>static</em> mode. In this demo, we explore how this mode is set, and what implications this has.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://colab.research.google.com/github/unifyai/demos/blob/main/unify_existing_code/1_the_basics/1_3_dynamic_vs_static.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid figure-img"></a></p>
+<p></p><figcaption class="figure-caption">Open In Colab</figcaption><p></p>
+</figure>
+</div>
 <section id="dynamic" class="level2">
 <h2 class="anchored" data-anchor-id="dynamic">Dynamic</h2>
 <p>Dynamic mode means that Python dynamic control flow is included in the extracted computation graph. For example, <code>if</code> statements, <code>for</code> loops, <code>while</code> loops etc. would all be <strong>included</strong> if dynamic mode is set to <code>True</code>.</p>

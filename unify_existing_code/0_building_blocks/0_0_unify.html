@@ -133,9 +133,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     }
 
     const options = {
-      valueNames: ['listing-path','listing-title','listing-author','listing-description','listing-filename','listing-file-modified','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] }],
+      valueNames: ['listing-path','listing-title','listing-author','listing-image','listing-description','listing-filename','listing-file-modified','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] }],
       
-      searchColumns: ["listing-path","listing-title","listing-author","listing-description","listing-filename","listing-file-modified","listing-reading-time"],
+      searchColumns: ["listing-path","listing-title","listing-author","listing-image","listing-description","listing-filename","listing-file-modified","listing-reading-time"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -330,6 +330,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="unify" class="level1">
 <h1>0.0: Unify</h1>
 <p>In this example, we unify a simple <code>torch</code> function <code>normalize</code>. We then show how this newly unified <code>normalize</code> function can be used alongside <em>any</em> ML framework!</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://colab.research.google.com/github/unifyai/demos/blob/main/unify_existing_code/0_building_blocks/0_0_unify.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid figure-img"></a></p>
+<p></p><figcaption class="figure-caption">Open In Colab</figcaption><p></p>
+</figure>
+</div>
 <p>Firstly, let’s import the dependencies and define the <code>torch</code> function.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ivy</span>
