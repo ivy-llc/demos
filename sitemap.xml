@@ -2,62 +2,62 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://github.com/unifyai/demos/unify_existing_code/0_building_blocks/0_2_transpile.html</loc>
-    <lastmod>2023-01-05T16:28:52.375Z</lastmod>
+    <lastmod>2023-01-05T22:30:29.180Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/unify_existing_code/0_building_blocks/0_1_compile.html</loc>
-    <lastmod>2023-01-05T16:28:53.307Z</lastmod>
+    <lastmod>2023-01-05T22:30:29.892Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/unify_existing_code/0_building_blocks/0_0_unify.html</loc>
-    <lastmod>2023-01-05T16:28:53.719Z</lastmod>
+    <lastmod>2023-01-05T22:30:30.216Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/unify_existing_code/3_models/3_0_perceiver.html</loc>
-    <lastmod>2023-01-05T16:28:54.079Z</lastmod>
+    <lastmod>2023-01-05T22:30:30.504Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/unify_existing_code/3_models/3_1_stable_diffusion.html</loc>
-    <lastmod>2023-01-05T16:28:54.423Z</lastmod>
+    <lastmod>2023-01-05T22:30:30.784Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/unify_existing_code/2_libraries/2_0_kornia.html</loc>
-    <lastmod>2023-01-05T16:28:54.771Z</lastmod>
+    <lastmod>2023-01-05T22:30:31.064Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/unify_existing_code/1_the_basics/1_2_as_a_decorator.html</loc>
-    <lastmod>2023-01-05T16:28:55.195Z</lastmod>
+    <lastmod>2023-01-05T22:30:31.404Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/unify_existing_code/1_the_basics/1_1_framework_selection.html</loc>
-    <lastmod>2023-01-05T16:28:55.667Z</lastmod>
+    <lastmod>2023-01-05T22:30:31.776Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/unify_existing_code/1_the_basics/1_0_lazy_vs_eager.html</loc>
-    <lastmod>2023-01-05T16:28:56.103Z</lastmod>
+    <lastmod>2023-01-05T22:30:32.116Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/unify_existing_code/1_the_basics/1_3_dynamic_vs_static.html</loc>
-    <lastmod>2023-01-05T16:28:56.467Z</lastmod>
+    <lastmod>2023-01-05T22:30:32.408Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/index.html</loc>
-    <lastmod>2023-01-05T16:28:57.199Z</lastmod>
+    <lastmod>2023-01-05T22:30:32.740Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/temp_demos/compilation_of_a_basic_function.html</loc>
-    <lastmod>2023-01-05T16:28:57.635Z</lastmod>
+    <lastmod>2023-01-05T22:30:33.064Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/temp_demos/basic_operations_with_ivy.html</loc>
-    <lastmod>2023-01-05T16:28:58.135Z</lastmod>
+    <lastmod>2023-01-05T22:30:33.436Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/temp_demos/ivy_as_a_transpiler_intro.html</loc>
-    <lastmod>2023-01-05T16:28:58.571Z</lastmod>
+    <lastmod>2023-01-05T22:30:33.776Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/temp_demos/deepmind_perceiverio.html</loc>
-    <lastmod>2023-01-05T16:28:59.183Z</lastmod>
+    <lastmod>2023-01-05T22:30:34.296Z</lastmod>
   </url>
 </urlset>

@@ -126,12 +126,12 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Unify Existing Code</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">Unify Existing Code</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">0 Building Blocks</a>
@@ -226,12 +226,12 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">Temp Demos</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">Temp Demos</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./temp_demos/basic_operations_with_ivy.html" class="sidebar-item-text sidebar-link">Basic Operations with Ivy</a>
@@ -273,35 +273,106 @@ ul.task-list li input[type="checkbox"] {
 
 <div class="quarto-listing quarto-listing-container-custom" id="listing-listing">
 
+<link href="assets/css/custom.css" rel="stylesheet" type="text/css">
 <div>
-  <div><a href="./unify_existing_code/0_building_blocks/0_0_unify.html">0.0: Unify</a></div>
-  <div>In this example, we unify a simple <code>torch</code> function <code>normalize</code>. We then show how this newly unified <code>normalize</code> function can be used alongside <em>any</em> ML framework!</div>
-  <div><a href="./unify_existing_code/0_building_blocks/0_1_compile.html">0.1: Compile</a></div>
-  <div>In this example, we compile our simple unified <code>ivy</code> function <code>normalize</code> from the last notebook. We then show how this newly compiled <code>normalize</code> function exhibits much better runtime…</div>
-  <div><a href="./unify_existing_code/0_building_blocks/0_2_transpile.html">0.2: Transpile</a></div>
-  <div>In this example, we transpile the original <code>normalize</code> function from <code>torch</code> to <code>jax</code> in one line of code. This is a common use case, where there is <em>one</em> target framework in mind.</div>
-  <div><a href="./unify_existing_code/1_the_basics/1_0_lazy_vs_eager.html">1.0: Lazy vs Eager</a></div>
-  <div><code>ivy.unify</code>, <code>ivy.compile</code> and <code>ivy.transpile</code> can all be performed either eagerly or lazily. All examples in the Building Blocks section are performed <em>lazily</em>, which means that the unification/compilation/transpilation process actually occurs…<em></em><code></code><code></code><code></code><em></em></div>
-  <div><a href="./unify_existing_code/1_the_basics/1_1_framework_selection.html">1.1: Framework Selection</a></div>
-  <div>The source and target frameworks for <code>ivy.unify</code>, <code>ivy.compile</code> and <code>ivy.transpile</code> can be: (a) inferred from the arguments…<code></code><em></em></div>
-  <div><a href="./unify_existing_code/1_the_basics/1_2_as_a_decorator.html">1.2: As a Decorator</a></div>
-  <div><code>ivy.unify</code>, <code>ivy.compile</code> and <code>ivy.transpile</code> can all be called either as a function decorator or as a standalone function. All examples in the Building Blocks section and…</div>
-  <div><a href="./unify_existing_code/1_the_basics/1_3_dynamic_vs_static.html">1.3: Dynamic vs Static</a></div>
-  <div>The functions <code>ivy.unify</code>, <code>ivy.compile</code> and <code>ivy.transpile</code> can all be executed either in <em>dynamic</em> mode or <em>static</em> mode. In this…</div>
-  <div><a href="./temp_demos/basic_operations_with_ivy.html">Basic Operations with Ivy</a></div>
-  <div>Ivy is a unified machine learning framework that aims to provide a single interface for working with various machine learning libraries, such as Numpy, TensorFlow, PyTorch…</div>
-  <div><a href="./temp_demos/compilation_of_a_basic_function.html">Compilation of a Basic Function</a></div>
-  <div>Ivy can compile any function that produce numerical outputs. Compiler track values from inputs to outputs and produce a computational…</div>
-  <div><a href="./temp_demos/deepmind_perceiverio.html">Deepmind PerceiverIO on GPU</a></div>
-  <div>This notebook presents a demonstration of how to run the PercieverIO model on GPU using any of the following backends currently supported by ivy (numpy, torch, tensorflow…</div>
-  <div><a href="./temp_demos/ivy_as_a_transpiler_intro.html">Ivy as a Transpiler Introduction</a></div>
-  <div>Transpile either functions, trainable models or importable python modules, with any number and combo permitted</div>
-  <div><a href="./unify_existing_code/3_models/3_0_perceiver.html"></a></div>
-  <div></div>
-  <div><a href="./unify_existing_code/3_models/3_1_stable_diffusion.html"></a></div>
-  <div></div>
-  <div><a href="./unify_existing_code/2_libraries/2_0_kornia.html"></a></div>
-  <div></div>
+  <a href="./unify_existing_code/0_building_blocks/0_0_unify.html">
+    <div class="notebook-card">
+      <div class="notebook-card-title">0.0: Unify</div>
+      <div class="notebook-card-title-border"></div>
+      <div>In this example, we unify a simple <code>torch</code> function <code>normalize</code>. We then show how this newly unified <code>normalize</code> function can be used alongside <em>any</em> ML framework!</div>
+    </div>
+  </a>
+  <a href="./unify_existing_code/0_building_blocks/0_1_compile.html">
+    <div class="notebook-card">
+      <div class="notebook-card-title">0.1: Compile</div>
+      <div class="notebook-card-title-border"></div>
+      <div>In this example, we compile our simple unified <code>ivy</code> function <code>normalize</code> from the last notebook. We then show how this newly compiled <code>normalize</code> function exhibits much better runtime…</div>
+    </div>
+  </a>
+  <a href="./unify_existing_code/0_building_blocks/0_2_transpile.html">
+    <div class="notebook-card">
+      <div class="notebook-card-title">0.2: Transpile</div>
+      <div class="notebook-card-title-border"></div>
+      <div>In this example, we transpile the original <code>normalize</code> function from <code>torch</code> to <code>jax</code> in one line of code. This is a common use case, where there is <em>one</em> target framework in mind.</div>
+    </div>
+  </a>
+  <a href="./unify_existing_code/1_the_basics/1_0_lazy_vs_eager.html">
+    <div class="notebook-card">
+      <div class="notebook-card-title">1.0: Lazy vs Eager</div>
+      <div class="notebook-card-title-border"></div>
+      <div><code>ivy.unify</code>, <code>ivy.compile</code> and <code>ivy.transpile</code> can all be performed either eagerly or lazily. All examples in the Building Blocks section are performed <em>lazily</em>, which means that the unification/compilation/transpilation process actually occurs…<em></em><code></code><code></code><code></code><em></em></div>
+    </div>
+  </a>
+  <a href="./unify_existing_code/1_the_basics/1_1_framework_selection.html">
+    <div class="notebook-card">
+      <div class="notebook-card-title">1.1: Framework Selection</div>
+      <div class="notebook-card-title-border"></div>
+      <div>The source and target frameworks for <code>ivy.unify</code>, <code>ivy.compile</code> and <code>ivy.transpile</code> can be: (a) inferred from the arguments…<code></code><em></em></div>
+    </div>
+  </a>
+  <a href="./unify_existing_code/1_the_basics/1_2_as_a_decorator.html">
+    <div class="notebook-card">
+      <div class="notebook-card-title">1.2: As a Decorator</div>
+      <div class="notebook-card-title-border"></div>
+      <div><code>ivy.unify</code>, <code>ivy.compile</code> and <code>ivy.transpile</code> can all be called either as a function decorator or as a standalone function. All examples in the Building Blocks section and…</div>
+    </div>
+  </a>
+  <a href="./unify_existing_code/1_the_basics/1_3_dynamic_vs_static.html">
+    <div class="notebook-card">
+      <div class="notebook-card-title">1.3: Dynamic vs Static</div>
+      <div class="notebook-card-title-border"></div>
+      <div>The functions <code>ivy.unify</code>, <code>ivy.compile</code> and <code>ivy.transpile</code> can all be executed either in <em>dynamic</em> mode or <em>static</em> mode. In this…</div>
+    </div>
+  </a>
+  <a href="./temp_demos/basic_operations_with_ivy.html">
+    <div class="notebook-card">
+      <div class="notebook-card-title">Basic Operations with Ivy</div>
+      <div class="notebook-card-title-border"></div>
+      <div>Ivy is a unified machine learning framework that aims to provide a single interface for working with various machine learning libraries, such as Numpy, TensorFlow, PyTorch…</div>
+    </div>
+  </a>
+  <a href="./temp_demos/compilation_of_a_basic_function.html">
+    <div class="notebook-card">
+      <div class="notebook-card-title">Compilation of a Basic Function</div>
+      <div class="notebook-card-title-border"></div>
+      <div>Ivy can compile any function that produce numerical outputs. Compiler track values from inputs to outputs and produce a computational…</div>
+    </div>
+  </a>
+  <a href="./temp_demos/deepmind_perceiverio.html">
+    <div class="notebook-card">
+      <div class="notebook-card-title">Deepmind PerceiverIO on GPU</div>
+      <div class="notebook-card-title-border"></div>
+      <div>This notebook presents a demonstration of how to run the PercieverIO model on GPU using any of the following backends currently supported by ivy (numpy, torch, tensorflow…</div>
+    </div>
+  </a>
+  <a href="./temp_demos/ivy_as_a_transpiler_intro.html">
+    <div class="notebook-card">
+      <div class="notebook-card-title">Ivy as a Transpiler Introduction</div>
+      <div class="notebook-card-title-border"></div>
+      <div>Transpile either functions, trainable models or importable python modules, with any number and combo permitted</div>
+    </div>
+  </a>
+  <a href="./unify_existing_code/3_models/3_0_perceiver.html">
+    <div class="notebook-card">
+      <div class="notebook-card-title"></div>
+      <div class="notebook-card-title-border"></div>
+      <div></div>
+    </div>
+  </a>
+  <a href="./unify_existing_code/3_models/3_1_stable_diffusion.html">
+    <div class="notebook-card">
+      <div class="notebook-card-title"></div>
+      <div class="notebook-card-title-border"></div>
+      <div></div>
+    </div>
+  </a>
+  <a href="./unify_existing_code/2_libraries/2_0_kornia.html">
+    <div class="notebook-card">
+      <div class="notebook-card-title"></div>
+      <div class="notebook-card-title-border"></div>
+      <div></div>
+    </div>
+  </a>
 </div>
 <div class="listing-no-matching d-none">
 No matching items
