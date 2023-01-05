@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.280">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>basic_operations_with_ivy</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-listing/list.min.js"></script>
+<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script>
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-listing .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-path','listing-title','listing-author','listing-description','listing-filename','listing-file-modified','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] }],
+      
+      searchColumns: ["listing-path","listing-title","listing-author","listing-description","listing-filename","listing-file-modified","listing-reading-time"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar floating nav-fixed fullcontent">
+
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../assets/img/ivy_logo.png" alt="Ivy Demos" class="navbar-logo">
+    </a>
+  </div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Unify Existing Code</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">0 Building Blocks</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../unify_existing_code/0_building_blocks/0_0_unify.html" class="sidebar-item-text sidebar-link">0.0: Unify</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../unify_existing_code/0_building_blocks/0_1_compile.html" class="sidebar-item-text sidebar-link">0.1: Compile</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../unify_existing_code/0_building_blocks/0_2_transpile.html" class="sidebar-item-text sidebar-link">0.2: Transpile</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">1 the Basics</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../unify_existing_code/1_the_basics/1_0_lazy_vs_eager.html" class="sidebar-item-text sidebar-link">1.0: Lazy vs Eager</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../unify_existing_code/1_the_basics/1_1_framework_selection.html" class="sidebar-item-text sidebar-link">1.1: Framework Selection</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../unify_existing_code/1_the_basics/1_2_as_a_decorator.html" class="sidebar-item-text sidebar-link">1.2: As a Decorator</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../unify_existing_code/1_the_basics/1_3_dynamic_vs_static.html" class="sidebar-item-text sidebar-link">1.3: Dynamic vs Static</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">2 Libraries</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../unify_existing_code/2_libraries/2_0_kornia.html" class="sidebar-item-text sidebar-link">2 0 Kornia</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">3 Models</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../unify_existing_code/3_models/3_0_perceiver.html" class="sidebar-item-text sidebar-link">3 0 Perceiver</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../unify_existing_code/3_models/3_1_stable_diffusion.html" class="sidebar-item-text sidebar-link">3 1 Stable Diffusion</a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">Temp Demos</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../temp_demos/basic_operations_with_ivy.html" class="sidebar-item-text sidebar-link active">Basic Operations with Ivy</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../temp_demos/compilation_of_a_basic_function.html" class="sidebar-item-text sidebar-link">Compilation of a Basic Function</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../temp_demos/deepmind_perceiverio.html" class="sidebar-item-text sidebar-link">Deepmind PerceiverIO on GPU</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../temp_demos/ivy_as_a_transpiler_intro.html" class="sidebar-item-text sidebar-link">Ivy as a Transpiler Introduction</a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+
+<section id="basic-operations-with-ivy" class="level1">
+<h1>Basic Operations with Ivy</h1>
+</section>
+<section id="installs" class="level1">
+<h1>Installs 💾</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install ivy<span class="op">-</span>core</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install torch</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install tensorflow</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install jax</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install dm<span class="op">-</span>haiku</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install numpy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="imports" class="level1">
+<h1>Imports 🛃</h1>
+<div class="cell" data-execution_count="43">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ivy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="ivy-as-a-unified-ml-framework" class="level1">
+<h1>Ivy as a Unified ML Framework 🔀</h1>
+<p>Ivy is a unified machine learning framework that aims to provide a single interface for working with various machine learning libraries, such as Numpy, TensorFlow, PyTorch, and Jax. With Ivy, you can use the same code to build and train machine learning models, regardless of the underlying library being used. All you have to do is to change one line of code 😉</p>
+<section id="change-frameworks-by-one-line-of-code" class="level2">
+<h2 class="anchored" data-anchor-id="change-frameworks-by-one-line-of-code">Change frameworks by one line of code ☝</h2>
+<p>With Ivy, you can define your data and operations just once and easily switch between different frameworks. To do this, simply write your operations in Ivy and use the <code>ivy.set_framework()</code> function to change the underlying framework.</p>
+<p>P.S. there are some more advanced ways of handling backend frameworks in Ivy, so check it out in our <a href="https://lets-unify.ai/ivy/deep_dive/backend_setting.html">Deep Dive</a>.</p>
+<section id="no-need-to-worry-about-data-types" class="level3">
+<h3 class="anchored" data-anchor-id="no-need-to-worry-about-data-types">No need to worry about data types 🎨</h3>
+<p>Firstly, let’s set the backend to Tensorflow</p>
+<div class="cell" data-execution_count="44">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>ivy.set_framework(<span class="st">'tensorflow'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-outputid="0eef18b2-4a56-4410-c58b-00e4f0065451" data-execution_count="45">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> ivy.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>])</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> ivy.array([<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>])</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>((<span class="bu">type</span>(ivy.to_native(x))))</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ivy.stack((x, y)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'tensorflow.python.framework.ops.EagerTensor'&gt;
+tf.Tensor(
+[[1 2 3]
+ [4 5 6]], shape=(2, 3), dtype=int32)</code></pre>
+</div>
+</div>
+<p>Now let’s try exactly the same code, but change the used backend framework to Pytorch.</p>
+<div class="cell" data-execution_count="46">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ivy.set_framework(<span class="st">'torch'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-outputid="b6b602ef-a81c-48a7-ada3-a3b2d5efb353" data-execution_count="47">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> ivy.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>])</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> ivy.array([<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>])</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>((<span class="bu">type</span>(ivy.to_native(x))))</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ivy.stack((x, y)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'torch.Tensor'&gt;
+tensor([[1, 2, 3],
+        [4, 5, 6]])</code></pre>
+</div>
+</div>
+<p>You can see that defined Ivy arrays have either tf.Tensor or torch.Tensor types underneath it without any need to worry about their types.</p>
+</section>
+<section id="no-need-to-worry-about-framework-differences" class="level3">
+<h3 class="anchored" data-anchor-id="no-need-to-worry-about-framework-differences">No need to worry about framework differences 💱</h3>
+<p>By saying that framework can be changed by just one line of code, we really mean it 🙂! By using Ivy as an ML framework, you do not need to worry about different function namings in different frameworks.</p>
+<p>Take a clip by value operator as an example. It performs the same operation across frameworks, but has different name and argument names. Numpy:</p>
+<pre><code>np.clip(a, a_min, a_max, out=None)</code></pre>
+<p>Tensforflow:</p>
+<pre><code>tf.clip_by_value(t, clip_value_min, clip_value_max, name=None)</code></pre>
+<p>Pytorch:</p>
+<pre><code>torch.clamp(input, min=None, max=None, *, out=None)</code></pre>
+<p>Jax:</p>
+<pre><code>jax.numpy.clip(a, a_min=None, a_max=None, out=None)</code></pre>
+<p>Here are some examples</p>
+<div class="cell" data-outputid="2f971378-c049-4180-9267-c33899a20e15" data-execution_count="48">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> tf.constant([[<span class="op">-</span><span class="fl">10.</span>, <span class="op">-</span><span class="fl">1.</span>, <span class="fl">0.</span>], [<span class="fl">0.</span>, <span class="fl">2.</span>, <span class="fl">10.</span>]])</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(tf.clip_by_value(t, clip_value_min<span class="op">=-</span><span class="dv">1</span>, clip_value_max<span class="op">=</span><span class="dv">1</span>))</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> np.array([[<span class="op">-</span><span class="fl">10.</span>, <span class="op">-</span><span class="fl">1.</span>, <span class="fl">0.</span>], [<span class="fl">0.</span>, <span class="fl">2.</span>, <span class="fl">10.</span>]])</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.clip(n, a_min<span class="op">=-</span><span class="dv">1</span>, a_max<span class="op">=</span><span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>tf.Tensor(
+[[-1. -1.  0.]
+ [ 0.  1.  1.]], shape=(2, 3), dtype=float32)
+[[-1. -1.  0.]
+ [ 0.  1.  1.]]</code></pre>
+</div>
+</div>
+<p>Ivy allows you not to worry about such things. Now let’s do the same solely in Ivy.</p>
+<div class="cell" data-outputid="fa760212-8e48-41a8-d7c3-1227b90e049d" data-execution_count="49">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>ivy.set_framework(<span class="st">'numpy'</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>i <span class="op">=</span> ivy.array([[<span class="op">-</span><span class="fl">10.</span>, <span class="op">-</span><span class="fl">1.</span>, <span class="fl">0.</span>], [<span class="fl">0.</span>, <span class="fl">2.</span>, <span class="fl">10.</span>]])</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>ivy.clip(i, <span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="49">
+<pre><code>array([[-1., -1.,  0.],
+       [ 0.,  1.,  1.]])</code></pre>
+</div>
+</div>
+<div class="cell" data-outputid="5aa4fc74-18b0-4d3a-fbed-d5509b81ecb8" data-execution_count="50">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>ivy.set_framework(<span class="st">'torch'</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>i <span class="op">=</span> ivy.array([[<span class="op">-</span><span class="fl">10.</span>, <span class="op">-</span><span class="fl">1.</span>, <span class="fl">0.</span>], [<span class="fl">0.</span>, <span class="fl">2.</span>, <span class="fl">10.</span>]])</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>ivy.clip(i, <span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="50">
+<pre><code>tensor([[-1., -1.,  0.],
+        [ 0.,  1.,  1.]])</code></pre>
+</div>
+</div>
+<div class="cell" data-outputid="453c5e04-e953-4d8b-be80-3c2103359d3f" data-execution_count="51">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>ivy.set_framework(<span class="st">'tensorflow'</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>i <span class="op">=</span> ivy.array([[<span class="op">-</span><span class="fl">10.</span>, <span class="op">-</span><span class="fl">1.</span>, <span class="fl">0.</span>], [<span class="fl">0.</span>, <span class="fl">2.</span>, <span class="fl">10.</span>]])</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>ivy.clip(i, <span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="51">
+<pre><code>&lt;tf.Tensor: shape=(2, 3), dtype=float32, numpy=
+array([[-1., -1.,  0.],
+       [ 0.,  1.,  1.]], dtype=float32)&gt;</code></pre>
+</div>
+</div>
+<div class="cell" data-outputid="87d6ddc8-7335-46c5-daff-e1aba3475b20" data-execution_count="93">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>ivy.set_framework(<span class="st">'jax'</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>i <span class="op">=</span> ivy.array([[<span class="op">-</span><span class="fl">10.</span>, <span class="op">-</span><span class="fl">1.</span>, <span class="fl">0.</span>], [<span class="fl">0.</span>, <span class="fl">2.</span>, <span class="fl">10.</span>]])</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>ivy.clip(i, <span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="93">
+<pre><code>DeviceArray([[-1., -1.,  0.],
+             [ 0.,  1.,  1.]], dtype=float32)</code></pre>
+</div>
+</div>
+<p>As you see, the only line that changed here is <code>ivy.set_framework()</code>.</p>
+</section>
+<section id="unifying-them-all" class="level3">
+<h3 class="anchored" data-anchor-id="unifying-them-all">Unifying them all! 🍲</h3>
+<p>Finally, functions defined in Ivy are framework agnostic. In the example below we show how Ivy’s concatenation function is compatible with tensors from different frameworks. This is the same for all Ivy functions. They can accept tensors from any framework and return the correct result.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jax.numpy <span class="im">as</span> jnp</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ivy</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>jax_concatted   <span class="op">=</span> ivy.concat((jnp.ones((<span class="dv">1</span>,)), jnp.ones((<span class="dv">1</span>,))), <span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>tf_concatted    <span class="op">=</span> ivy.concat((tf.ones((<span class="dv">1</span>,)), tf.ones((<span class="dv">1</span>,))), <span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>np_concatted    <span class="op">=</span> ivy.concat((np.ones((<span class="dv">1</span>,)), np.ones((<span class="dv">1</span>,))), <span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>torch_concatted <span class="op">=</span> ivy.concat((torch.ones((<span class="dv">1</span>,)), torch.ones((<span class="dv">1</span>,))), <span class="op">-</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="ivy-as-a-standalone-ml-framework" class="level1">
+<h1>Ivy as a standalone ML framework 🌀</h1>
+<p>Finally, let’s train a simple two layer network using Ivy.</p>
+<section id="set-backend-framework" class="level3">
+<h3 class="anchored" data-anchor-id="set-backend-framework">Set Backend Framework</h3>
+<p>You can change the framework to any of the following: <code>torch</code>, <code>tensforflow</code>, or <code>jax</code>.</p>
+<div class="cell" data-execution_count="85">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>ivy.set_framework(<span class="st">'torch'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="define-model" class="level3">
+<h3 class="anchored" data-anchor-id="define-model">Define Model</h3>
+<div class="cell" data-execution_count="86">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MyModel(ivy.Module):</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.linear0 <span class="op">=</span> ivy.Linear(<span class="dv">3</span>, <span class="dv">64</span>)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.linear1 <span class="op">=</span> ivy.Linear(<span class="dv">64</span>, <span class="dv">1</span>)</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>        ivy.Module.<span class="fu">__init__</span>(<span class="va">self</span>)</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> _forward(<span class="va">self</span>, x):</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> ivy.relu(<span class="va">self</span>.linear0(x))</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> ivy.sigmoid(<span class="va">self</span>.linear1(x))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="create-model" class="level3">
+<h3 class="anchored" data-anchor-id="create-model">Create Model</h3>
+<div class="cell" data-execution_count="87">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> MyModel()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="create-optimizer" class="level3">
+<h3 class="anchored" data-anchor-id="create-optimizer">Create Optimizer</h3>
+<div class="cell" data-execution_count="88">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>optimizer <span class="op">=</span> ivy.Adam(<span class="fl">1e-4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="input-and-target" class="level3">
+<h3 class="anchored" data-anchor-id="input-and-target">Input and Target</h3>
+<div class="cell" data-execution_count="89">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>x_in <span class="op">=</span> ivy.array([<span class="fl">1.</span>, <span class="fl">2.</span>, <span class="fl">3.</span>])</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>target <span class="op">=</span> ivy.array([<span class="fl">0.</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="loss-function" class="level3">
+<h3 class="anchored" data-anchor-id="loss-function">Loss Function</h3>
+<div class="cell" data-execution_count="90">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> loss_fn(v):</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> model(x_in, v<span class="op">=</span>v)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ivy.reduce_mean((out <span class="op">-</span> target)<span class="op">**</span><span class="dv">2</span>)[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="training-loop" class="level3">
+<h3 class="anchored" data-anchor-id="training-loop">Training Loop</h3>
+<div class="cell" data-outputid="c6866b31-2109-43d1-91c5-235c04048875" data-execution_count="91">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> step <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">100</span>):</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    loss, grads <span class="op">=</span> ivy.execute_with_gradients(loss_fn, model.v)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    model.v <span class="op">=</span> optimizer.step(model.v, grads)</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'step </span><span class="sc">{}</span><span class="st"> loss </span><span class="sc">{}</span><span class="st">'</span>.<span class="bu">format</span>(step, ivy.to_numpy(loss).item()))</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Finished training!'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>step 0 loss 0.49040043354034424
+step 1 loss 0.48975786566734314
+step 2 loss 0.4892795979976654
+step 3 loss 0.48886892199516296
+step 4 loss 0.4884953498840332
+step 5 loss 0.4881443977355957
+step 6 loss 0.4878086447715759
+step 7 loss 0.48748287558555603
+step 8 loss 0.48716384172439575
+step 9 loss 0.48684927821159363
+step 10 loss 0.48653748631477356
+step 11 loss 0.48622724413871765
+step 12 loss 0.4859171509742737
+step 13 loss 0.48560672998428345
+step 14 loss 0.48529526591300964
+step 15 loss 0.4849821627140045
+step 16 loss 0.48466697335243225
+step 17 loss 0.4843493402004242
+step 18 loss 0.4840289056301117
+step 19 loss 0.4837053418159485
+step 20 loss 0.4833785891532898
+step 21 loss 0.4830484390258789
+step 22 loss 0.48271444439888
+step 23 loss 0.48237672448158264
+step 24 loss 0.48203518986701965
+step 25 loss 0.48168954253196716
+step 26 loss 0.4813397228717804
+step 27 loss 0.4809857904911041
+step 28 loss 0.48062753677368164
+step 29 loss 0.48026490211486816
+step 30 loss 0.479898065328598
+step 31 loss 0.47952669858932495
+step 32 loss 0.4791509211063385
+step 33 loss 0.4787706732749939
+step 34 loss 0.47838595509529114
+step 35 loss 0.4779967665672302
+step 36 loss 0.47760307788848877
+step 37 loss 0.4772048890590668
+step 38 loss 0.47680220007896423
+step 39 loss 0.47639501094818115
+step 40 loss 0.47598329186439514
+step 41 loss 0.4755673110485077
+step 42 loss 0.4751465618610382
+step 43 loss 0.4747215211391449
+step 44 loss 0.4742920398712158
+step 45 loss 0.47385817766189575
+step 46 loss 0.47341999411582947
+step 47 loss 0.47297725081443787
+step 48 loss 0.4725303053855896
+step 49 loss 0.47207894921302795
+step 50 loss 0.47162333130836487
+step 51 loss 0.47116345167160034
+step 52 loss 0.470699280500412
+step 53 loss 0.47023090720176697
+step 54 loss 0.4697583019733429
+step 55 loss 0.46928152441978455
+step 56 loss 0.46880054473876953
+step 57 loss 0.4683155119419098
+step 58 loss 0.4678264260292053
+step 59 loss 0.46733325719833374
+step 60 loss 0.46683603525161743
+step 61 loss 0.4663347601890564
+step 62 loss 0.4658295214176178
+step 63 loss 0.465320348739624
+step 64 loss 0.4648073613643646
+step 65 loss 0.46429020166397095
+step 66 loss 0.4637692868709564
+step 67 loss 0.46324464678764343
+step 68 loss 0.4627160429954529
+step 69 loss 0.4621836841106415
+step 70 loss 0.4616474211215973
+step 71 loss 0.46110764145851135
+step 72 loss 0.460563987493515
+step 73 loss 0.4600166976451874
+step 74 loss 0.45946577191352844
+step 75 loss 0.45891112089157104
+step 76 loss 0.45835286378860474
+step 77 loss 0.4577910006046295
+step 78 loss 0.45722562074661255
+step 79 loss 0.45665669441223145
+step 80 loss 0.4560841917991638
+step 81 loss 0.4555082619190216
+step 82 loss 0.45492875576019287
+step 83 loss 0.45434585213661194
+step 84 loss 0.45375964045524597
+step 85 loss 0.4531698524951935
+step 86 loss 0.4525766670703888
+step 87 loss 0.45198020339012146
+step 88 loss 0.4513803720474243
+step 89 loss 0.4507772624492645
+step 90 loss 0.4501707851886749
+step 91 loss 0.4495610296726227
+step 92 loss 0.4489481747150421
+step 93 loss 0.44833192229270935
+step 94 loss 0.4477125108242035
+step 95 loss 0.44708991050720215
+step 96 loss 0.44646409153938293
+step 97 loss 0.44583529233932495
+step 98 loss 0.4452032148838043
+step 99 loss 0.44456806778907776
+Finished training!</code></pre>
+</div>
+</div>
+<div class="cell" data-outputid="5d12ecae-b557-442b-814e-9403f9c7ecec" data-execution_count="92">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>loss_fn(model.v)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="92">
+<pre><code>tensor(0.4439, grad_fn=&lt;SelectBackward0&gt;)</code></pre>
+</div>
+</div>
+<p>We hope that this short demo gives you a better understanding of basic Ivy functionality and got your interest in learning more about Ivy!</p>
+
+
+
+</section>
+</section>
+
+<div class="quarto-listing quarto-listing-container-custom" id="listing-listing">
+<ul>
+  <li><a href="../temp_demos/compilation_of_a_basic_function.html">Compilation of a Basic Function</a></li>
+  <li><a href="../temp_demos/deepmind_perceiverio.html">Deepmind PerceiverIO on GPU</a></li>
+  <li><a href="../temp_demos/ivy_as_a_transpiler_intro.html">Ivy as a Transpiler Introduction</a></li>
+</ul>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

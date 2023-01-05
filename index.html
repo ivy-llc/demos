@@ -24,6 +24,7 @@ ul.task-list li input[type="checkbox"] {
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="site_libs/quarto-search/fuse.min.js"></script>
@@ -41,11 +42,11 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
-  "location": "sidebar",
+  "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
-  "panel-placement": "start",
-  "type": "textbox",
+  "panel-placement": "end",
+  "type": "overlay",
   "limit": 20,
   "language": {
     "search-no-results-text": "No results",
@@ -93,12 +94,169 @@ ul.task-list li input[type="checkbox"] {
 
 </head>
 
-<body class="fullcontent">
+<body class="nav-sidebar floating nav-fixed fullcontent">
+
 
 <div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    <img src="./assets/img/ivy_logo.png" alt="Ivy Demos" class="navbar-logo">
+    </a>
+  </div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Unify Existing Code</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">0 Building Blocks</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./unify_existing_code/0_building_blocks/0_0_unify.html" class="sidebar-item-text sidebar-link">0.0: Unify</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./unify_existing_code/0_building_blocks/0_1_compile.html" class="sidebar-item-text sidebar-link">0.1: Compile</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./unify_existing_code/0_building_blocks/0_2_transpile.html" class="sidebar-item-text sidebar-link">0.2: Transpile</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">1 the Basics</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./unify_existing_code/1_the_basics/1_0_lazy_vs_eager.html" class="sidebar-item-text sidebar-link">1.0: Lazy vs Eager</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./unify_existing_code/1_the_basics/1_1_framework_selection.html" class="sidebar-item-text sidebar-link">1.1: Framework Selection</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./unify_existing_code/1_the_basics/1_2_as_a_decorator.html" class="sidebar-item-text sidebar-link">1.2: As a Decorator</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./unify_existing_code/1_the_basics/1_3_dynamic_vs_static.html" class="sidebar-item-text sidebar-link">1.3: Dynamic vs Static</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">2 Libraries</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./unify_existing_code/2_libraries/2_0_kornia.html" class="sidebar-item-text sidebar-link">2 0 Kornia</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">3 Models</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./unify_existing_code/3_models/3_0_perceiver.html" class="sidebar-item-text sidebar-link">3 0 Perceiver</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./unify_existing_code/3_models/3_1_stable_diffusion.html" class="sidebar-item-text sidebar-link">3 1 Stable Diffusion</a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">Temp Demos</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./temp_demos/basic_operations_with_ivy.html" class="sidebar-item-text sidebar-link">Basic Operations with Ivy</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./temp_demos/compilation_of_a_basic_function.html" class="sidebar-item-text sidebar-link">Compilation of a Basic Function</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./temp_demos/deepmind_perceiverio.html" class="sidebar-item-text sidebar-link">Deepmind PerceiverIO on GPU</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./temp_demos/ivy_as_a_transpiler_intro.html" class="sidebar-item-text sidebar-link">Ivy as a Transpiler Introduction</a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
 <!-- margin-sidebar -->
     
 <!-- main -->
@@ -115,7 +273,7 @@ ul.task-list li input[type="checkbox"] {
 
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-listing-file-modified-sort="1672864045632" data-listing-reading-time-sort="0.785">
+<div class="quarto-post image-right" data-index="0" data-listing-file-modified-sort="1672922444207" data-listing-reading-time-sort="0.785">
 <div class="body">
 <a href="./unify_existing_code/0_building_blocks/0_0_unify.html">
 <h3 class="no-anchor listing-title">
@@ -133,7 +291,7 @@ In this example, we unify a simple <code>torch</code> function <code>normalize</
 <a href="./unify_existing_code/0_building_blocks/0_0_unify.html"> </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-listing-file-modified-sort="1672864045632" data-listing-reading-time-sort="2.185">
+<div class="quarto-post image-right" data-index="1" data-listing-file-modified-sort="1672922444207" data-listing-reading-time-sort="2.185">
 <div class="body">
 <a href="./unify_existing_code/0_building_blocks/0_1_compile.html">
 <h3 class="no-anchor listing-title">
@@ -151,7 +309,7 @@ In this example, we compile our simple unified <code>ivy</code> function <code>n
 <a href="./unify_existing_code/0_building_blocks/0_1_compile.html"> </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="2" data-listing-file-modified-sort="1672864045632" data-listing-reading-time-sort="1.09">
+<div class="quarto-post image-right" data-index="2" data-listing-file-modified-sort="1672922444207" data-listing-reading-time-sort="1.09">
 <div class="body">
 <a href="./unify_existing_code/0_building_blocks/0_2_transpile.html">
 <h3 class="no-anchor listing-title">
@@ -169,7 +327,7 @@ In this example, we transpile the original <code>normalize</code> function from 
 <a href="./unify_existing_code/0_building_blocks/0_2_transpile.html"> </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="3" data-listing-file-modified-sort="1672864045632" data-listing-reading-time-sort="1.6">
+<div class="quarto-post image-right" data-index="3" data-listing-file-modified-sort="1672922444207" data-listing-reading-time-sort="1.6">
 <div class="body">
 <a href="./unify_existing_code/1_the_basics/1_0_lazy_vs_eager.html">
 <h3 class="no-anchor listing-title">
@@ -187,7 +345,7 @@ In this example, we transpile the original <code>normalize</code> function from 
 <a href="./unify_existing_code/1_the_basics/1_0_lazy_vs_eager.html"> </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="4" data-listing-file-modified-sort="1672864045632" data-listing-reading-time-sort="3.025">
+<div class="quarto-post image-right" data-index="4" data-listing-file-modified-sort="1672922444211" data-listing-reading-time-sort="3.025">
 <div class="body">
 <a href="./unify_existing_code/1_the_basics/1_1_framework_selection.html">
 <h3 class="no-anchor listing-title">
@@ -205,7 +363,7 @@ The source and target frameworks for <code>ivy.unify</code>, <code>ivy.compile</
 <a href="./unify_existing_code/1_the_basics/1_1_framework_selection.html"> </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="5" data-listing-file-modified-sort="1672864045632" data-listing-reading-time-sort="1.61">
+<div class="quarto-post image-right" data-index="5" data-listing-file-modified-sort="1672922444211" data-listing-reading-time-sort="1.61">
 <div class="body">
 <a href="./unify_existing_code/1_the_basics/1_2_as_a_decorator.html">
 <h3 class="no-anchor listing-title">
@@ -223,7 +381,7 @@ The source and target frameworks for <code>ivy.unify</code>, <code>ivy.compile</
 <a href="./unify_existing_code/1_the_basics/1_2_as_a_decorator.html"> </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="6" data-listing-file-modified-sort="1672864045632" data-listing-reading-time-sort="0.69">
+<div class="quarto-post image-right" data-index="6" data-listing-file-modified-sort="1672922444211" data-listing-reading-time-sort="0.69">
 <div class="body">
 <a href="./unify_existing_code/1_the_basics/1_3_dynamic_vs_static.html">
 <h3 class="no-anchor listing-title">
@@ -241,9 +399,9 @@ The functions <code>ivy.unify</code>, <code>ivy.compile</code> and <code>ivy.tra
 <a href="./unify_existing_code/1_the_basics/1_3_dynamic_vs_static.html"> </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="7" data-listing-file-modified-sort="1672864045612" data-listing-reading-time-sort="2.045">
+<div class="quarto-post image-right" data-index="7" data-listing-file-modified-sort="1672922444183" data-listing-reading-time-sort="2.055">
 <div class="body">
-<a href="./basic_operations_with_ivy.html">
+<a href="./temp_demos/basic_operations_with_ivy.html">
 <h3 class="no-anchor listing-title">
 Basic Operations with Ivy
 </h3>
@@ -256,12 +414,12 @@ Ivy is a unified machine learning framework that aims to provide a single interf
 </a>
 </div>
 <div class="metadata">
-<a href="./basic_operations_with_ivy.html"> </a>
+<a href="./temp_demos/basic_operations_with_ivy.html"> </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="8" data-listing-file-modified-sort="1672864045612" data-listing-reading-time-sort="0.67">
+<div class="quarto-post image-right" data-index="8" data-listing-file-modified-sort="1672922444183" data-listing-reading-time-sort="0.68">
 <div class="body">
-<a href="./compilation_of_a_basic_function.html">
+<a href="./temp_demos/compilation_of_a_basic_function.html">
 <h3 class="no-anchor listing-title">
 Compilation of a Basic Function
 </h3>
@@ -274,12 +432,12 @@ Ivy can compile any function that produce numerical outputs. Compiler track valu
 </a>
 </div>
 <div class="metadata">
-<a href="./compilation_of_a_basic_function.html"> </a>
+<a href="./temp_demos/compilation_of_a_basic_function.html"> </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="9" data-listing-file-modified-sort="1672864045632" data-listing-reading-time-sort="0.595">
+<div class="quarto-post image-right" data-index="9" data-listing-file-modified-sort="1672922444207" data-listing-reading-time-sort="0.6">
 <div class="body">
-<a href="./deepmind_perceiverio.html">
+<a href="./temp_demos/deepmind_perceiverio.html">
 <h3 class="no-anchor listing-title">
 Deepmind PerceiverIO on GPU
 </h3>
@@ -292,12 +450,12 @@ This notebook presents a demonstration of how to run the PercieverIO model on GP
 </a>
 </div>
 <div class="metadata">
-<a href="./deepmind_perceiverio.html"> </a>
+<a href="./temp_demos/deepmind_perceiverio.html"> </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="10" data-listing-file-modified-sort="1672864045632" data-listing-reading-time-sort="1.65">
+<div class="quarto-post image-right" data-index="10" data-listing-file-modified-sort="1672922444207" data-listing-reading-time-sort="1.67">
 <div class="body">
-<a href="./ivy_as_a_transpiler_intro.html">
+<a href="./temp_demos/ivy_as_a_transpiler_intro.html">
 <h3 class="no-anchor listing-title">
 Ivy as a Transpiler Introduction
 </h3>
@@ -310,10 +468,10 @@ Transpile either functions, trainable models or importable python modules, with 
 </a>
 </div>
 <div class="metadata">
-<a href="./ivy_as_a_transpiler_intro.html"> </a>
+<a href="./temp_demos/ivy_as_a_transpiler_intro.html"> </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="11" data-listing-file-modified-sort="1672864045632" data-listing-reading-time-sort="0">
+<div class="quarto-post image-right" data-index="11" data-listing-file-modified-sort="1672922444211" data-listing-reading-time-sort="0">
 <div class="body">
 <a href="./unify_existing_code/3_models/3_0_perceiver.html">
 <h3 class="no-anchor listing-title">
@@ -330,7 +488,7 @@ Transpile either functions, trainable models or importable python modules, with 
 <a href="./unify_existing_code/3_models/3_0_perceiver.html"> </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="12" data-listing-file-modified-sort="1672864045632" data-listing-reading-time-sort="0">
+<div class="quarto-post image-right" data-index="12" data-listing-file-modified-sort="1672922444211" data-listing-reading-time-sort="0">
 <div class="body">
 <a href="./unify_existing_code/3_models/3_1_stable_diffusion.html">
 <h3 class="no-anchor listing-title">
@@ -348,7 +506,7 @@ Transpile either functions, trainable models or importable python modules, with 
 <a href="./unify_existing_code/3_models/3_1_stable_diffusion.html"> </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="13" data-listing-file-modified-sort="1672864045632" data-listing-reading-time-sort="0">
+<div class="quarto-post image-right" data-index="13" data-listing-file-modified-sort="1672922444211" data-listing-reading-time-sort="0">
 <div class="body">
 <a href="./unify_existing_code/2_libraries/2_0_kornia.html">
 <h3 class="no-anchor listing-title">
