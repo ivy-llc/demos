@@ -1,74 +1,5 @@
 [
   {
-    "listing": "/unify_existing_code/0_building_blocks/0_2_transpile.html",
-    "items": [
-      "/unify_existing_code/0_building_blocks/0_0_unify.html",
-      "/unify_existing_code/0_building_blocks/0_1_compile.html"
-    ]
-  },
-  {
-    "listing": "/unify_existing_code/0_building_blocks/0_1_compile.html",
-    "items": [
-      "/unify_existing_code/0_building_blocks/0_0_unify.html",
-      "/unify_existing_code/0_building_blocks/0_2_transpile.html"
-    ]
-  },
-  {
-    "listing": "/unify_existing_code/0_building_blocks/0_0_unify.html",
-    "items": [
-      "/unify_existing_code/0_building_blocks/0_1_compile.html",
-      "/unify_existing_code/0_building_blocks/0_2_transpile.html"
-    ]
-  },
-  {
-    "listing": "/unify_existing_code/3_models/3_0_perceiver.html",
-    "items": [
-      "/unify_existing_code/3_models/3_1_stable_diffusion.html"
-    ]
-  },
-  {
-    "listing": "/unify_existing_code/3_models/3_1_stable_diffusion.html",
-    "items": [
-      "/unify_existing_code/3_models/3_0_perceiver.html"
-    ]
-  },
-  {
-    "listing": "/unify_existing_code/2_libraries/2_0_kornia.html",
-    "items": []
-  },
-  {
-    "listing": "/unify_existing_code/1_the_basics/1_2_as_a_decorator.html",
-    "items": [
-      "/unify_existing_code/1_the_basics/1_0_lazy_vs_eager.html",
-      "/unify_existing_code/1_the_basics/1_1_framework_selection.html",
-      "/unify_existing_code/1_the_basics/1_3_dynamic_vs_static.html"
-    ]
-  },
-  {
-    "listing": "/unify_existing_code/1_the_basics/1_1_framework_selection.html",
-    "items": [
-      "/unify_existing_code/1_the_basics/1_0_lazy_vs_eager.html",
-      "/unify_existing_code/1_the_basics/1_2_as_a_decorator.html",
-      "/unify_existing_code/1_the_basics/1_3_dynamic_vs_static.html"
-    ]
-  },
-  {
-    "listing": "/unify_existing_code/1_the_basics/1_0_lazy_vs_eager.html",
-    "items": [
-      "/unify_existing_code/1_the_basics/1_1_framework_selection.html",
-      "/unify_existing_code/1_the_basics/1_2_as_a_decorator.html",
-      "/unify_existing_code/1_the_basics/1_3_dynamic_vs_static.html"
-    ]
-  },
-  {
-    "listing": "/unify_existing_code/1_the_basics/1_3_dynamic_vs_static.html",
-    "items": [
-      "/unify_existing_code/1_the_basics/1_0_lazy_vs_eager.html",
-      "/unify_existing_code/1_the_basics/1_1_framework_selection.html",
-      "/unify_existing_code/1_the_basics/1_2_as_a_decorator.html"
-    ]
-  },
-  {
     "listing": "/index.html",
     "items": [
       "/unify_existing_code/0_building_blocks/0_0_unify.html",
@@ -85,38 +16,6 @@
       "/unify_existing_code/3_models/3_0_perceiver.html",
       "/unify_existing_code/3_models/3_1_stable_diffusion.html",
       "/unify_existing_code/2_libraries/2_0_kornia.html"
-    ]
-  },
-  {
-    "listing": "/temp_demos/compilation_of_a_basic_function.html",
-    "items": [
-      "/temp_demos/basic_operations_with_ivy.html",
-      "/temp_demos/deepmind_perceiverio.html",
-      "/temp_demos/ivy_as_a_transpiler_intro.html"
-    ]
-  },
-  {
-    "listing": "/temp_demos/basic_operations_with_ivy.html",
-    "items": [
-      "/temp_demos/compilation_of_a_basic_function.html",
-      "/temp_demos/deepmind_perceiverio.html",
-      "/temp_demos/ivy_as_a_transpiler_intro.html"
-    ]
-  },
-  {
-    "listing": "/temp_demos/ivy_as_a_transpiler_intro.html",
-    "items": [
-      "/temp_demos/basic_operations_with_ivy.html",
-      "/temp_demos/compilation_of_a_basic_function.html",
-      "/temp_demos/deepmind_perceiverio.html"
-    ]
-  },
-  {
-    "listing": "/temp_demos/deepmind_perceiverio.html",
-    "items": [
-      "/temp_demos/basic_operations_with_ivy.html",
-      "/temp_demos/compilation_of_a_basic_function.html",
-      "/temp_demos/ivy_as_a_transpiler_intro.html"
     ]
   }
 ]
