@@ -93,6 +93,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../temp_demos/ivy_as_a_transpiler_intro.html" rel="next">
+<link href="../temp_demos/compilation_of_a_basic_function.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -372,9 +374,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>git clone <span class="op">--</span>depth <span class="dv">1</span> https:<span class="op">//</span>github.com<span class="op">/</span>unifyai<span class="op">/</span>ivy.git </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-</section>
-<section id="install-ivy-and-ivy_models-from-the-repos" class="level2">
-<h2 class="anchored" data-anchor-id="install-ivy-and-ivy_models-from-the-repos">Install ivy and ivy_models from the repos</h2>
+<section id="install-ivy-and-ivy_models-from-the-repos" class="level3">
+<h3 class="anchored" data-anchor-id="install-ivy-and-ivy_models-from-the-repos">Install ivy and ivy_models from the repos</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install models<span class="op">/</span> <span class="op">--</span>upgrade</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -389,8 +390,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install jaxlib with with the corresponding CUDA version.</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install  https:<span class="op">//</span>storage.googleapis.com<span class="op">/</span>jax<span class="op">-</span>releases<span class="op">/</span>cuda11<span class="op">/</span>jaxlib<span class="op">-</span><span class="fl">0.3.14</span><span class="op">+</span>cuda11.cudnn805<span class="op">-</span>cp38<span class="op">-</span>none<span class="op">-</span>manylinux2014_x86_64.whl</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="run-the-demo" class="level3">
-<h3 class="anchored" data-anchor-id="run-the-demo">Run the demo…</h3>
+</section>
+</section>
+<section id="run-the-demo" class="level2">
+<h2 class="anchored" data-anchor-id="run-the-demo">Run the demo…</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/local/bin/python3.8</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -537,7 +540,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb14-62"><a href="#cb14-62" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> logits</span>
 <span id="cb14-63"><a href="#cb14-63" aria-hidden="true" tabindex="-1"></a>    </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section>
 <section id="with-torch-backend" class="level3">
 <h3 class="anchored" data-anchor-id="with-torch-backend">…with torch backend</h3>
 <div class="cell" data-outputid="b9ccf9fa-9e51-44d4-d220-d108e5598f17">
@@ -1034,6 +1036,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../temp_demos/compilation_of_a_basic_function.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Compilation of a Basic Function</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../temp_demos/ivy_as_a_transpiler_intro.html" class="pagination-link">
+        <span class="nav-page-text">Ivy as a Transpiler Introduction</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
 </div> <!-- /content -->
 
 

@@ -93,6 +93,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../temp_demos/deepmind_perceiverio.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -297,17 +298,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <section id="ivy-as-a-transpiler-introduction" class="level1">
 <h1>Ivy as a Transpiler Introduction</h1>
-</section>
-<section id="to-use-the-transpiler" class="level1">
-<h1>To use the transpiler:</h1>
+<section id="to-use-the-transpiler" class="level3">
+<h3 class="anchored" data-anchor-id="to-use-the-transpiler">To use the transpiler:</h3>
 <ol type="1">
 <li>Head to our <a href="https://lets-unify.ai/">website</a></li>
 <li>Create an account and generate an API Key</li>
 <li>Set the<code>IVY_API_KEY</code>environment variable to your generated key</li>
 </ol>
 </section>
-<section id="transpiler-interface" class="level1">
-<h1>Transpiler Interface</h1>
+<section id="transpiler-interface" class="level2">
+<h2 class="anchored" data-anchor-id="transpiler-interface">Transpiler Interface</h2>
 <div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> transpile(</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>,</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>        <span class="op">*</span>objs,</span>
@@ -335,9 +335,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Telemetry helps us better understand how users are interacting with the transpiler &amp; how to make it better, we specifcally collect: 1. Invocations of the transpiler 2. graph representation of the transpiled object(s) 3. General machine information (e.g.&nbsp;number of CPUs, GPUs, OS)</p>
 <p><em>add option to opt-out?</em></p>
 </section>
-</section>
-<section id="transpile-functions" class="level1">
-<h1>1. Transpile Functions 🔢</h1>
+<section id="transpile-functions" class="level3">
+<h3 class="anchored" data-anchor-id="transpile-functions">1. Transpile Functions 🔢</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install kornia ivy<span class="op">-</span>core</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>wget https:<span class="op">//</span>raw.githubusercontent.com<span class="op">/</span>unifyai<span class="op">/</span>unifyai.github.io<span class="op">/</span>master<span class="op">/</span>img<span class="op">/</span>externally_linked<span class="op">/</span>logo.png <span class="op">-</span>O image.png</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -398,8 +397,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>cv2_imshow(new_img)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="transpile-libraries" class="level1">
-<h1>2. Transpile Libraries 📚</h1>
+<section id="transpile-libraries" class="level3">
+<h3 class="anchored" data-anchor-id="transpile-libraries">2. Transpile Libraries 📚</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># transpile module lazily</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>kornia <span class="op">=</span> ivy.transpile(kornia,to<span class="op">=</span><span class="st">"tensorflow"</span>)</span>
@@ -415,8 +414,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>cv2_imshow(img)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="transpile-models" class="level1">
-<h1>3. Transpile Models 🌐</h1>
+<section id="transpile-models" class="level3">
+<h3 class="anchored" data-anchor-id="transpile-models">3. Transpile Models 🌐</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> haiku <span class="im">as</span> hk</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -432,6 +431,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 
 
+</section>
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -568,6 +569,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../temp_demos/deepmind_perceiverio.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Deepmind PerceiverIO on GPU</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
 </div> <!-- /content -->
 
 

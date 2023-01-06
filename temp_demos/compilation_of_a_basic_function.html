@@ -93,6 +93,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../temp_demos/deepmind_perceiverio.html" rel="next">
+<link href="../temp_demos/basic_operations_with_ivy.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -297,43 +299,42 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <section id="compilation-of-a-basic-function" class="level1">
 <h1>Compilation of a Basic Function</h1>
-</section>
-<section id="installs" class="level1">
-<h1>Installs 💾</h1>
+<section id="installs" class="level2">
+<h2 class="anchored" data-anchor-id="installs">Installs 💾</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install ivy<span class="op">-</span>core</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install numpy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="imports" class="level1">
-<h1>Imports 🛃</h1>
+<section id="imports" class="level2">
+<h2 class="anchored" data-anchor-id="imports">Imports 🛃</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ivy</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
 <section id="import-ivy-compiler" class="level2">
 <h2 class="anchored" data-anchor-id="import-ivy-compiler">Import Ivy compiler</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ivy_compiler <span class="im">as</span> ic</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-</section>
-<section id="function-compilation" class="level1">
-<h1>Function compilation 🛠</h1>
-<section id="set-backend" class="level2">
-<h2 class="anchored" data-anchor-id="set-backend">Set backend</h2>
+<section id="function-compilation" class="level2">
+<h2 class="anchored" data-anchor-id="function-compilation">Function compilation 🛠</h2>
+<section id="set-backend" class="level3">
+<h3 class="anchored" data-anchor-id="set-backend">Set backend</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">"numpy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="sample-input" class="level2">
-<h2 class="anchored" data-anchor-id="sample-input">Sample input</h2>
+<section id="sample-input" class="level3">
+<h3 class="anchored" data-anchor-id="sample-input">Sample input</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> ivy.array([<span class="fl">1.</span>, <span class="fl">2.</span>, <span class="fl">3.</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="define-function-to-compile" class="level2">
-<h2 class="anchored" data-anchor-id="define-function-to-compile">Define function to compile</h2>
+<section id="define-function-to-compile" class="level3">
+<h3 class="anchored" data-anchor-id="define-function-to-compile">Define function to compile</h3>
 <p>Ivy can compile any function that produce numerical outputs. Compiler track values from inputs to outputs and produce a computational graph from those operations and will ignore anything that does not affect final output value. It will ignore all intermediate dummy variables, operations, and print statements.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> original_fn(x):</span>
@@ -349,14 +350,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="compile-the-function" class="level2">
-<h2 class="anchored" data-anchor-id="compile-the-function">Compile the function</h2>
+<section id="compile-the-function" class="level3">
+<h3 class="anchored" data-anchor-id="compile-the-function">Compile the function</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>comp_fn <span class="op">=</span> ic.compile_graph(original_fn, x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="check-results" class="level2">
-<h2 class="anchored" data-anchor-id="check-results">Check results</h2>
+<section id="check-results" class="level3">
+<h3 class="anchored" data-anchor-id="check-results">Check results</h3>
 <p>Given that function is compiled, its result can be compared to the original function.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>expected_result <span class="op">=</span> original_fn(x)</span>
@@ -368,8 +369,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>As you can see, both functions produce the same results, which is what we want 🙂!</p>
 </section>
 </section>
-<section id="compiling-simple-neural-network" class="level1">
-<h1>Compiling simple neural network 🧠</h1>
+<section id="compiling-simple-neural-network" class="level2">
+<h2 class="anchored" data-anchor-id="compiling-simple-neural-network">Compiling simple neural network 🧠</h2>
 <p>Similarly to compiling functions, you can compile a neural network. The compilation works in exactly the same manner and will ignore all irrelevant opeations.</p>
 <section id="define-model" class="level3">
 <h3 class="anchored" data-anchor-id="define-model">Define Model</h3>
@@ -383,32 +384,33 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>._layer(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="create-model" class="level2">
-<h2 class="anchored" data-anchor-id="create-model">Create model</h2>
+<section id="create-model" class="level3">
+<h3 class="anchored" data-anchor-id="create-model">Create model</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> Network()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="define-input" class="level2">
-<h2 class="anchored" data-anchor-id="define-input">Define input</h2>
+<section id="define-input" class="level3">
+<h3 class="anchored" data-anchor-id="define-input">Define input</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> ivy.array([<span class="fl">1.</span>, <span class="fl">2.</span>, <span class="fl">3.</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="compile-network" class="level2">
-<h2 class="anchored" data-anchor-id="compile-network">Compile network</h2>
+<section id="compile-network" class="level3">
+<h3 class="anchored" data-anchor-id="compile-network">Compile network</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>compiled_net <span class="op">=</span> ic.compile_graph(net, x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="check-results-1" class="level2">
-<h2 class="anchored" data-anchor-id="check-results-1">Check results</h2>
+<section id="check-results-1" class="level3">
+<h3 class="anchored" data-anchor-id="check-results-1">Check results</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(net(x))</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(compiled_net(x))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
+</section>
 </section>
 </section>
 
@@ -546,6 +548,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../temp_demos/basic_operations_with_ivy.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Basic Operations with Ivy</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../temp_demos/deepmind_perceiverio.html" class="pagination-link">
+        <span class="nav-page-text">Deepmind PerceiverIO on GPU</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
 </div> <!-- /content -->
 
 
