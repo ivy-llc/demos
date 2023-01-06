@@ -127,7 +127,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </head>
 
-<body class="nav-sidebar floating fullcontent">
+<body class="nav-sidebar floating">
 
 
 <div id="quarto-search-results"></div>
@@ -142,7 +142,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
@@ -230,7 +230,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../unify_existing_code/2_libraries/2_0_kornia.html" class="sidebar-item-text sidebar-link">2 0 Kornia</a>
+  <a href="../../unify_existing_code/2_libraries/2_0_kornia.html" class="sidebar-item-text sidebar-link">2.0: Kornia</a>
   </div>
 </li>
       </ul>
@@ -245,12 +245,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../unify_existing_code/3_models/3_0_perceiver.html" class="sidebar-item-text sidebar-link">3 0 Perceiver</a>
+  <a href="../../unify_existing_code/3_models/3_0_perceiver.html" class="sidebar-item-text sidebar-link">3.0: Perceiver</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../unify_existing_code/3_models/3_1_stable_diffusion.html" class="sidebar-item-text sidebar-link">3 1 Stable Diffusion</a>
+  <a href="../../unify_existing_code/3_models/3_1_stable_diffusion.html" class="sidebar-item-text sidebar-link">3.1: Stable Diffusion</a>
   </div>
 </li>
       </ul>
@@ -293,13 +293,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content column-page-right" id="quarto-document-content">
 
 
 
 <section id="lazy-vs-eager" class="level1">
 <h1>1.0: Lazy vs Eager</h1>
-<p><code>ivy.unify</code>, <code>ivy.compile</code> and <code>ivy.transpile</code> can all be performed either eagerly or lazily. All examples in the <a href="">Building Blocks</a> section are performed <em>lazily</em>, which means that the unification/compilation/transpilation process actually occurs during the first call of the <em>returned</em> function. This is because all three of these processes depend on function tracing, which requires function arguments to use for the tracing. Alternatively, the arguments can be provided during the <code>ivy.unify</code>, <code>ivy.compile</code> or <code>ivy.transpile</code> call itself, in which case the process is performed <em>eagerly</em>. We show some simple examples for each case below.</p>
+<p><code>ivy.unify</code>, <code>ivy.compile</code> and <code>ivy.transpile</code> can all be performed either eagerly or lazily. All examples in the <a href="">Building Blocks</a> section are performed <em>lazily</em>, which means that the unification, compilation, or transpilation process actually occurs during the first call of the <em>returned</em> function. This is because all three of these processes depend on function tracing, which requires function arguments to use for the tracing. Alternatively, the arguments can be provided during the <code>ivy.unify</code>, <code>ivy.compile</code> or <code>ivy.transpile</code> call itself, in which case the process is performed <em>eagerly</em>. We show some simple examples for each case below.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><a href="https://colab.research.google.com/github/unifyai/demos/blob/main/unify_existing_code/1_the_basics/1_0_lazy_vs_eager.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid figure-img"></a></p>
@@ -519,7 +519,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-<nav class="page-navigation">
+<nav class="page-navigation column-page-right">
   <div class="nav-page nav-page-previous">
       <a href="../../unify_existing_code/0_building_blocks/0_2_transpile.html" class="pagination-link">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">0.2: Transpile</span>

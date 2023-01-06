@@ -9,13 +9,13 @@
       "/unify_existing_code/1_the_basics/1_1_framework_selection.html",
       "/unify_existing_code/1_the_basics/1_2_as_a_decorator.html",
       "/unify_existing_code/1_the_basics/1_3_dynamic_vs_static.html",
+      "/unify_existing_code/2_libraries/2_0_kornia.html",
+      "/unify_existing_code/3_models/3_0_perceiver.html",
+      "/unify_existing_code/3_models/3_1_stable_diffusion.html",
       "/temp_demos/basic_operations_with_ivy.html",
       "/temp_demos/compilation_of_a_basic_function.html",
       "/temp_demos/deepmind_perceiverio.html",
-      "/temp_demos/ivy_as_a_transpiler_intro.html",
-      "/unify_existing_code/3_models/3_0_perceiver.html",
-      "/unify_existing_code/3_models/3_1_stable_diffusion.html",
-      "/unify_existing_code/2_libraries/2_0_kornia.html"
+      "/temp_demos/ivy_as_a_transpiler_intro.html"
     ]
   }
 ]

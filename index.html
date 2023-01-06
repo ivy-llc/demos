@@ -63,7 +63,7 @@ ul.task-list li input[type="checkbox"] {
 <script>
 
   window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
+    const listingTargetEl = window.document.querySelector('#listing-unify-existing-code .list');
     if (!listingTargetEl) {
       // No listing discovered, do not attach.
       return; 
@@ -76,7 +76,35 @@ ul.task-list li input[type="checkbox"] {
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
+    window['quarto-listings']['listing-unify-existing-code'] = new List('listing-unify-existing-code', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-temp-demos .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-path','listing-title','listing-author','listing-description','listing-filename','listing-file-modified','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] }],
+      
+      searchColumns: ["listing-path","listing-title","listing-author","listing-description","listing-filename","listing-file-modified","listing-reading-time"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-temp-demos'] = new List('listing-temp-demos', options);
 
     if (window['quarto-listing-loaded']) {
       window['quarto-listing-loaded']();
@@ -94,7 +122,7 @@ ul.task-list li input[type="checkbox"] {
 
 </head>
 
-<body class="nav-sidebar floating fullcontent">
+<body class="nav-sidebar floating">
 
 
 <div id="quarto-search-results"></div>
@@ -109,7 +137,7 @@ ul.task-list li input[type="checkbox"] {
   </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
@@ -197,7 +225,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./unify_existing_code/2_libraries/2_0_kornia.html" class="sidebar-item-text sidebar-link">2 0 Kornia</a>
+  <a href="./unify_existing_code/2_libraries/2_0_kornia.html" class="sidebar-item-text sidebar-link">2.0: Kornia</a>
   </div>
 </li>
       </ul>
@@ -212,12 +240,12 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./unify_existing_code/3_models/3_0_perceiver.html" class="sidebar-item-text sidebar-link">3 0 Perceiver</a>
+  <a href="./unify_existing_code/3_models/3_0_perceiver.html" class="sidebar-item-text sidebar-link">3.0: Perceiver</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./unify_existing_code/3_models/3_1_stable_diffusion.html" class="sidebar-item-text sidebar-link">3 1 Stable Diffusion</a>
+  <a href="./unify_existing_code/3_models/3_1_stable_diffusion.html" class="sidebar-item-text sidebar-link">3.1: Stable Diffusion</a>
   </div>
 </li>
       </ul>
@@ -260,21 +288,18 @@ ul.task-list li input[type="checkbox"] {
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content column-page-right" id="quarto-document-content">
 
 
 
 <section id="demo-collections" class="level1">
 <h1>Demo Collections</h1>
+<section id="unify-existing-code" class="level3">
+<h3 class="anchored" data-anchor-id="unify-existing-code">Unify Existing Code</h3>
+<div id="listing-unify-existing-code" class="quarto-listing quarto-listing-container-custom">
 
-
-
-</section>
-
-<div class="quarto-listing quarto-listing-container-custom" id="listing-listing">
-
-<link href="assets/css/custom.css" rel="stylesheet" type="text/css">
-<div>
+<link href="assets/css/custom.scss" rel="stylesheet" type="text/css">
+<div class="notebook-grid-gallery rwd-gallery-layout">
   <a href="./unify_existing_code/0_building_blocks/0_0_unify.html">
     <div class="notebook-card">
       <div class="notebook-card-title">0.0: Unify</div>
@@ -300,7 +325,7 @@ ul.task-list li input[type="checkbox"] {
     <div class="notebook-card">
       <div class="notebook-card-title">1.0: Lazy vs Eager</div>
       <div class="notebook-card-title-border"></div>
-      <div><code>ivy.unify</code>, <code>ivy.compile</code> and <code>ivy.transpile</code> can all be performed either eagerly or lazily. All examples in the Building Blocks section are performed <em>lazily</em>, which means that the unification/compilation/transpilation process actually occurs…<em></em><code></code><code></code><code></code><em></em></div>
+      <div><code>ivy.unify</code>, <code>ivy.compile</code> and <code>ivy.transpile</code> can all be performed either eagerly or lazily. All examples in the Building Blocks section are performed <em>lazily</em>, which means that the unification, compilation, or transpilation process actually occurs…<em></em><code></code><code></code><code></code><em></em></div>
     </div>
   </a>
   <a href="./unify_existing_code/1_the_basics/1_1_framework_selection.html">
@@ -324,6 +349,38 @@ ul.task-list li input[type="checkbox"] {
       <div>The functions <code>ivy.unify</code>, <code>ivy.compile</code> and <code>ivy.transpile</code> can all be executed either in <em>dynamic</em> mode or <em>static</em> mode. In this…</div>
     </div>
   </a>
+  <a href="./unify_existing_code/2_libraries/2_0_kornia.html">
+    <div class="notebook-card">
+      <div class="notebook-card-title">2.0: Kornia</div>
+      <div class="notebook-card-title-border"></div>
+      <div></div>
+    </div>
+  </a>
+  <a href="./unify_existing_code/3_models/3_0_perceiver.html">
+    <div class="notebook-card">
+      <div class="notebook-card-title">3.0: Perceiver</div>
+      <div class="notebook-card-title-border"></div>
+      <div></div>
+    </div>
+  </a>
+  <a href="./unify_existing_code/3_models/3_1_stable_diffusion.html">
+    <div class="notebook-card">
+      <div class="notebook-card-title">3.1: Stable Diffusion</div>
+      <div class="notebook-card-title-border"></div>
+      <div></div>
+    </div>
+  </a>
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div>
+</section>
+<section id="temp-demos" class="level3">
+<h3 class="anchored" data-anchor-id="temp-demos">Temp Demos</h3>
+<div id="listing-temp-demos" class="quarto-listing quarto-listing-container-custom">
+<link href="assets/css/custom.scss" rel="stylesheet" type="text/css">
+<div class="notebook-grid-gallery rwd-gallery-layout">
   <a href="./temp_demos/basic_operations_with_ivy.html">
     <div class="notebook-card">
       <div class="notebook-card-title">Basic Operations with Ivy</div>
@@ -352,32 +409,18 @@ ul.task-list li input[type="checkbox"] {
       <div>Transpile either functions, trainable models or importable python modules, with any number and combo permitted</div>
     </div>
   </a>
-  <a href="./unify_existing_code/3_models/3_0_perceiver.html">
-    <div class="notebook-card">
-      <div class="notebook-card-title"></div>
-      <div class="notebook-card-title-border"></div>
-      <div></div>
-    </div>
-  </a>
-  <a href="./unify_existing_code/3_models/3_1_stable_diffusion.html">
-    <div class="notebook-card">
-      <div class="notebook-card-title"></div>
-      <div class="notebook-card-title-border"></div>
-      <div></div>
-    </div>
-  </a>
-  <a href="./unify_existing_code/2_libraries/2_0_kornia.html">
-    <div class="notebook-card">
-      <div class="notebook-card-title"></div>
-      <div class="notebook-card-title-border"></div>
-      <div></div>
-    </div>
-  </a>
 </div>
 <div class="listing-no-matching d-none">
 No matching items
 </div>
-</div></main> <!-- /main -->
+</div>
+
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
