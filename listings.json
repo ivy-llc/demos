@@ -15,7 +15,8 @@
       "/temp_demos/basic_operations_with_ivy.html",
       "/temp_demos/compilation_of_a_basic_function.html",
       "/temp_demos/deepmind_perceiverio.html",
-      "/temp_demos/ivy_as_a_transpiler_intro.html"
+      "/temp_demos/ivy_as_a_transpiler_intro.html",
+      "/temp_demos/compilation_of_various_models/resnet_18.html"
     ]
   }
 ]
