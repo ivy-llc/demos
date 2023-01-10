@@ -294,7 +294,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../temp_demos/compilation_of_various_models/resnet_18.html" class="sidebar-item-text sidebar-link active">Lets first install <strong>Ivy</strong> (<code>pip install ivy-core</code>) and compatable version of <code>matplotlib</code> to be able to see generated graph</a>
+  <a href="../../temp_demos/compilation_of_various_models/resnet_18.html" class="sidebar-item-text sidebar-link active">Resnet 18</a>
   </div>
 </li>
       </ul>
@@ -311,8 +311,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<section id="lets-first-install-ivy-pip-install-ivy-core-and-compatable-version-of-matplotlib-to-be-able-to-see-generated-graph" class="level1">
-<h1>Lets first install <strong>Ivy</strong> (<code>pip install ivy-core</code>) and compatable version of <code>matplotlib</code> to be able to see generated graph</h1>
+<section id="resnet-18" class="level1">
+<h1>Resnet 18</h1>
+<section id="lets-first-install-ivy-pip-install-ivy-core-and-compatable-version-of-matplotlib-to-be-able-to-see-generated-graph" class="level3">
+<h3 class="anchored" data-anchor-id="lets-first-install-ivy-pip-install-ivy-core-and-compatable-version-of-matplotlib-to-be-able-to-see-generated-graph">Lets first install <strong>Ivy</strong> (<code>pip install ivy-core</code>) and compatable version of <code>matplotlib</code> to be able to see generated graph</h3>
 <div class="cell" data-outputid="fa7f1673-34e3-4d75-ef10-4be3f63dfc7b" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install ivy<span class="op">-</span>core</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install matplotlib<span class="op">==</span><span class="fl">3.5.2</span></span>
@@ -387,6 +389,7 @@ Successfully installed networkx-2.8.4</code></pre>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> Image</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
 </section>
 <section id="here-we-load-resnet18-pytorch-model.-copy-model-to-chosen-device-and-convert-the-model-into-ivy-using-ivy.to_ivy_module." class="level1">
 <h1>Here we load <code>resnet18</code> pytorch model. Copy model to chosen device and convert the model into ivy (using <code>ivy.to_ivy_module</code>).</h1>

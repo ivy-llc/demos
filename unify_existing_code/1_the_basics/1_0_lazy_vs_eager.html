@@ -295,7 +295,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../temp_demos/compilation_of_various_models/resnet_18.html" class="sidebar-item-text sidebar-link">Lets first install <strong>Ivy</strong> (<code>pip install ivy-core</code>) and compatable version of <code>matplotlib</code> to be able to see generated graph</a>
+  <a href="../../temp_demos/compilation_of_various_models/resnet_18.html" class="sidebar-item-text sidebar-link">Resnet 18</a>
   </div>
 </li>
       </ul>
@@ -315,10 +315,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="lazy-vs-eager" class="level1">
 <h1>1.0: Lazy vs Eager</h1>
 <p><code>ivy.unify</code>, <code>ivy.compile</code> and <code>ivy.transpile</code> can all be performed either eagerly or lazily. All examples in the <a href="">Building Blocks</a> section are performed <em>lazily</em>, which means that the unification, compilation, or transpilation process actually occurs during the first call of the <em>returned</em> function. This is because all three of these processes depend on function tracing, which requires function arguments to use for the tracing. Alternatively, the arguments can be provided during the <code>ivy.unify</code>, <code>ivy.compile</code> or <code>ivy.transpile</code> call itself, in which case the process is performed <em>eagerly</em>. We show some simple examples for each case below.</p>
+<div id="colab-button">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><a href="https://colab.research.google.com/github/unifyai/demos/blob/main/unify_existing_code/1_the_basics/1_0_lazy_vs_eager.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid figure-img"></a></p>
 </figure>
+</div>
 </div>
 <section id="unify" class="level2">
 <h2 class="anchored" data-anchor-id="unify">Unify</h2>
