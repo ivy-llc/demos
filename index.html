@@ -70,9 +70,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-path','listing-title','listing-author','listing-image','listing-description','listing-filename','listing-file-modified','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] }],
+      valueNames: ['listing-path','listing-title','listing-author','listing-description','listing-filename','listing-file-modified','listing-reading-time','listing-image',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] }],
       
-      searchColumns: ["listing-path","listing-title","listing-author","listing-image","listing-description","listing-filename","listing-file-modified","listing-reading-time"],
+      searchColumns: ["listing-path","listing-title","listing-author","listing-description","listing-filename","listing-file-modified","listing-reading-time","listing-image"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -277,6 +277,11 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./temp_demos/deepmind_perceiver_io.html" class="sidebar-item-text sidebar-link">Demo: Transpiling DeepMind’s PerceiverIO</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./temp_demos/ivy_as_a_transpiler_intro.html" class="sidebar-item-text sidebar-link">Ivy as a Transpiler Introduction</a>
   </div>
 </li>
@@ -415,6 +420,13 @@ No matching items
       <div class="notebook-card-title">Deepmind PerceiverIO on GPU</div>
       <div class="notebook-card-title-border"></div>
       <div>This notebook presents a demonstration of how to run the PercieverIO model on GPU using any of the following backends currently supported by ivy (numpy, torch, tensorflow…</div>
+    </div>
+  </a>
+  <a href="./temp_demos/deepmind_perceiver_io.html">
+    <div class="notebook-card">
+      <div class="notebook-card-title">Demo: Transpiling DeepMind's PerceiverIO</div>
+      <div class="notebook-card-title-border"></div>
+      <div>In this example, we will <code>unify</code> and <code>transpile</code> a classifier built on top of DeepMind’s original implementation of the PerceiverIO module written in JAX!</div>
     </div>
   </a>
   <a href="./temp_demos/ivy_as_a_transpiler_intro.html">
