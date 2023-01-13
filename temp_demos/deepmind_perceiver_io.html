@@ -332,12 +332,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <p>First of all, let’s import <strong>Ivy 🚀</strong></p>
 <div class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ivy</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> graph_compiler <span class="im">import</span> <span class="bu">compile</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transpiler.transpiler <span class="im">import</span> unify, transpile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ivy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>2023-01-13 16:05:01.516850: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory
-2023-01-13 16:05:01.516868: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.</code></pre>
+<pre><code>2023-01-13 17:53:19.518928: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory
+2023-01-13 17:53:19.518952: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>WARNING:tensorflow:From /usr/local/lib/python3.8/dist-packages/tensorflow/python/util/decorator_utils.py:153: GraphKeys.VARIABLES (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
@@ -349,7 +347,7 @@ Use `tf.GraphKeys.GLOBAL_VARIABLES` instead.</code></pre>
 <section id="defining-the-model" class="level2">
 <h2 class="anchored" data-anchor-id="defining-the-model">Defining the model <a class="anchor" id="defining-the-model"></a></h2>
 <p>(Psst! The PerceiverIO code we will use comes from <a href="https://github.com/deepmind/deepmind-research/tree/master/perceiver">the original repo</a>)</p>
-<p>In order to define an image classifier on top of the PerceiverIO model, we must import some things first:</p>
+<p>In order to use an image classifier on top of the PerceiverIO model, we must import some things first from the DeepMind repo:</p>
 <div class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># utils</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
@@ -361,230 +359,183 @@ Use `tf.GraphKeys.GLOBAL_VARIABLES` instead.</code></pre>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jax</span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jax.numpy <span class="im">as</span> jnp</span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> haiku <span class="im">as</span> hk</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> jax.random.PRNGKey(<span class="dv">23</span>)</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Perceiver implementation</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> demos.perceiver_io.perceiver_io_deepmind <span class="im">import</span> perceiver, io_processors</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> demos.perceiver_io.perceiver_io_deepmind.imagenet_labels <span class="im">import</span> IMAGENET_LABELS</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> jax.random.PRNGKey(<span class="dv">23</span>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Perceiver implementation</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> demos.perceiver_io.perceiver_io_deepmind.imagenet_labels <span class="im">import</span> IMAGENET_LABELS</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> demos.perceiver_io.perceiver_io_deepmind.model <span class="im">import</span> imagenet_classifier, fourier_pos_configs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>WARNING:absl:No GPU/TPU found, falling back to CPU. (Set TF_CPP_MIN_LOG_LEVEL=0 and rerun for more info.)</code></pre>
 </div>
 </div>
-<p>We can now define the configuration of the Perceiver module</p>
+<p>Using the PerceiverIO module, we have now loaded an Imagenet classifier which is a Haiku (i.e.&nbsp;JAX) <code>TransformedWithState</code> instance.</p>
 <div class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>IMAGE_SIZE <span class="op">=</span> (<span class="dv">224</span>, <span class="dv">224</span>)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>fourier_pos_configs <span class="op">=</span> <span class="bu">dict</span>(</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    input_preprocessor<span class="op">=</span><span class="bu">dict</span>(</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        position_encoding_type<span class="op">=</span><span class="st">"fourier"</span>,</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        fourier_position_encoding_kwargs<span class="op">=</span><span class="bu">dict</span>(</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>            concat_pos<span class="op">=</span><span class="va">True</span>, max_resolution<span class="op">=</span>(<span class="dv">224</span>, <span class="dv">224</span>), num_bands<span class="op">=</span><span class="dv">64</span>, sine_only<span class="op">=</span><span class="va">False</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        ),</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>        prep_type<span class="op">=</span><span class="st">"pixels"</span>,</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        spatial_downsample<span class="op">=</span><span class="dv">1</span>,</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    encoder<span class="op">=</span><span class="bu">dict</span>(</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>        cross_attend_widening_factor<span class="op">=</span><span class="dv">1</span>,</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        cross_attention_shape_for_attn<span class="op">=</span><span class="st">"kv"</span>,</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        dropout_prob<span class="op">=</span><span class="dv">0</span>,</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>        num_blocks<span class="op">=</span><span class="dv">8</span>,</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>        num_cross_attend_heads<span class="op">=</span><span class="dv">1</span>,</span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>        num_self_attend_heads<span class="op">=</span><span class="dv">8</span>,</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>        num_self_attends_per_block<span class="op">=</span><span class="dv">6</span>,</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>        num_z_channels<span class="op">=</span><span class="dv">1024</span>,</span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>        self_attend_widening_factor<span class="op">=</span><span class="dv">1</span>,</span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>        use_query_residual<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>        z_index_dim<span class="op">=</span><span class="dv">512</span>,</span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>        z_pos_enc_init_scale<span class="op">=</span><span class="fl">0.02</span>,</span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    decoder<span class="op">=</span><span class="bu">dict</span>(</span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>        num_z_channels<span class="op">=</span><span class="dv">1024</span>,</span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>        position_encoding_type<span class="op">=</span><span class="st">"trainable"</span>,</span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>        trainable_position_encoding_kwargs<span class="op">=</span><span class="bu">dict</span>(</span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>            init_scale<span class="op">=</span><span class="fl">0.02</span>,</span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>            num_channels<span class="op">=</span><span class="dv">1024</span>,</span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>        ),</span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>        use_query_residual<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(imagenet_classifier)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<pre><code>haiku._src.transform.TransformedWithState</code></pre>
 </div>
-<p>Using the PerceiverIO module, we can now define an Imagenet classifier</p>
-<div class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> imagenet_classifier(config, images):</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    input_preprocessor <span class="op">=</span> io_processors.ImagePreprocessor(<span class="op">**</span>config[<span class="st">"input_preprocessor"</span>])</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    encoder <span class="op">=</span> perceiver.PerceiverEncoder(<span class="op">**</span>config[<span class="st">"encoder"</span>])</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    decoder <span class="op">=</span> perceiver.ClassificationDecoder(<span class="dv">1000</span>, <span class="op">**</span>config[<span class="st">"decoder"</span>])</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> perceiver.Perceiver(</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>        encoder<span class="op">=</span>encoder, decoder<span class="op">=</span>decoder, input_preprocessor<span class="op">=</span>input_preprocessor</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    logits <span class="op">=</span> model(images, is_training<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> logits</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>imagenet_classifier <span class="op">=</span> hk.transform_with_state(imagenet_classifier)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We also need to download the <strong>original</strong> parameters published by DeepMind if we want to save <em>some</em> computing 😅</p>
 <p>Thankfully Ivy will transform those for us as well 😉</p>
-<div class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>cwd <span class="op">=</span> os.getcwd()</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>checkpoint_path <span class="op">=</span> os.path.join(cwd, <span class="st">"demos"</span>, <span class="st">"imagenet_checkpoint.pystate"</span>)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> os.path.exists(checkpoint_path):</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    url <span class="op">=</span> <span class="st">"https://storage.googleapis.com/perceiver_io/imagenet_fourier_position_encoding.pystate"</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    _ <span class="op">=</span> urllib.request.urlretrieve(url, checkpoint_path)</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(checkpoint_path, <span class="st">"rb"</span>) <span class="im">as</span> f:</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    ckpt <span class="op">=</span> pickle.loads(f.read())</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>params <span class="op">=</span> ckpt[<span class="st">"params"</span>]</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>state <span class="op">=</span> ckpt[<span class="st">"state"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>cwd <span class="op">=</span> os.getcwd()</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>checkpoint_path <span class="op">=</span> os.path.join(cwd, <span class="st">"demos"</span>, <span class="st">"imagenet_checkpoint.pystate"</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> os.path.exists(checkpoint_path):</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    url <span class="op">=</span> <span class="st">"https://storage.googleapis.com/perceiver_io/imagenet_fourier_position_encoding.pystate"</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    _ <span class="op">=</span> urllib.request.urlretrieve(url, checkpoint_path)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(checkpoint_path, <span class="st">"rb"</span>) <span class="im">as</span> f:</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    ckpt <span class="op">=</span> pickle.loads(f.read())</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>params <span class="op">=</span> ckpt[<span class="st">"params"</span>]</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>state <span class="op">=</span> ckpt[<span class="st">"state"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Finally, let’s write a function that applies the downloaded parameters.</p>
-<div class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> imagenet_classify(image):</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> imagenet_classifier.<span class="bu">apply</span>(params, state, rng, fourier_pos_configs, image)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> imagenet_classify(image):</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> imagenet_classifier.<span class="bu">apply</span>(params, state, rng, fourier_pos_configs, image)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="some-helper-functions" class="level2">
 <h2 class="anchored" data-anchor-id="some-helper-functions">Some helper functions <a class="anchor" id="some-helper-functions"></a></h2>
-<p>In order to correctly use the classifier, we will need to define some <strong>preprocessing functions</strong>.</p>
-<div class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>MEAN_RGB <span class="op">=</span> (<span class="fl">0.485</span> <span class="op">*</span> <span class="dv">255</span>, <span class="fl">0.456</span> <span class="op">*</span> <span class="dv">255</span>, <span class="fl">0.406</span> <span class="op">*</span> <span class="dv">255</span>)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>STDDEV_RGB <span class="op">=</span> (<span class="fl">0.229</span> <span class="op">*</span> <span class="dv">255</span>, <span class="fl">0.224</span> <span class="op">*</span> <span class="dv">255</span>, <span class="fl">0.225</span> <span class="op">*</span> <span class="dv">255</span>)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> normalize(im):</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (im <span class="op">-</span> np.array(MEAN_RGB)) <span class="op">/</span> np.array(STDDEV_RGB)</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> denormalize(im):</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> im <span class="op">*</span> np.array(STDDEV_RGB) <span class="op">+</span> np.array(MEAN_RGB)</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> resize_and_center_crop(image):</span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Crops to center of image with padding then scales."""</span></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    shape <span class="op">=</span> image.shape</span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    image_height <span class="op">=</span> shape[<span class="dv">0</span>]</span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    image_width <span class="op">=</span> shape[<span class="dv">1</span>]</span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    padded_center_crop_size <span class="op">=</span> (</span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>        (<span class="dv">224</span> <span class="op">/</span> (<span class="dv">224</span> <span class="op">+</span> <span class="dv">32</span>)) <span class="op">*</span> np.minimum(image_height, image_width).astype(np.float32)</span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    ).astype(np.int32)</span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>    offset_height <span class="op">=</span> ((image_height <span class="op">-</span> padded_center_crop_size) <span class="op">+</span> <span class="dv">1</span>) <span class="op">//</span> <span class="dv">2</span></span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>    offset_width <span class="op">=</span> ((image_width <span class="op">-</span> padded_center_crop_size) <span class="op">+</span> <span class="dv">1</span>) <span class="op">//</span> <span class="dv">2</span></span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>    crop_window <span class="op">=</span> [</span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>        offset_height,</span>
-<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>        offset_width,</span>
-<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>        padded_center_crop_size,</span>
-<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>        padded_center_crop_size,</span>
-<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>    ]</span>
-<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>    image <span class="op">=</span> image[</span>
-<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>        crop_window[<span class="dv">0</span>] : crop_window[<span class="dv">0</span>] <span class="op">+</span> crop_window[<span class="dv">2</span>],</span>
-<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>        crop_window[<span class="dv">1</span>] : crop_window[<span class="dv">1</span>] <span class="op">+</span> crop_window[<span class="dv">3</span>],</span>
-<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>    ]</span>
-<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> cv2.resize(image, (<span class="dv">224</span>, <span class="dv">224</span>), interpolation<span class="op">=</span>cv2.INTER_CUBIC)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In order to correctly use the classifier, we will need to use some <strong>preprocessing functions</strong> (also from <a href="https://github.com/deepmind/deepmind-research/tree/master/perceiver">the DeepMind repo</a>)</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>MEAN_RGB <span class="op">=</span> (<span class="fl">0.485</span> <span class="op">*</span> <span class="dv">255</span>, <span class="fl">0.456</span> <span class="op">*</span> <span class="dv">255</span>, <span class="fl">0.406</span> <span class="op">*</span> <span class="dv">255</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>STDDEV_RGB <span class="op">=</span> (<span class="fl">0.229</span> <span class="op">*</span> <span class="dv">255</span>, <span class="fl">0.224</span> <span class="op">*</span> <span class="dv">255</span>, <span class="fl">0.225</span> <span class="op">*</span> <span class="dv">255</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> normalize(im):</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (im <span class="op">-</span> np.array(MEAN_RGB)) <span class="op">/</span> np.array(STDDEV_RGB)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> denormalize(im):</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> im <span class="op">*</span> np.array(STDDEV_RGB) <span class="op">+</span> np.array(MEAN_RGB)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> resize_and_center_crop(image):</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Crops to center of image with padding then scales."""</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    shape <span class="op">=</span> image.shape</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    image_height <span class="op">=</span> shape[<span class="dv">0</span>]</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    image_width <span class="op">=</span> shape[<span class="dv">1</span>]</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    padded_center_crop_size <span class="op">=</span> (</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>        (<span class="dv">224</span> <span class="op">/</span> (<span class="dv">224</span> <span class="op">+</span> <span class="dv">32</span>)) <span class="op">*</span> np.minimum(image_height, image_width).astype(np.float32)</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    ).astype(np.int32)</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    offset_height <span class="op">=</span> ((image_height <span class="op">-</span> padded_center_crop_size) <span class="op">+</span> <span class="dv">1</span>) <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    offset_width <span class="op">=</span> ((image_width <span class="op">-</span> padded_center_crop_size) <span class="op">+</span> <span class="dv">1</span>) <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    crop_window <span class="op">=</span> [</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>        offset_height,</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>        offset_width,</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>        padded_center_crop_size,</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>        padded_center_crop_size,</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>    image <span class="op">=</span> image[</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>        crop_window[<span class="dv">0</span>] : crop_window[<span class="dv">0</span>] <span class="op">+</span> crop_window[<span class="dv">2</span>],</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>        crop_window[<span class="dv">1</span>] : crop_window[<span class="dv">1</span>] <span class="op">+</span> crop_window[<span class="dv">3</span>],</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> cv2.resize(image, (<span class="dv">224</span>, <span class="dv">224</span>), interpolation<span class="op">=</span>cv2.INTER_CUBIC)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Same for the visualization of results, let’s write some helpers to have nice outputs!</p>
-<div class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.pyplot <span class="im">import</span> figure, imshow, axis</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> print_labels(probs, indices):</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">list</span>(indices):</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>        i <span class="op">=</span> <span class="bu">int</span>(i)</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>IMAGENET_LABELS[i]<span class="sc">.</span>split(<span class="st">','</span>)[<span class="dv">0</span>][:<span class="dv">15</span>]<span class="sc">.</span>ljust(<span class="dv">20</span>)<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>probs[i]<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> show_images_row(images):</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    fig <span class="op">=</span> figure(figsize<span class="op">=</span>(<span class="dv">12</span>,<span class="dv">8</span>))</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    number_of_files <span class="op">=</span> <span class="bu">len</span>(images)</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, image <span class="kw">in</span> <span class="bu">enumerate</span>(images):</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>        a<span class="op">=</span>fig.add_subplot(<span class="dv">1</span>,number_of_files,i<span class="op">+</span><span class="dv">1</span>)</span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>        imshow(np.array(image))</span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>        axis(<span class="st">'off'</span>)</span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> show_device_array(device_array):</span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    im <span class="op">=</span> np.array(device_array[<span class="dv">0</span>])</span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    im <span class="op">=</span> denormalize(im)</span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    im <span class="op">=</span> im<span class="op">/</span><span class="fl">256.0</span></span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>    im <span class="op">=</span> np.clip(im, <span class="dv">0</span>, <span class="dv">1</span>)</span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>    fig <span class="op">=</span> figure(figsize<span class="op">=</span>(<span class="dv">3</span>,<span class="dv">2</span>))</span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>    imshow(im)</span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>    axis(<span class="st">'off'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.pyplot <span class="im">import</span> figure, imshow, axis</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> print_labels(probs, indices):</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">list</span>(indices):</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        i <span class="op">=</span> <span class="bu">int</span>(i)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>IMAGENET_LABELS[i]<span class="sc">.</span>split(<span class="st">','</span>)[<span class="dv">0</span>][:<span class="dv">15</span>]<span class="sc">.</span>ljust(<span class="dv">20</span>)<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>probs[i]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> show_images_row(images):</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    fig <span class="op">=</span> figure(figsize<span class="op">=</span>(<span class="dv">12</span>,<span class="dv">8</span>))</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    number_of_files <span class="op">=</span> <span class="bu">len</span>(images)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, image <span class="kw">in</span> <span class="bu">enumerate</span>(images):</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>        a<span class="op">=</span>fig.add_subplot(<span class="dv">1</span>,number_of_files,i<span class="op">+</span><span class="dv">1</span>)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>        imshow(np.array(image))</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>        axis(<span class="st">'off'</span>)</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> show_device_array(device_array):</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    im <span class="op">=</span> np.array(device_array[<span class="dv">0</span>])</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    im <span class="op">=</span> denormalize(im)</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    im <span class="op">=</span> im<span class="op">/</span><span class="fl">256.0</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>    im <span class="op">=</span> np.clip(im, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>    fig <span class="op">=</span> figure(figsize<span class="op">=</span>(<span class="dv">3</span>,<span class="dv">2</span>))</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>    imshow(im)</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>    axis(<span class="st">'off'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="getting-images-and-noise-for-the-classifier" class="level2">
 <h2 class="anchored" data-anchor-id="getting-images-and-noise-for-the-classifier">Getting images (and noise!) for the classifier <a class="anchor" id="images"></a></h2>
 <p>To compile and test the classifier we are going to need two types of images: - First, an image with random noise, which we will use to compile the graph while ensuring that input-specific information is <strong>not</strong> registered. - Secondly, a few images to test the compiled and transpiled models on!</p>
-<div class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>test_urls <span class="op">=</span> {</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"goldfish"</span>: <span class="st">"https://github.com/EliSchwartz/imagenet-sample-images/raw/master/n01443537_goldfish.JPEG"</span>,</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"roof"</span>: <span class="st">"https://github.com/EliSchwartz/imagenet-sample-images/raw/master/n04435653_tile_roof.JPEG"</span>,</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"camera"</span>: <span class="st">"https://github.com/EliSchwartz/imagenet-sample-images/raw/master/n04069434_reflex_camera.JPEG"</span>,</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>image_paths <span class="op">=</span> {c: os.path.join(cwd, <span class="st">"demos"</span>, <span class="ss">f"</span><span class="sc">{</span>c<span class="sc">}</span><span class="ss">.jpg"</span>) <span class="cf">for</span> c <span class="kw">in</span> test_urls.keys()}</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> class_, image_path <span class="kw">in</span> image_paths.items():</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> os.path.exists(image_path):</span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>        url <span class="op">=</span> test_urls[class_]</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>        _ <span class="op">=</span> urllib.request.urlretrieve(url, image_path)</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>imgs <span class="op">=</span> []</span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> image_path <span class="kw">in</span> image_paths.values():</span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(image_path, <span class="st">"rb"</span>) <span class="im">as</span> f:</span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>        img <span class="op">=</span> imageio.imread(f)</span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>        img <span class="op">=</span> resize_and_center_crop(img)</span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>        imgs.append(img)</span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="co"># generate noise</span></span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>noise <span class="op">=</span> np.random.uniform(size<span class="op">=</span>(<span class="dv">224</span>, <span class="dv">224</span>, <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>test_urls <span class="op">=</span> {</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"goldfish"</span>: <span class="st">"https://github.com/EliSchwartz/imagenet-sample-images/raw/master/n01443537_goldfish.JPEG"</span>,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"roof"</span>: <span class="st">"https://github.com/EliSchwartz/imagenet-sample-images/raw/master/n04435653_tile_roof.JPEG"</span>,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"camera"</span>: <span class="st">"https://github.com/EliSchwartz/imagenet-sample-images/raw/master/n04069434_reflex_camera.JPEG"</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>image_paths <span class="op">=</span> {c: os.path.join(cwd, <span class="st">"demos"</span>, <span class="ss">f"</span><span class="sc">{</span>c<span class="sc">}</span><span class="ss">.jpg"</span>) <span class="cf">for</span> c <span class="kw">in</span> test_urls.keys()}</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> class_, image_path <span class="kw">in</span> image_paths.items():</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> os.path.exists(image_path):</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>        url <span class="op">=</span> test_urls[class_]</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>        _ <span class="op">=</span> urllib.request.urlretrieve(url, image_path)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>imgs <span class="op">=</span> []</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> image_path <span class="kw">in</span> image_paths.values():</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(image_path, <span class="st">"rb"</span>) <span class="im">as</span> f:</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>        img <span class="op">=</span> imageio.imread(f)</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>        img <span class="op">=</span> resize_and_center_crop(img)</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>        imgs.append(img)</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="co"># generate noise</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>noise <span class="op">=</span> np.random.uniform(size<span class="op">=</span>(<span class="dv">224</span>, <span class="dv">224</span>, <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Let’s see what we got:</p>
-<div class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>show_images_row([noise, <span class="op">*</span>imgs])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>show_images_row([noise, <span class="op">*</span>imgs])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="deepmind_perceiver_io_files/figure-html/cell-12-output-1.png" class="img-fluid"></p>
+<p><img src="deepmind_perceiver_io_files/figure-html/cell-10-output-1.png" class="img-fluid"></p>
 </div>
 </div>
 <p>Looking good! We can now convert the images to <code>jax.numpy.Array</code>s.</p>
-<div class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>noise <span class="op">=</span> jnp.expand_dims(jnp.array(noise), <span class="dv">0</span>)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, img <span class="kw">in</span> <span class="bu">enumerate</span>(imgs):</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    img <span class="op">=</span> normalize(img)</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    img <span class="op">=</span> jnp.array(img)[<span class="va">None</span>]</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    imgs[i] <span class="op">=</span> img</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>noise <span class="op">=</span> jnp.expand_dims(jnp.array(noise), <span class="dv">0</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, img <span class="kw">in</span> <span class="bu">enumerate</span>(imgs):</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    img <span class="op">=</span> normalize(img)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    img <span class="op">=</span> jnp.array(img)[<span class="va">None</span>]</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    imgs[i] <span class="op">=</span> img</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="compiling-the-model" class="level2">
 <h2 class="anchored" data-anchor-id="compiling-the-model">Compiling the model <a class="anchor" id="compiling"></a></h2>
 <p>The first thing we can do with the model is compiling it into a graph, this way, we remove any part of the code that doesn’t contribute to the output directly which, you guessed it, makes it faster 🚀</p>
-<div class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">"jax"</span>)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>graph <span class="op">=</span> <span class="bu">compile</span>(imagenet_classify, noise)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">"jax"</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>graph <span class="op">=</span> ivy.<span class="bu">compile</span>(imagenet_classify, noise)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>After compiling with the noisy image, let’s use our first real image to check the inference speed and the accuracy of the compiled result.</p>
-<div class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> imgs[<span class="dv">0</span>]</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>show_device_array(img)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> imgs[<span class="dv">0</span>]</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>show_device_array(img)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="deepmind_perceiver_io_files/figure-html/cell-15-output-1.png" class="img-fluid"></p>
+<p><img src="deepmind_perceiver_io_files/figure-html/cell-13-output-1.png" class="img-fluid"></p>
 </div>
 </div>
-<div class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>time</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>original_output, _ <span class="op">=</span> imagenet_classify(img)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>time</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>original_output, _ <span class="op">=</span> imagenet_classify(img)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>CPU times: user 38 s, sys: 3.75 s, total: 41.7 s
-Wall time: 8.35 s</code></pre>
+<pre><code>CPU times: user 41 s, sys: 4.24 s, total: 45.3 s
+Wall time: 9.5 s</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>time</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>compiled_output, _ <span class="op">=</span> graph(img)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>time</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>compiled_output, _ <span class="op">=</span> graph(img)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>CPU times: user 14.2 s, sys: 959 ms, total: 15.2 s
-Wall time: 3.21 s</code></pre>
+<pre><code>CPU times: user 15.5 s, sys: 1.08 s, total: 16.6 s
+Wall time: 3.65 s</code></pre>
 </div>
 </div>
-<div class="cell" data-scrolled="true" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>np.allclose(original_output, compiled_output, atol<span class="op">=</span><span class="fl">0.0001</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="17">
+<div class="cell" data-scrolled="true" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>np.allclose(original_output, compiled_output, atol<span class="op">=</span><span class="fl">0.0001</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="15">
 <pre><code>True</code></pre>
 </div>
 </div>
@@ -593,54 +544,54 @@ Wall time: 3.21 s</code></pre>
 <section id="unifying-the-model" class="level2">
 <h2 class="anchored" data-anchor-id="unifying-the-model">Unifying the model <a class="anchor" id="unifying"></a></h2>
 <p>By <strong>unifying</strong> the model, we will get a model that can be used with <strong>any ML framework</strong>. Don’t forget that we aren’t just converting the inputs, all the operations within the model will happen in your framework of choice!</p>
-<div class="cell" data-execution_count="18">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>ivy_graph <span class="op">=</span> unify(</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    imagenet_classify,</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    original_backend<span class="op">=</span><span class="st">"jax"</span>,</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    args<span class="op">=</span>(noise,),</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>ivy_graph <span class="op">=</span> ivy.unify(</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    imagenet_classify,</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    original_backend<span class="op">=</span><span class="st">"jax"</span>,</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    args<span class="op">=</span>(noise,),</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Let’s pick the second image as an example:</p>
-<div class="cell" data-execution_count="19">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> imgs[<span class="dv">1</span>]</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>show_device_array(img)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> imgs[<span class="dv">1</span>]</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>show_device_array(img)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="deepmind_perceiver_io_files/figure-html/cell-20-output-1.png" class="img-fluid"></p>
+<p><img src="deepmind_perceiver_io_files/figure-html/cell-18-output-1.png" class="img-fluid"></p>
 </div>
 </div>
 <p>And calculate the output using each one of the frameworks:</p>
-<div class="cell" data-execution_count="20">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>original_logits, _ <span class="op">=</span> imagenet_classify(img)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>original_logits, _ <span class="op">=</span> imagenet_classify(img)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="21">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">"jax"</span>)</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>jax_logits, _ <span class="op">=</span> ivy_graph(img)</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>np.allclose(original_logits, jax_logits, atol<span class="op">=</span><span class="fl">0.0001</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="21">
+<div class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">"jax"</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>jax_logits, _ <span class="op">=</span> ivy_graph(img)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>np.allclose(original_logits, jax_logits, atol<span class="op">=</span><span class="fl">0.0001</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="19">
+<pre><code>True</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">"torch"</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>torch_logits, _ <span class="op">=</span> ivy_graph(img)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>np.allclose(original_logits, torch_logits, atol<span class="op">=</span><span class="fl">0.0001</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="20">
 <pre><code>True</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="22">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">"torch"</span>)</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>torch_logits, _ <span class="op">=</span> ivy_graph(img)</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>np.allclose(original_logits, torch_logits, atol<span class="op">=</span><span class="fl">0.0001</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">"tensorflow"</span>)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>tf_logits, _ <span class="op">=</span> ivy_graph(img)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>np.allclose(original_logits, tf_logits, atol<span class="op">=</span><span class="fl">0.0001</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="22">
 <pre><code>True</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="25">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">"tensorflow"</span>)</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>tf_logits, _ <span class="op">=</span> ivy_graph(img)</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>np.allclose(original_logits, tf_logits, atol<span class="op">=</span><span class="fl">0.0001</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="25">
-<pre><code>True</code></pre>
-</div>
-</div>
-<div class="cell" data-execution_count="24">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">"numpy"</span>)</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>np_logits, _ <span class="op">=</span> ivy_graph(img)</span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>np.allclose(original_logits, np_logits, atol<span class="op">=</span><span class="fl">0.0001</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="24">
+<div class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">"numpy"</span>)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>np_logits, _ <span class="op">=</span> ivy_graph(img)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>np.allclose(original_logits, np_logits, atol<span class="op">=</span><span class="fl">0.0001</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="23">
 <pre><code>True</code></pre>
 </div>
 </div>
@@ -649,39 +600,39 @@ Wall time: 3.21 s</code></pre>
 <section id="transpiling-the-model" class="level2">
 <h2 class="anchored" data-anchor-id="transpiling-the-model">Transpiling the model <a class="anchor" id="transpiling"></a></h2>
 <p>Unifying is pretty cool, but sometimes we need to use code from a framework in projects which are already built using another framework. If we have, a project written in PyTorch but still want to use the PerceiverIO module, we can use <code>transpile</code> to convert it directly into a PyTorch module. It only takes <strong>one line of code</strong>. Let’s test this with the third image.</p>
-<div class="cell" data-execution_count="26">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> imgs[<span class="dv">2</span>]</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>show_device_array(img)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> imgs[<span class="dv">2</span>]</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>show_device_array(img)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="deepmind_perceiver_io_files/figure-html/cell-26-output-1.png" class="img-fluid"></p>
+<p><img src="deepmind_perceiver_io_files/figure-html/cell-24-output-1.png" class="img-fluid"></p>
 </div>
 </div>
-<div class="cell" data-execution_count="27">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">"jax"</span>)</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>transpiled_graph <span class="op">=</span> transpile(imagenet_classify, original_backend<span class="op">=</span><span class="st">"jax"</span>, to<span class="op">=</span><span class="st">"torch"</span>, args<span class="op">=</span>(noise,))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">"jax"</span>)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>transpiled_graph <span class="op">=</span> ivy.transpile(imagenet_classify, original_backend<span class="op">=</span><span class="st">"jax"</span>, to<span class="op">=</span><span class="st">"torch"</span>, args<span class="op">=</span>(noise,))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>First, we call the original function, which as expected, yields a JAX <code>DeviceArray</code> instance.</p>
-<div class="cell" data-execution_count="28">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>logits, _ <span class="op">=</span> imagenet_classify(img)</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(logits)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="28">
+<div class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>logits, _ <span class="op">=</span> imagenet_classify(img)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(logits)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="26">
 <pre><code>jaxlib.xla_extension.DeviceArray</code></pre>
 </div>
 </div>
 <p>If we now call the transpiled graph, we can see that the output is, in fact, a <code>torch.Tensor</code>, due to the transpiled graph being now fully composed of torch code.</p>
-<div class="cell" data-execution_count="29">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>transpiled_logits, _ <span class="op">=</span> transpiled_graph(img)</span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(transpiled_logits)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="29">
+<div class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>transpiled_logits, _ <span class="op">=</span> transpiled_graph(img)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(transpiled_logits)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="27">
 <pre><code>torch.Tensor</code></pre>
 </div>
 </div>
 <p>Once again, we can check the predictions of both the original and the transpiled model, to see that their results match correctly!</p>
-<div class="cell" data-execution_count="30">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>_, indices <span class="op">=</span> ivy.to_numpy(ivy.top_k(logits[<span class="dv">0</span>], <span class="dv">5</span>))</span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>probs <span class="op">=</span> ivy.to_numpy(ivy.softmax(logits[<span class="dv">0</span>]))</span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Original - Top 5 labels:"</span>)</span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>print_labels(probs, indices)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>_, indices <span class="op">=</span> ivy.to_numpy(ivy.top_k(logits[<span class="dv">0</span>], <span class="dv">5</span>))</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>probs <span class="op">=</span> ivy.to_numpy(ivy.softmax(logits[<span class="dv">0</span>]))</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Original - Top 5 labels:"</span>)</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>print_labels(probs, indices)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Original - Top 5 labels:
 reflex camera       : 0.9125176974309779
@@ -691,12 +642,12 @@ tripod              : 0.0013543223305103043
 washer              : 0.0008780962522585626</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="31">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">"torch"</span>)</span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>_, indices <span class="op">=</span> ivy.top_k(transpiled_logits[<span class="dv">0</span>], <span class="dv">5</span>)</span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>probs <span class="op">=</span> ivy.to_numpy(ivy.softmax(transpiled_logits[<span class="dv">0</span>]))</span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Transpiled - Top 5 labels:"</span>)</span>
-<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>print_labels(probs, indices)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">"torch"</span>)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>_, indices <span class="op">=</span> ivy.top_k(transpiled_logits[<span class="dv">0</span>], <span class="dv">5</span>)</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>probs <span class="op">=</span> ivy.to_numpy(ivy.softmax(transpiled_logits[<span class="dv">0</span>]))</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Transpiled - Top 5 labels:"</span>)</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>print_labels(probs, indices)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Transpiled - Top 5 labels:
 reflex camera       : 0.9125140905380249
