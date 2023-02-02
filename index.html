@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.313">
+<meta name="generator" content="quarto-1.2.335">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -70,9 +70,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-path','listing-title','listing-author','listing-description','listing-filename','listing-file-modified','listing-reading-time','listing-image',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] }],
+      valueNames: ['listing-path','listing-title','listing-author','listing-image','listing-description','listing-filename','listing-file-modified','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] }],
       
-      searchColumns: ["listing-path","listing-title","listing-author","listing-description","listing-filename","listing-file-modified","listing-reading-time","listing-image"],
+      searchColumns: ["listing-path","listing-title","listing-author","listing-image","listing-description","listing-filename","listing-file-modified","listing-reading-time"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -295,12 +295,12 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./temp_demos/compilation_of_various_models/resnet_18.html" class="sidebar-item-text sidebar-link">Resnet 18</a>
+  <a href="./temp_demos/compilation_of_various_models/hf_tensorflow_deit.html" class="sidebar-item-text sidebar-link">HuggingFace Tensorflow DeiT</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./temp_demos/compilation_of_various_models/hf_tensorflow_deit.html" class="sidebar-item-text sidebar-link">This is the example of compilation (using ivy) of <code>DeiT</code> model from Huggingface implemented with tensorflow (link: https://huggingface.co/docs/transformers/model_doc/deit)</a>
+  <a href="./temp_demos/compilation_of_various_models/resnet_18.html" class="sidebar-item-text sidebar-link">Resnet 18</a>
   </div>
 </li>
       </ul>
@@ -434,6 +434,13 @@ No matching items
       <div>In this example, we will <code>unify</code> and <code>transpile</code> a classifier built on top of DeepMind’s original implementation of the PerceiverIO module written in JAX!</div>
     </div>
   </a>
+  <a href="./temp_demos/compilation_of_various_models/hf_tensorflow_deit.html">
+    <div class="notebook-card">
+      <div class="notebook-card-title">HuggingFace Tensorflow DeiT</div>
+      <div class="notebook-card-title-border"></div>
+      <div></div>
+    </div>
+  </a>
   <a href="./temp_demos/ivy_as_a_transpiler_intro.html">
     <div class="notebook-card">
       <div class="notebook-card-title">Ivy as a Transpiler Introduction</div>
@@ -444,13 +451,6 @@ No matching items
   <a href="./temp_demos/compilation_of_various_models/resnet_18.html">
     <div class="notebook-card">
       <div class="notebook-card-title">Resnet 18</div>
-      <div class="notebook-card-title-border"></div>
-      <div></div>
-    </div>
-  </a>
-  <a href="./temp_demos/compilation_of_various_models/hf_tensorflow_deit.html">
-    <div class="notebook-card">
-      <div class="notebook-card-title">This is the example of compilation (using ivy) of `DeiT` model from Huggingface implemented with tensorflow (link: https://huggingface.co/docs/transformers/model_doc/deit)</div>
       <div class="notebook-card-title-border"></div>
       <div></div>
     </div>
