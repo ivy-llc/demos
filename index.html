@@ -70,9 +70,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-path','listing-title','listing-author','listing-image','listing-description','listing-filename','listing-file-modified','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] }],
+      valueNames: ['listing-file','listing-path','listing-title','listing-author','listing-image','listing-description','listing-filename','listing-file-modified','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] }],
       
-      searchColumns: ["listing-path","listing-title","listing-author","listing-image","listing-description","listing-filename","listing-file-modified","listing-reading-time"],
+      searchColumns: ["listing-file","listing-path","listing-title","listing-author","listing-image","listing-description","listing-filename","listing-file-modified","listing-reading-time"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -105,6 +105,34 @@ ul.task-list li input[type="checkbox"] {
 
     window['quarto-listings'] = window['quarto-listings'] || {};
     window['quarto-listings']['listing-temp-demos'] = new List('listing-temp-demos', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-compilation-of-various-models .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-path','listing-title','listing-author','listing-description','listing-filename','listing-file-modified','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] }],
+      
+      searchColumns: ["listing-path","listing-title","listing-author","listing-description","listing-filename","listing-file-modified","listing-reading-time"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-compilation-of-various-models'] = new List('listing-compilation-of-various-models', options);
 
     if (window['quarto-listing-loaded']) {
       window['quarto-listing-loaded']();
@@ -254,12 +282,32 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">Temp Demos</a>
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">Compilation of Various Models</a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./compilation_of_various_models/hf_tensorflow_deit.html" class="sidebar-item-text sidebar-link">HuggingFace Tensorflow DeiT</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./compilation_of_various_models/resnet_18.html" class="sidebar-item-text sidebar-link">Resnet 18</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">Temp Demos</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./temp_demos/basic_operations_with_ivy.html" class="sidebar-item-text sidebar-link">Basic Operations with Ivy</a>
@@ -285,26 +333,6 @@ ul.task-list li input[type="checkbox"] {
   <a href="./temp_demos/ivy_as_a_transpiler_intro.html" class="sidebar-item-text sidebar-link">Ivy as a Transpiler Introduction</a>
   </div>
 </li>
-          <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">Compilation of Various Models</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./temp_demos/compilation_of_various_models/hf_tensorflow_deit.html" class="sidebar-item-text sidebar-link">HuggingFace Tensorflow DeiT</a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./temp_demos/compilation_of_various_models/resnet_18.html" class="sidebar-item-text sidebar-link">Resnet 18</a>
-  </div>
-</li>
-      </ul>
-  </li>
       </ul>
   </li>
     </ul>
@@ -401,6 +429,31 @@ No matching items
 </div>
 </div>
 </section>
+<section id="compilation-of-various-models" class="level3">
+<h3 class="anchored" data-anchor-id="compilation-of-various-models">Compilation of Various Models</h3>
+<div id="listing-compilation-of-various-models" class="quarto-listing quarto-listing-container-custom">
+<link href="assets/css/custom.scss" rel="stylesheet" type="text/css">
+<div class="notebook-grid-gallery rwd-gallery-layout">
+  <a href="./compilation_of_various_models/hf_tensorflow_deit.html">
+    <div class="notebook-card">
+      <div class="notebook-card-title">HuggingFace Tensorflow DeiT</div>
+      <div class="notebook-card-title-border"></div>
+      <div>This is an example of compilation (using ivy) of <code>DeiT</code> model from Huggingface implemented with tensorflow.</div>
+    </div>
+  </a>
+  <a href="./compilation_of_various_models/resnet_18.html">
+    <div class="notebook-card">
+      <div class="notebook-card-title">Resnet 18</div>
+      <div class="notebook-card-title-border"></div>
+      <div>ToDo: description</div>
+    </div>
+  </a>
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div>
+</section>
 <section id="temp-demos" class="level3">
 <h3 class="anchored" data-anchor-id="temp-demos">Temp Demos</h3>
 <div id="listing-temp-demos" class="quarto-listing quarto-listing-container-custom">
@@ -434,25 +487,11 @@ No matching items
       <div>In this example, we will <code>unify</code> and <code>transpile</code> a classifier built on top of DeepMind’s original implementation of the PerceiverIO module written in JAX!</div>
     </div>
   </a>
-  <a href="./temp_demos/compilation_of_various_models/hf_tensorflow_deit.html">
-    <div class="notebook-card">
-      <div class="notebook-card-title">HuggingFace Tensorflow DeiT</div>
-      <div class="notebook-card-title-border"></div>
-      <div></div>
-    </div>
-  </a>
   <a href="./temp_demos/ivy_as_a_transpiler_intro.html">
     <div class="notebook-card">
       <div class="notebook-card-title">Ivy as a Transpiler Introduction</div>
       <div class="notebook-card-title-border"></div>
       <div>Transpile either functions, trainable models or importable python modules, with any number and combo permitted</div>
-    </div>
-  </a>
-  <a href="./temp_demos/compilation_of_various_models/resnet_18.html">
-    <div class="notebook-card">
-      <div class="notebook-card-title">Resnet 18</div>
-      <div class="notebook-card-title-border"></div>
-      <div></div>
     </div>
   </a>
 </div>

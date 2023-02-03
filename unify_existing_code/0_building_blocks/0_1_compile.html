@@ -259,12 +259,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">Temp Demos</a>
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">Compilation of Various Models</a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../compilation_of_various_models/hf_tensorflow_deit.html" class="sidebar-item-text sidebar-link">HuggingFace Tensorflow DeiT</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../compilation_of_various_models/resnet_18.html" class="sidebar-item-text sidebar-link">Resnet 18</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">Temp Demos</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../temp_demos/basic_operations_with_ivy.html" class="sidebar-item-text sidebar-link">Basic Operations with Ivy</a>
@@ -290,26 +310,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="../../temp_demos/ivy_as_a_transpiler_intro.html" class="sidebar-item-text sidebar-link">Ivy as a Transpiler Introduction</a>
   </div>
 </li>
-          <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">Compilation of Various Models</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../temp_demos/compilation_of_various_models/hf_tensorflow_deit.html" class="sidebar-item-text sidebar-link">HuggingFace Tensorflow DeiT</a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../temp_demos/compilation_of_various_models/resnet_18.html" class="sidebar-item-text sidebar-link">Resnet 18</a>
-  </div>
-</li>
-      </ul>
-  </li>
       </ul>
   </li>
     </ul>
@@ -326,11 +326,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1>0.1: Compile</h1>
 <p>In this example, we compile our simple unified <code>ivy</code> function <code>normalize</code> from the <a href="">last notebook</a>. We then show how this newly compiled <code>normalize</code> function exhibits much better runtime performance than the non-compiled version.</p>
 <div id="colab-button">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://colab.research.google.com/github/unifyai/demos/blob/main/unify_existing_code/0_building_blocks/0_1_compile.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid figure-img"></a></p>
-</figure>
-</div>
+<p><a href="https://colab.research.google.com/github/unifyai/demos/blob/main/unify_existing_code/0_building_blocks/0_1_compile.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid" alt="Open in Colab"></a> <a href="https://github.com/unifyai/demos/blob/main/unify_existing_code/0_building_blocks/0_1_compile.ipynb"><img src="https://badgen.net/badge/icon/github?icon=github&amp;label.png" class="img-fluid" alt="GitHub"></a></p>
 </div>
 <p>Firstly, let’s pick up where we left off in the <a href="">last notebook</a>, with our unified <code>normalize</code> function:</p>
 <div class="cell">
