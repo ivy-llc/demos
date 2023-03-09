@@ -16,6 +16,7 @@
       "/temp_demos/compilation_of_a_basic_function.html",
       "/temp_demos/deepmind_perceiverio.html",
       "/temp_demos/deepmind_perceiver_io.html",
+      "/temp_demos/end_to_end_training_pipeline_in_ivy.html",
       "/temp_demos/ivy_as_a_transpiler_intro.html",
       "/compilation_of_various_models/hf_tensorflow_deit.html",
       "/compilation_of_various_models/resnet_18.html"
