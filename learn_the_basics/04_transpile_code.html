@@ -271,7 +271,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#transpile-code" id="toc-transpile-code" class="nav-link active" data-scroll-target="#transpile-code">Transpile code</a></li>
+  <li><a href="#transpile-code" id="toc-transpile-code" class="nav-link active" data-scroll-target="#transpile-code">Transpile code</a>
+  <ul class="collapse">
+  <li><a href="#round-up" id="toc-round-up" class="nav-link" data-scroll-target="#round-up">Round Up</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -282,19 +285,52 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <section id="transpile-code" class="level1">
 <h1>Transpile code</h1>
-<p>Convert a given function from <code>torch</code> to <code>jax</code> in one line of code.</p>
+<p>Convert a <code>torch</code> function to <code>jax</code> with just one line of code.</p>
 <div id="colab-button">
-<p><a href="https://colab.research.google.com/github/unifyai/demos/blob/main/"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid" alt="Open in Colab"></a> <a href="https://github.com/unifyai/demos/blob/main/"><img src="https://badgen.net/badge/icon/github?icon=github&amp;label" class="img-fluid" alt="GitHub"></a></p>
+<p><a href="https://colab.research.google.com/github/unifyai/demos/blob/main/learn_the_basics/04_transpile_code.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid" alt="Open in Colab"></a> <a href="https://github.com/unifyai/demos/blob/main/learn_the_basics/04_transpile_code.ipynb"><img src="https://badgen.net/badge/icon/github?icon=github&amp;label" class="img-fluid" alt="GitHub"></a></p>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># TO REPLACE:</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># All contents start from here!</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Use ## tag (h2) for section titles</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Use </span><span class="al">###</span><span class="co"> tag (h3) for subsection titles</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Use normal paragraph (p, no tag) for steps and explanations</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Using what we learnt in the previous two notebooks for <a href="">Unify</a> and <a href="">Compile</a>, the workflow for converting directly from <code>torch</code> to <code>jax</code> would be as follows, first unifying to <code>ivy</code> code, and then compiling to the <code>jax</code> backend:</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ivy</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">"jax"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> normalize(x):</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    mean <span class="op">=</span> torch.mean(x)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    std <span class="op">=</span> torch.std(x)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> torch.div(torch.sub(x, mean), std)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># convert the function to Ivy code</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>ivy_normalize <span class="op">=</span> ivy.unify(normalize)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># compile the Ivy code into jax functions</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>jax_normalize <span class="op">=</span> ivy.<span class="bu">compile</span>(ivy_normalize)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p><code>normalize</code> is now compiled to <code>jax</code>, ready to be integrated into your wider <code>jax</code> project.</p>
+<p>This workflow is common, and so in order to avoid repeated calls to <code>ivy.unify</code> followed by <code>ivy.compile</code>, there is another convenience function <code>ivy.transpile</code>, which basically acts as a shorthand for this pair of function calls:</p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>jax_normalize <span class="op">=</span> ivy.transpile(normalize, source<span class="op">=</span><span class="st">"torch"</span>, to<span class="op">=</span><span class="st">"jax"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Again, <code>normalize</code> is now a <code>jax</code> function, ready to be integrated into your <code>jax</code> project.</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jax</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>key <span class="op">=</span> jax.random.PRNGKey(<span class="dv">42</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>jax.config.update(<span class="st">'jax_enable_x64'</span>, <span class="va">True</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> jax.random.uniform(key, shape<span class="op">=</span>(<span class="dv">10</span>,))</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(jax_normalize(x))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[-0.93968587  0.26075466 -0.22723222 -1.06276492 -0.47426987  1.72835908
+  1.71737559 -0.50411096 -0.65419174  0.15576624]</code></pre>
+</div>
+</div>
+<section id="round-up" class="level2">
+<h2 class="anchored" data-anchor-id="round-up">Round Up</h2>
+<p>That’s it, you can now transpile code from one framework to another with one line of code! However, there are still other important topics to master before you’re ready to unify ML code like a pro 🥷. In the next notebooks we’ll be learning about the various different ways that <code>ivy.unify</code>, <code>ivy.compile</code> and <code>ivy.transpile</code> can be called, and what implications each of these have!</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

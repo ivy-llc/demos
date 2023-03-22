@@ -313,7 +313,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>key <span class="op">=</span> jax.random.PRNGKey(<span class="dv">42</span>)</span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> jax.random.uniform(key, shape<span class="op">=</span>(<span class="dv">10</span>,))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>As in the previous example, the Ivy function can be executed like so:</p>
+<p>As in the previous example, the Ivy function can be executed like so (in this case it will trigger lazy unification, see the <a href="">Lazy vs Eager</a> section for more details):</p>
 <div class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>normalize(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="5">
