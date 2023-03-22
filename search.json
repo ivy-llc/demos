@@ -1,12 +1,5 @@
 [
   {
-    "objectID": "learn_the_basics/03_transpile_code.html",
-    "href": "learn_the_basics/03_transpile_code.html",
-    "title": "Tutorials and Examples - Ivy",
-    "section": "",
-    "text": "Transpile code\nConvert a given function from torch to jax in one line of code.\n\n \n\n\n# TO REPLACE:\n# All contents start from here!\n# Use ## tag (h2) for section titles\n# Use ### tag (h3) for subsection titles\n# Use normal paragraph (p, no tag) for steps and explanations"
-  },
-  {
     "objectID": "learn_the_basics/01_write_ivy_code.html",
     "href": "learn_the_basics/01_write_ivy_code.html",
     "title": "Tutorials and Examples - Ivy",
@@ -19,6 +12,27 @@
     "title": "Tutorials and Examples - Ivy",
     "section": "",
     "text": "Write a model using Ivy\nDevelop a simple linear regression model using Ivy’s stateful API.\n\n \n\n\n# TO REPLACE:\n# All contents start from here!\n# Use ## tag (h2) for section titles\n# Use ### tag (h3) for subsection titles\n# Use normal paragraph (p, no tag) for steps and explanations"
+  },
+  {
+    "objectID": "learn_the_basics/03_compile_code.html",
+    "href": "learn_the_basics/03_compile_code.html",
+    "title": "Tutorials and Examples - Ivy",
+    "section": "",
+    "text": "Turn your Ivy code into an efficient fully-functional graph, removing wrappers and unused parts of the code.\n\n \n\nFirstly, let’s pick up where we left off in the last notebook, with our unified normalize function:\n\nimport ivy\nimport torch\n\ndef normalize(x):\n    mean = torch.mean(x)\n    std = torch.std(x)\n    return torch.div(torch.sub(x, mean), std)\n\nnormalize = ivy.unify(normalize, source=\"torch\")\n\nFor the purpose of illustration, we will use jax as our backend framework:\n\n# set ivy's backend to jax\nivy.set_backend(\"jax\")\n\n# Import jax\nimport jax\n\n# create random jax arrays for testing\nkey = jax.random.PRNGKey(42)\nx = jax.random.uniform(key, shape=(10,))\n\nAs in the previous example, the Ivy function can be executed like so:\n\nnormalize(x)\n\nivy.array([ 0.55563945, -0.65538704, -1.14150524,  1.46951997,  1.30220294,\n       -1.14739668, -0.57017946, -0.91962677,  0.51029003,  0.59644395])\n\n\nWhen calling this function, all of ivy’s function wrapping is included in the call stack of normalize, which adds runtime overhead. In general, ivy.compile strips any arbitrary function down to its constituent functions in the functional API of the target framework. The code can be compiled like so:\n\nivy.set_backend(\"jax\")\ncomp = ivy.compile(normalize)  # compiles to jax, due to ivy.set_backend\n\nThe compiled function can be executed in exactly the same manner as the non-compiled function (in this case it will also trigger lazy compilation, see the Lazy vs Eager section for more details):\n\ncomp(x)\n\nArray([ 0.5556394 , -0.655387  , -1.1415051 ,  1.4695197 ,  1.3022028 ,\n       -1.1473966 , -0.5701794 , -0.91962665,  0.51028997,  0.5964439 ],      dtype=float32)\n\n\nWith all lazy compilation calls now performed (which all increase runtime during the very first call of the function), we can now assess the runtime efficiencies of each function:\n\n%%timeit\nnormalize(x)\n\n985 µs ± 6.76 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)\n\n\n\n%%timeit\ncomp(x)\n\n69.5 µs ± 1.24 µs per loop (mean ± std. dev. of 7 runs, 10,000 loops each)\n\n\nAs expected, we can see that normalize is slower, as it includes all ivy wrapping overhead. On the other hand, comp has no wrapping overhead and it’s more efficient!\n\n\nThat’s it, you can now compile ivy code for more efficient inference! However, there are several other important topics to master before you’re ready to unify ML code like a pro 🥷. Next, we’ll be learning how to transpile code from one framework to another in a single line of code 🔄"
+  },
+  {
+    "objectID": "learn_the_basics/02_unify_code.html",
+    "href": "learn_the_basics/02_unify_code.html",
+    "title": "Tutorials and Examples - Ivy",
+    "section": "",
+    "text": "Unify a simple torch function and use it alongside any ML framework!\n\n \n\nFirstly, let’s import the dependencies and define the torch function.\n\nimport ivy\nimport torch\n\ndef normalize(x):\n    mean = torch.mean(x)\n    std = torch.std(x)\n    return torch.div(torch.sub(x, mean), std)\n\nNow, let’s unify the function!\n\nnormalize = ivy.unify(normalize, source=\"torch\")\n\nAnd that’s it! The normalize function can now be used with any ML framework. It’s as simple as that!\nSo, let’s give it a try!\n\n# import the frameworks\nimport numpy as np\nimport jax.numpy as jnp\nimport tensorflow as tf\n\n\n# create random numpy arrays for testing\nx = np.random.uniform(size=10).astype(np.float32)\nivy.set_backend(\"numpy\")\nprint(normalize(x))\n\n# jax\nx_ = jnp.array(x)\nivy.set_backend(\"jax\")\nprint(normalize(x_))\n\n# tensorflow\nx_ = tf.constant(x)\nivy.set_backend(\"tensorflow\")\nprint(normalize(x_))\n\n# torch\nx_ = torch.tensor(x)\nivy.set_backend(\"torch\")\nprint(normalize(x_))\n\nivy.array([ 0.82997245,  0.44733784, -0.32163444, -1.93330479, -0.52438271,\n       -0.20438017,  1.252316  ,  0.0827222 ,  1.26017165, -0.88881904])\nivy.array([ 0.82997245,  0.44733784, -0.32163444, -1.93330479, -0.52438271,\n       -0.20438017,  1.252316  ,  0.0827222 ,  1.26017165, -0.88881904])\nivy.array([ 0.82997245,  0.44733784, -0.32163444, -1.93330479, -0.52438271,\n       -0.20438017,  1.252316  ,  0.0827222 ,  1.26017165, -0.88881904])\nivy.array([ 0.82997245,  0.44733784, -0.32163444, -1.93330479, -0.52438271,\n       -0.20438017,  1.252316  ,  0.0827222 ,  1.26017165, -0.88881904])\n\n\nWe can see that the new normalize function can operate with any ML framework. ivy.unify converts the framework-specific torch implementation into a framework-agnostic ivy implementation, which is compatible with all frameworks.\n\n\nThat’s it, you can now unify ML code! However, there are several other important topics to master before you’re ready to unify ML code like a pro 🥷. Next, we’ll be learning how to make our unified Ivy code run much more efficiently! ⚡"
+  },
+  {
+    "objectID": "learn_the_basics/04_transpile_code.html",
+    "href": "learn_the_basics/04_transpile_code.html",
+    "title": "Tutorials and Examples - Ivy",
+    "section": "",
+    "text": "Transpile code\nConvert a given function from torch to jax in one line of code.\n\n \n\n\n# TO REPLACE:\n# All contents start from here!\n# Use ## tag (h2) for section titles\n# Use ### tag (h3) for subsection titles\n# Use normal paragraph (p, no tag) for steps and explanations"
   },
   {
     "objectID": "learn_the_basics/07_transpile_any_library.html",
@@ -49,20 +63,6 @@
     "text": "Transpile any model\nTranspile a tensorflow model into a PyTorch module.\n\n \n\n\n# TO REPLACE:\n# All contents start from here!\n# Use ## tag (h2) for section titles\n# Use ### tag (h3) for subsection titles\n# Use normal paragraph (p, no tag) for steps and explanations"
   },
   {
-    "objectID": "learn_the_basics/04_unify_code.html",
-    "href": "learn_the_basics/04_unify_code.html",
-    "title": "Tutorials and Examples - Ivy",
-    "section": "",
-    "text": "Unify code\nTranspile a function directly to Ivy and use it with any framework.\n\n \n\n\n# TO REPLACE:\n# All contents start from here!\n# Use ## tag (h2) for section titles\n# Use ### tag (h3) for subsection titles\n# Use normal paragraph (p, no tag) for steps and explanations"
-  },
-  {
-    "objectID": "learn_the_basics/02_compile_code.html",
-    "href": "learn_the_basics/02_compile_code.html",
-    "title": "Tutorials and Examples - Ivy",
-    "section": "",
-    "text": "Compile code\nTurn your Ivy code into an efficient fully-functional graph, removing wrappers and unused parts of the code.\n\n \n\n\n# TO REPLACE:\n# All contents start from here!\n# Use ## tag (h2) for section titles\n# Use ### tag (h3) for subsection titles\n# Use normal paragraph (p, no tag) for steps and explanations"
-  },
-  {
     "objectID": "quickstart.html",
     "href": "quickstart.html",
     "title": "Tutorials and Examples - Ivy",
@@ -88,7 +88,7 @@
     "href": "index.html",
     "title": "Tutorials and Examples - Ivy",
     "section": "",
-    "text": "Welcome to Ivy’s tutorials webpage! Our goal is to provide you with a comprehensive learning experience on a variety of topics. We have organized our tutorials into three main sections to help you find exactly what you need.\nIf you are in a rush, you can jump straight into the Quickstart, a quick and general introduction to Ivy’s features and capabilities!\n\nIn the Learn the basics section, you will find basic and to the point tutorials to help you get started with Ivy.\nThe Guides section includes more involved tutorials for those who want to dive deeper into the framework.\nFinally, in the Examples and Demos section, you will find start-to-finish projects and applications that showcase real-world applications of Ivy. Whether you’re a beginner or an advanced user, we’ve got you covered!\n\n\n\n\n\n\n  \n    \n      Write Ivy code\n      \n      \n    \n  \n  \n    \n      Compile code\n      \n      \n    \n  \n  \n    \n      Transpile code\n      \n      \n    \n  \n  \n    \n      Unify code\n      \n      \n    \n  \n  \n    \n      Lazy vs Eager\n      \n      \n    \n  \n  \n    \n      How to use decorators\n      \n      \n    \n  \n  \n    \n      Transpile any library\n      \n      \n    \n  \n  \n    \n      Transpile any model\n      \n      \n    \n  \n  \n    \n      Write a model using Ivy\n      \n      \n    \n  \n\n\nNo matching items\n\n\n\n\n\n\n\n\n  \n    \n      Transpiling a PyTorch model to build on top\n      \n      \n    \n  \n  \n    \n      Transpiling a haiku model to build on top\n      \n      \n    \n  \n  \n    \n      Transpiling a TensorFlow model to build on top\n      \n      \n    \n  \n  \n    \n      Developing a convolutional network using Ivy\n      \n      \n    \n  \n\n\nNo matching items\n\n\n\n\n\n\n\n\n  \n    \n      TO REPLACE: Title\n      \n      \n    \n  \n\n\nNo matching items"
+    "text": "Welcome to Ivy’s tutorials webpage! Our goal is to provide you with a comprehensive learning experience on a variety of topics. We have organized our tutorials into three main sections to help you find exactly what you need.\nIf you are in a rush, you can jump straight into the Quickstart, a quick and general introduction to Ivy’s features and capabilities!\n\nIn the Learn the basics section, you will find basic and to the point tutorials to help you get started with Ivy.\nThe Guides section includes more involved tutorials for those who want to dive deeper into the framework.\nFinally, in the Examples and Demos section, you will find start-to-finish projects and applications that showcase real-world applications of Ivy. Whether you’re a beginner or an advanced user, we’ve got you covered!\n\n\n\n\n\n\n  \n    \n      Write Ivy code\n      \n      \n    \n  \n  \n    \n      Unify code\n      \n      \n    \n  \n  \n    \n      Compile code\n      \n      \n    \n  \n  \n    \n      Transpile code\n      \n      \n    \n  \n  \n    \n      Lazy vs Eager\n      \n      \n    \n  \n  \n    \n      How to use decorators\n      \n      \n    \n  \n  \n    \n      Transpile any library\n      \n      \n    \n  \n  \n    \n      Transpile any model\n      \n      \n    \n  \n  \n    \n      Write a model using Ivy\n      \n      \n    \n  \n\n\nNo matching items\n\n\n\n\n\n\n\n\n  \n    \n      Transpiling a PyTorch model to build on top\n      \n      \n    \n  \n  \n    \n      Transpiling a haiku model to build on top\n      \n      \n    \n  \n  \n    \n      Transpiling a TensorFlow model to build on top\n      \n      \n    \n  \n  \n    \n      Developing a convolutional network using Ivy\n      \n      \n    \n  \n\n\nNo matching items\n\n\n\n\n\n\n\n\n  \n    \n      TO REPLACE: Title\n      \n      \n    \n  \n\n\nNo matching items"
   },
   {
     "objectID": "wip/ivy_as_a_transpiler_intro.html",
