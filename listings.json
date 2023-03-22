@@ -2,24 +2,20 @@
   {
     "listing": "/index.html",
     "items": [
-      "/unify_existing_code/0_building_blocks/0_0_unify.html",
-      "/unify_existing_code/0_building_blocks/0_1_compile.html",
-      "/unify_existing_code/0_building_blocks/0_2_transpile.html",
-      "/unify_existing_code/1_the_basics/1_0_lazy_vs_eager.html",
-      "/unify_existing_code/1_the_basics/1_1_framework_selection.html",
-      "/unify_existing_code/1_the_basics/1_2_as_a_decorator.html",
-      "/unify_existing_code/1_the_basics/1_3_dynamic_vs_static.html",
-      "/unify_existing_code/2_libraries/2_0_kornia.html",
-      "/unify_existing_code/3_models/3_0_perceiver.html",
-      "/unify_existing_code/3_models/3_1_stable_diffusion.html",
-      "/temp_demos/basic_operations_with_ivy.html",
-      "/temp_demos/compilation_of_a_basic_function.html",
-      "/temp_demos/deepmind_perceiverio.html",
-      "/temp_demos/deepmind_perceiver_io.html",
-      "/temp_demos/end_to_end_training_pipeline_in_ivy.html",
-      "/temp_demos/ivy_as_a_transpiler_intro.html",
-      "/compilation_of_various_models/hf_tensorflow_deit.html",
-      "/compilation_of_various_models/resnet_18.html"
+      "/learn_the_basics/01_write_ivy_code.html",
+      "/learn_the_basics/02_compile_code.html",
+      "/learn_the_basics/03_transpile_code.html",
+      "/learn_the_basics/04_unify_code.html",
+      "/learn_the_basics/05_lazy_vs._eager.html",
+      "/learn_the_basics/06_how_to_use_decorators.html",
+      "/learn_the_basics/07_transpile_any_library.html",
+      "/learn_the_basics/08_transpile_any_model.html",
+      "/learn_the_basics/09_write_a_model_using_ivy.html",
+      "/guides/01_transpiling_a_torch_model.html",
+      "/guides/02_transpiling_a_haiku_model.html",
+      "/guides/03_transpiling_a_tf_model.html",
+      "/guides/04_developing_a_convnet_with_ivy.html",
+      "/examples_and_demos/01_template.html"
     ]
   }
 ]

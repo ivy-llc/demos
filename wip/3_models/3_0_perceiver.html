@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Tutorials and Examples - Ivy – template</title>
+<title>Tutorials and Examples - Ivy – perceiver</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,89 +20,26 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<link href="../assets/img/ivy_logo_only.png" rel="icon" type="image/png">
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../assets/img/ivy_logo_only.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -144,8 +81,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
-      <a href="../index.html" class="sidebar-logo-link">
-      <img src="../assets/img/ivy_logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      <a href="../../index.html" class="sidebar-logo-link">
+      <img src="../../assets/img/ivy_logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
       </a>
       </div>
       <div class="mt-2 flex-shrink-0 align-items-center">
@@ -157,7 +94,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../quickstart.html" class="sidebar-item-text sidebar-link">Quickstart</a>
+  <a href="../../quickstart.html" class="sidebar-item-text sidebar-link">Quickstart</a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -170,47 +107,47 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../learn_the_basics/02_compile_code.html" class="sidebar-item-text sidebar-link">Compile code</a>
+  <a href="../../learn_the_basics/02_compile_code.html" class="sidebar-item-text sidebar-link">Compile code</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../learn_the_basics/06_how_to_use_decorators.html" class="sidebar-item-text sidebar-link">How to use decorators</a>
+  <a href="../../learn_the_basics/06_how_to_use_decorators.html" class="sidebar-item-text sidebar-link">How to use decorators</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../learn_the_basics/05_lazy_vs._eager.html" class="sidebar-item-text sidebar-link">Lazy vs Eager</a>
+  <a href="../../learn_the_basics/05_lazy_vs._eager.html" class="sidebar-item-text sidebar-link">Lazy vs Eager</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../learn_the_basics/07_transpile_any_library.html" class="sidebar-item-text sidebar-link">Transpile any library</a>
+  <a href="../../learn_the_basics/07_transpile_any_library.html" class="sidebar-item-text sidebar-link">Transpile any library</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../learn_the_basics/08_transpile_any_model.html" class="sidebar-item-text sidebar-link">Transpile any model</a>
+  <a href="../../learn_the_basics/08_transpile_any_model.html" class="sidebar-item-text sidebar-link">Transpile any model</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../learn_the_basics/03_transpile_code.html" class="sidebar-item-text sidebar-link">Transpile code</a>
+  <a href="../../learn_the_basics/03_transpile_code.html" class="sidebar-item-text sidebar-link">Transpile code</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../learn_the_basics/04_unify_code.html" class="sidebar-item-text sidebar-link">Unify code</a>
+  <a href="../../learn_the_basics/04_unify_code.html" class="sidebar-item-text sidebar-link">Unify code</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../learn_the_basics/09_write_a_model_using_ivy.html" class="sidebar-item-text sidebar-link">Write a model using Ivy</a>
+  <a href="../../learn_the_basics/09_write_a_model_using_ivy.html" class="sidebar-item-text sidebar-link">Write a model using Ivy</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../learn_the_basics/01_write_ivy_code.html" class="sidebar-item-text sidebar-link">Write Ivy code</a>
+  <a href="../../learn_the_basics/01_write_ivy_code.html" class="sidebar-item-text sidebar-link">Write Ivy code</a>
   </div>
 </li>
       </ul>
@@ -225,22 +162,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../guides/04_developing_a_convnet_with_ivy.html" class="sidebar-item-text sidebar-link">Developing a convolutional network using Ivy</a>
+  <a href="../../guides/04_developing_a_convnet_with_ivy.html" class="sidebar-item-text sidebar-link">Developing a convolutional network using Ivy</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../guides/02_transpiling_a_haiku_model.html" class="sidebar-item-text sidebar-link">Transpiling a haiku model to build on top</a>
+  <a href="../../guides/02_transpiling_a_haiku_model.html" class="sidebar-item-text sidebar-link">Transpiling a haiku model to build on top</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../guides/01_transpiling_a_torch_model.html" class="sidebar-item-text sidebar-link">Transpiling a PyTorch model to build on top</a>
+  <a href="../../guides/01_transpiling_a_torch_model.html" class="sidebar-item-text sidebar-link">Transpiling a PyTorch model to build on top</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../guides/03_transpiling_a_tf_model.html" class="sidebar-item-text sidebar-link">Transpiling a TensorFlow model to build on top</a>
+  <a href="../../guides/03_transpiling_a_tf_model.html" class="sidebar-item-text sidebar-link">Transpiling a TensorFlow model to build on top</a>
   </div>
 </li>
       </ul>
@@ -255,7 +192,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../examples_and_demos/01_template.html" class="sidebar-item-text sidebar-link">TO REPLACE: Title</a>
+  <a href="../../examples_and_demos/01_template.html" class="sidebar-item-text sidebar-link">TO REPLACE: Title</a>
   </div>
 </li>
       </ul>
@@ -269,7 +206,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#to-replace-title" id="toc-to-replace-title" class="nav-link active" data-scroll-target="#to-replace-title">TO REPLACE: Title</a></li>
+  <li><a href="#perceiver" id="toc-perceiver" class="nav-link active" data-scroll-target="#perceiver">3.0: Perceiver</a></li>
   </ul>
 </nav>
     </div>
@@ -278,18 +215,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<section id="to-replace-title" class="level1">
-<h1>TO REPLACE: Title</h1>
-<p>TO REPLACE: description</p>
+<section id="perceiver" class="level1">
+<h1>3.0: Perceiver</h1>
+<p>ToDo: description</p>
 <div id="colab-button">
-<p><a href="https://colab.research.google.com/github/unifyai/demos/blob/main/"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid" alt="Open in Colab"></a> <a href="https://github.com/unifyai/demos/blob/main/"><img src="https://badgen.net/badge/icon/github?icon=github&amp;label" class="img-fluid" alt="GitHub"></a></p>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># TO REPLACE:</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># All contents start from here!</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Use ## tag (h2) for section titles</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Use </span><span class="al">###</span><span class="co"> tag (h3) for subsection titles</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Use normal paragraph (p, no tag) for steps and explanations</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><a href="https://colab.research.google.com/github/unifyai/demos/blob/main/unify_existing_code/3_models/3_0_perceiver.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid" alt="Open in Colab"></a> <a href="https://github.com/unifyai/demos/blob/main/unify_existing_code/3_models/3_0_perceiver.ipynb"><img src="https://badgen.net/badge/icon/github?icon=github&amp;label" class="img-fluid" alt="GitHub"></a></p>
 </div>
 
 

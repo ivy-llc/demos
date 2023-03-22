@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Tutorials and Examples - Ivy – template</title>
+<title>Tutorials and Examples - Ivy – transpile_any_model</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -93,6 +93,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../learn_the_basics/03_transpile_code.html" rel="next">
+<link href="../learn_the_basics/07_transpile_any_library.html" rel="prev">
 <link href="../assets/img/ivy_logo_only.png" rel="icon" type="image/png">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -162,12 +164,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">Learn the Basics</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Learn the Basics</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../learn_the_basics/02_compile_code.html" class="sidebar-item-text sidebar-link">Compile code</a>
@@ -190,7 +192,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../learn_the_basics/08_transpile_any_model.html" class="sidebar-item-text sidebar-link">Transpile any model</a>
+  <a href="../learn_the_basics/08_transpile_any_model.html" class="sidebar-item-text sidebar-link active">Transpile any model</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -269,7 +271,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#to-replace-title" id="toc-to-replace-title" class="nav-link active" data-scroll-target="#to-replace-title">TO REPLACE: Title</a></li>
+  <li><a href="#transpile-any-model" id="toc-transpile-any-model" class="nav-link active" data-scroll-target="#transpile-any-model">Transpile any model</a></li>
   </ul>
 </nav>
     </div>
@@ -278,9 +280,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<section id="to-replace-title" class="level1">
-<h1>TO REPLACE: Title</h1>
-<p>TO REPLACE: description</p>
+<section id="transpile-any-model" class="level1">
+<h1>Transpile any model</h1>
+<p>Transpile a <code>tensorflow</code> model into a <code>PyTorch</code> module.</p>
 <div id="colab-button">
 <p><a href="https://colab.research.google.com/github/unifyai/demos/blob/main/"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid" alt="Open in Colab"></a> <a href="https://github.com/unifyai/demos/blob/main/"><img src="https://badgen.net/badge/icon/github?icon=github&amp;label" class="img-fluid" alt="GitHub"></a></p>
 </div>
@@ -429,6 +431,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
+<nav class="page-navigation column-body">
+  <div class="nav-page nav-page-previous">
+      <a href="../learn_the_basics/07_transpile_any_library.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Transpile any library</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../learn_the_basics/03_transpile_code.html" class="pagination-link">
+        <span class="nav-page-text">Transpile code</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
 </div> <!-- /content -->
 
 

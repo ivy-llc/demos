@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Tutorials and Examples - Ivy</title>
+<title>Tutorials and Examples - Ivy – quickstart</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,69 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -30,9 +93,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./learn_the_basics/02_compile_code.html" rel="next">
 <link href="./assets/img/ivy_logo_only.png" rel="icon" type="image/png">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -61,93 +123,7 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-learn-the-basics .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-file','listing-path','listing-title','listing-author','listing-image','listing-description','listing-filename','listing-file-modified','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] }],
-      
-      searchColumns: ["listing-file","listing-path","listing-title","listing-author","listing-image","listing-description","listing-filename","listing-file-modified","listing-reading-time"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-learn-the-basics'] = new List('listing-learn-the-basics', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-guides .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-file','listing-path','listing-title','listing-author','listing-image','listing-description','listing-filename','listing-file-modified','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] }],
-      
-      searchColumns: ["listing-file","listing-path","listing-title","listing-author","listing-image","listing-description","listing-filename","listing-file-modified","listing-reading-time"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-guides'] = new List('listing-guides', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-examples-and-demos .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-file','listing-path','listing-title','listing-author','listing-image','listing-description','listing-filename','listing-file-modified','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] }],
-      
-      searchColumns: ["listing-file","listing-path","listing-title","listing-author","listing-image","listing-description","listing-filename","listing-file-modified","listing-reading-time"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-examples-and-demos'] = new List('listing-examples-and-demos', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 </head>
 
@@ -182,7 +158,7 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./quickstart.html" class="sidebar-item-text sidebar-link">Quickstart</a>
+  <a href="./quickstart.html" class="sidebar-item-text sidebar-link active">Quickstart</a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -294,11 +270,9 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#tutorials-and-examples" id="toc-tutorials-and-examples" class="nav-link active" data-scroll-target="#tutorials-and-examples">Tutorials and Examples</a>
+  <li><a href="#quickstart" id="toc-quickstart" class="nav-link active" data-scroll-target="#quickstart">Quickstart</a>
   <ul class="collapse">
-  <li><a href="#learn-the-basics" id="toc-learn-the-basics" class="nav-link" data-scroll-target="#learn-the-basics">Learn the basics</a></li>
-  <li><a href="#guides" id="toc-guides" class="nav-link" data-scroll-target="#guides">Guides</a></li>
-  <li><a href="#examples-and-demos" id="toc-examples-and-demos" class="nav-link" data-scroll-target="#examples-and-demos">Examples and Demos</a></li>
+  <li><a href="#round-up" id="toc-round-up" class="nav-link" data-scroll-target="#round-up">Round Up</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -308,146 +282,62 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="tutorials-and-examples" class="level2">
-<h2 class="anchored" data-anchor-id="tutorials-and-examples">Tutorials and Examples</h2>
-<p>Welcome to Ivy’s tutorials webpage! Our goal is to provide you with a comprehensive learning experience on a variety of topics. We have organized our tutorials into three main sections to help you find exactly what you need.</p>
-<p>If you are in a rush, you can jump straight into the <strong><a href="./quickstart.html">Quickstart</a></strong>, a quick and general introduction to Ivy’s features and capabilities!</p>
-<ul>
-<li><p>In the <strong>Learn the basics</strong> section, you will find basic and to the point tutorials to help you get started with Ivy.</p></li>
-<li><p>The <strong>Guides</strong> section includes more involved tutorials for those who want to dive deeper into the framework.</p></li>
-<li><p>Finally, in the <strong>Examples and Demos</strong> section, you will find start-to-finish projects and applications that showcase real-world applications of Ivy. Whether you’re a beginner or an advanced user, we’ve got you covered!</p></li>
-</ul>
-<section id="learn-the-basics" class="level3">
-<h3 class="anchored" data-anchor-id="learn-the-basics">Learn the basics</h3>
-<div id="listing-learn-the-basics" class="quarto-listing quarto-listing-container-custom">
-<link href="assets/css/custom.scss" rel="stylesheet" type="text/css">
-<div class="notebook-grid-gallery rwd-gallery-layout">
-  <a href="./learn_the_basics/01_write_ivy_code.html">
-    <div class="notebook-card">
-      <div class="notebook-card-title">Write Ivy code</div>
-      <div class="notebook-card-title-border"></div>
-      <div class="notebook-card-body">Get familiar with Ivy’s basic concepts and learn to write framework-agnostic code.</div>
-    </div>
-  </a>
-  <a href="./learn_the_basics/02_compile_code.html">
-    <div class="notebook-card">
-      <div class="notebook-card-title">Compile code</div>
-      <div class="notebook-card-title-border"></div>
-      <div class="notebook-card-body">Turn your Ivy code into an efficient fully-functional graph, removing wrappers and unused parts of the code.</div>
-    </div>
-  </a>
-  <a href="./learn_the_basics/03_transpile_code.html">
-    <div class="notebook-card">
-      <div class="notebook-card-title">Transpile code</div>
-      <div class="notebook-card-title-border"></div>
-      <div class="notebook-card-body">Convert a given function from <code>torch</code> to <code>jax</code> in one line of code.</div>
-    </div>
-  </a>
-  <a href="./learn_the_basics/04_unify_code.html">
-    <div class="notebook-card">
-      <div class="notebook-card-title">Unify code</div>
-      <div class="notebook-card-title-border"></div>
-      <div class="notebook-card-body">Transpile a function directly to Ivy and use it with any framework.</div>
-    </div>
-  </a>
-  <a href="./learn_the_basics/05_lazy_vs._eager.html">
-    <div class="notebook-card">
-      <div class="notebook-card-title">Lazy vs Eager</div>
-      <div class="notebook-card-title-border"></div>
-      <div class="notebook-card-body">Understand the difference between eager and lazy compilation and transpilation.</div>
-    </div>
-  </a>
-  <a href="./learn_the_basics/06_how_to_use_decorators.html">
-    <div class="notebook-card">
-      <div class="notebook-card-title">How to use decorators</div>
-      <div class="notebook-card-title-border"></div>
-      <div class="notebook-card-body">Learn about the different ways to use compilation and transpilation functions.</div>
-    </div>
-  </a>
-  <a href="./learn_the_basics/07_transpile_any_library.html">
-    <div class="notebook-card">
-      <div class="notebook-card-title">Transpile any library</div>
-      <div class="notebook-card-title-border"></div>
-      <div class="notebook-card-body">Transpile the <code>kornia</code> library to <code>jax</code> with just one line of code.</div>
-    </div>
-  </a>
-  <a href="./learn_the_basics/08_transpile_any_model.html">
-    <div class="notebook-card">
-      <div class="notebook-card-title">Transpile any model</div>
-      <div class="notebook-card-title-border"></div>
-      <div class="notebook-card-body">Transpile a <code>tensorflow</code> model into a <code>PyTorch</code> module.</div>
-    </div>
-  </a>
-  <a href="./learn_the_basics/09_write_a_model_using_ivy.html">
-    <div class="notebook-card">
-      <div class="notebook-card-title">Write a model using Ivy</div>
-      <div class="notebook-card-title-border"></div>
-      <div class="notebook-card-body">Develop a simple linear regression model using Ivy’s stateful API.</div>
-    </div>
-  </a>
+<section id="quickstart" class="level1">
+<h1>Quickstart</h1>
+<p>Get up to speed with Ivy with a quick, general introduction of its features and capabilities!</p>
+<div id="colab-button">
+<p><a href="https://colab.research.google.com/github/unifyai/demos/blob/main/unify_existing_code/0_building_blocks/0_0_unify.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid" alt="Open in Colab"></a> <a href="https://github.com/unifyai/demos/blob/main/unify_existing_code/0_building_blocks/0_0_unify.ipynb"><img src="https://badgen.net/badge/icon/github?icon=github&amp;label" class="img-fluid" alt="GitHub"></a></p>
 </div>
-<div class="listing-no-matching d-none">
-No matching items
+<p>Firstly, let’s import the dependencies and define the <code>torch</code> function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ivy</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> normalize(x, mean, std):</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> torch.div(torch.sub(x, mean), std)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Now, let’s unify the function!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>normalize <span class="op">=</span> ivy.unify(normalize)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section>
-<section id="guides" class="level3">
-<h3 class="anchored" data-anchor-id="guides">Guides</h3>
-<div id="listing-guides" class="quarto-listing quarto-listing-container-custom">
-<link href="assets/css/custom.scss" rel="stylesheet" type="text/css">
-<div class="notebook-grid-gallery rwd-gallery-layout">
-  <a href="./guides/01_transpiling_a_torch_model.html">
-    <div class="notebook-card">
-      <div class="notebook-card-title">Transpiling a PyTorch model to build on top</div>
-      <div class="notebook-card-title-border"></div>
-      <div class="notebook-card-body">Transpile a <code>timm</code> model to <code>tensorflow</code> and build a new model around it.</div>
-    </div>
-  </a>
-  <a href="./guides/02_transpiling_a_haiku_model.html">
-    <div class="notebook-card">
-      <div class="notebook-card-title">Transpiling a haiku model to build on top</div>
-      <div class="notebook-card-title-border"></div>
-      <div class="notebook-card-body">Transpile DeepMind’s PerceiverIO to <code>PyTorch</code> to use it as a pretrained backbone.</div>
-    </div>
-  </a>
-  <a href="./guides/03_transpiling_a_tf_model.html">
-    <div class="notebook-card">
-      <div class="notebook-card-title">Transpiling a TensorFlow model to build on top</div>
-      <div class="notebook-card-title-border"></div>
-      <div class="notebook-card-body">Transpile a <code>keras</code> model to <code>haiku</code> and leverage <code>Jax</code> efficiency.</div>
-    </div>
-  </a>
-  <a href="./guides/04_developing_a_convnet_with_ivy.html">
-    <div class="notebook-card">
-      <div class="notebook-card-title">Developing a convolutional network using Ivy</div>
-      <div class="notebook-card-title-border"></div>
-      <div class="notebook-card-body">Build a more involved convolutional network using Ivy’s stateful API.</div>
-    </div>
-  </a>
+<p>And that’s it! The <code>normalize</code> function can now be used with <strong>any ML framework</strong>. It’s as simple as that!</p>
+<p>So, let’s give it a try!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import numpy</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># create random numpy arrays for testing</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.randon.uniform(size<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>mean <span class="op">=</span> np.mean(x)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>std <span class="op">=</span> np.std(x)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># numpy</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(normalize(x, mean, std))</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co"># jax</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jax.numpy <span class="im">as</span> jnp</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>x_ <span class="op">=</span> jnp.array(x)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>mean_ <span class="op">=</span> jnp.array(mean)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>std_ <span class="op">=</span> jnp.array(std)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(normalize(x_, mean_, std_))</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co"># tensorflow</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>x_ <span class="op">=</span> tf.constant(x)</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>mean_ <span class="op">=</span> tf.constant(mean)</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>std_ <span class="op">=</span> tf.constant(std)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(normalize(x_, mean_, std_))</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="co"># torch</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>x_ <span class="op">=</span> torch.tensor(x)</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>mean_ <span class="op">=</span> torch.tensor(mean)</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>std_ <span class="op">=</span> torch.tensor(std)</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(normalize(x_, mean_, std_))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div>
-</section>
-<section id="examples-and-demos" class="level3">
-<h3 class="anchored" data-anchor-id="examples-and-demos">Examples and Demos</h3>
-<div id="listing-examples-and-demos" class="quarto-listing quarto-listing-container-custom">
-<link href="assets/css/custom.scss" rel="stylesheet" type="text/css">
-<div class="notebook-grid-gallery rwd-gallery-layout">
-  <a href="./examples_and_demos/01_template.html">
-    <div class="notebook-card">
-      <div class="notebook-card-title">TO REPLACE: Title</div>
-      <div class="notebook-card-title-border"></div>
-      <div class="notebook-card-body">TO REPLACE: description</div>
-    </div>
-  </a>
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div>
-
+<p>We can see that the new <code>normalize</code> function can operate with any ML framework. <code>ivy.unify</code> is able to detect that the original <code>normalize</code> function is implemented in <code>torch</code> by using the <code>inspection</code> module. <code>ivy.unify</code> then converts the framework-specific <code>torch</code> implementation into a framework-agnostic <code>ivy</code> implementation, which is compatible with all frameworks.</p>
+<section id="round-up" class="level2">
+<h2 class="anchored" data-anchor-id="round-up">Round Up</h2>
+<p>That’s it, you can now unify ML code! However, there are several other important topics to master before you’re ready to unify ML code like a pro 🥷. Next, we’ll be learning how to make our unified Ivy code <a href="">run much more efficiently</a>! ⚡</p>
 
 
 </section>
@@ -587,6 +477,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
+<nav class="page-navigation column-body">
+  <div class="nav-page nav-page-previous">
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./learn_the_basics/02_compile_code.html" class="pagination-link">
+        <span class="nav-page-text">Compile code</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
 </div> <!-- /content -->
 
 
