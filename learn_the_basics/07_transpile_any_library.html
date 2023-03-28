@@ -314,7 +314,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="07_transpile_any_library_files/figure-html/cell-4-output-1.png" class="img-fluid"></p>
 </div>
 </div>
-<p>Now that we have our sample image, we can easily call any <code>kornia</code> function using our transpiled version of the library, <code>jax_kornia</code>. As expected, both the input and the output of this function is a <code>jax.Array</code>.</p>
+<p>Now that we have our sample image, we can easily call any <code>kornia</code> function using our transpiled version of the library, <code>jax_kornia</code>. As expected, both inputs and outputs of this function are <code>jax.Array</code> instances.</p>
 <div class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>out <span class="op">=</span> jax_kornia.enhance.sharpness(img, <span class="dv">10</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(out)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

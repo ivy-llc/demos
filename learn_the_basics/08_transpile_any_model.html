@@ -271,7 +271,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#transpile-any-model" id="toc-transpile-any-model" class="nav-link active" data-scroll-target="#transpile-any-model">Transpile any model</a></li>
+  <li><a href="#transpile-any-model" id="toc-transpile-any-model" class="nav-link active" data-scroll-target="#transpile-any-model">Transpile any model</a>
+  <ul class="collapse">
+  <li><a href="#round-up" id="toc-round-up" class="nav-link" data-scroll-target="#round-up">Round up</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -282,19 +285,55 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <section id="transpile-any-model" class="level1">
 <h1>Transpile any model</h1>
-<p>Transpile a <code>tensorflow</code> model into a <code>PyTorch</code> module.</p>
+<p>Transpile a <code>Keras</code> model into a <code>PyTorch</code> module.</p>
 <div id="colab-button">
-<p><a href="https://colab.research.google.com/github/unifyai/demos/blob/main/"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid" alt="Open in Colab"></a> <a href="https://github.com/unifyai/demos/blob/main/"><img src="https://badgen.net/badge/icon/github?icon=github&amp;label" class="img-fluid" alt="GitHub"></a></p>
+<p><a href="https://colab.research.google.com/github/unifyai/demos/blob/main/learn_the_basics/08_transpile_any_model.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid" alt="Open in Colab"></a> <a href="https://github.com/unifyai/demos/blob/main/learn_the_basics/08_transpile_any_model.ipynb"><img src="https://badgen.net/badge/icon/github?icon=github&amp;label" class="img-fluid" alt="GitHub"></a></p>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># TO REPLACE:</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># All contents start from here!</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Use ## tag (h2) for section titles</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Use </span><span class="al">###</span><span class="co"> tag (h3) for subsection titles</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Use normal paragraph (p, no tag) for steps and explanations</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>As we’ve already seen, <code>ivy.transpile</code> can convert functions and whole libraries from one framework to another. However, in machine learning and deep learning, much of the focus is on trainable modules. Fortunately, Ivy can manage the parameters of these modules and ensure that the transpiled module is fully compatible with the target framework. This allows you to take full advantage of the training utilities provided by any framework and to build complex models on top of the transpiled ones. Let’s see how this works!</p>
+<p>Let’s start by importing the neccessary libraries:</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ivy</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>There are examples which use more involved models in the <a href="https://lets-unify.ai/demos#guides">Guides</a> section, but to keep things simple, let’s define a basic convolutional network using Keras’ Sequential API to use it as the starting point!</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> tf.keras.Sequential([</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Conv2D(<span class="dv">32</span>, kernel_size<span class="op">=</span>(<span class="dv">3</span>, <span class="dv">3</span>), activation<span class="op">=</span><span class="st">'relu'</span>, input_shape<span class="op">=</span>(<span class="dv">28</span>, <span class="dv">28</span>, <span class="dv">3</span>)),</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Flatten(),</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Dense(<span class="dv">10</span>, activation<span class="op">=</span><span class="st">'softmax'</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now, we can use <code>ivy.transpile</code> to convert this <code>Keras</code> model to <code>PyTorch</code>. Since we are passing a framework-specific object to the <code>transpile</code> function, there is no need to specify the <code>source</code> keyword argument this time.</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>input_array <span class="op">=</span> tf.random.normal((<span class="dv">1</span>, <span class="dv">28</span>, <span class="dv">28</span>, <span class="dv">3</span>))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>torch_model <span class="op">=</span> ivy.transpile(model, to<span class="op">=</span><span class="st">"torch"</span>, args<span class="op">=</span>(input_array,))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Thanks to (eager) transpilation, we now have a fully-fledged <code>torch.nn.module</code> 🚀</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">isinstance</span>(torch_model, torch.nn.Module)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>True</code></pre>
+</div>
+</div>
+<p>This means that we can pass <code>PyTorch</code> inputs (keeping the channels-last format of <code>Keras</code>, as the new computational graph is identical to the original one!) and get <code>PyTorch</code> tensors as the output:</p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>input_array <span class="op">=</span> torch.rand((<span class="dv">1</span>, <span class="dv">28</span>, <span class="dv">28</span>, <span class="dv">3</span>))</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>output_array <span class="op">=</span> torch_model(input_array)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(output_array)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>tensor([[0.0768, 0.0727, 0.0942, 0.1300, 0.1350, 0.0839, 0.1511, 0.1061, 0.0606,
+         0.0896]], grad_fn=&lt;SoftmaxBackward0&gt;)</code></pre>
+</div>
+</div>
+<p>Furthermore, having a <code>torch.nn.Module</code> also enables you to train the model using PyTorch training code, and also to use the transpiled model to build more complex torch models, as shown in the <a href="">Transpiling a haiku model to build on top</a> guide!</p>
+<section id="round-up" class="level2">
+<h2 class="anchored" data-anchor-id="round-up">Round up</h2>
+<p>This is the last tutorial related to the compiler/transpiler in <a href="https://lets-unify.ai/demos#learn-the-basics">Learn the Basics</a>. In the next tutorial, we’ll go over an introduction to building models directly using Ivy 👨‍💻. If you are interested in continuing to learn about transpilation, you can check out the more complex tutorials in the <a href="https://lets-unify.ai/demos#guides">Guides</a> section!</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
