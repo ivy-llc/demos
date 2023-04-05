@@ -14,8 +14,7 @@
       "/guides/01_transpiling_a_torch_model.html",
       "/guides/02_transpiling_a_haiku_model.html",
       "/guides/03_transpiling_a_tf_model.html",
-      "/guides/04_developing_a_convnet_with_ivy.html",
-      "/examples_and_demos/01_template.html"
+      "/guides/04_developing_a_convnet_with_ivy.html"
     ]
   }
 ]
