@@ -257,7 +257,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#to-replace-title" id="toc-to-replace-title" class="nav-link active" data-scroll-target="#to-replace-title">TO REPLACE: Title</a></li>
+  <li><a href="#to-replace-title" id="toc-to-replace-title" class="nav-link active" data-scroll-target="#to-replace-title">TO REPLACE: Title</a>
+  <ul class="collapse">
+  <li><a href="#round-up" id="toc-round-up" class="nav-link" data-scroll-target="#round-up">Round Up</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -269,9 +272,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="to-replace-title" class="level1">
 <h1>TO REPLACE: Title</h1>
 <p>TO REPLACE: description</p>
-<div id="colab-button">
-<p><a href="https://colab.research.google.com/github/unifyai/demos/blob/main/"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid" alt="Open in Colab"></a> <a href="https://github.com/unifyai/demos/blob/main/"><img src="https://badgen.net/badge/icon/github?icon=github&amp;label" class="img-fluid" alt="GitHub"></a></p>
-</div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># TO REPLACE:</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># All contents start from here!</span></span>
@@ -279,8 +279,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Use </span><span class="al">###</span><span class="co"> tag (h3) for subsection titles</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Use normal paragraph (p, no tag) for steps and explanations</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<section id="round-up" class="level2">
+<h2 class="anchored" data-anchor-id="round-up">Round Up</h2>
+<p>TO REPLACE</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -418,6 +422,61 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+<script>
+    function generateBadges() {
+        var url = window.location.href; // get the current URL
+
+        // get everything after the root domain
+        var path = url.split('/').slice(3).join('/');
+
+        // replace ".html" ending with ".ipynb"
+        if (path.endsWith('.html')) {
+            path = path.replace(/\.html$/, '.ipynb');
+        }
+
+        // check if the path is not empty
+        if (path.length > 0) {
+            // find the first h1 header inside a main tag with id "quarto-document-content"
+            var main = document.querySelector('main#quarto-document-content');
+            var h1 = main.querySelector('h1');
+
+            // create a container element for the badges
+            var badgesContainer = document.createElement('div');
+            badgesContainer.style.display = 'flex';
+            badgesContainer.style.alignItems = 'center';
+
+            // create the first badge element with a link and some margin below it
+            var colabBadge = document.createElement('a');
+            colabBadge.href = `https://colab.research.google.com/github/unifyai/demos/blob/main/${path}`;
+            colabBadge.target = '_blank';
+            colabBadge.rel = 'noopener noreferrer';
+            var colabImg = document.createElement('img');
+            colabImg.src = 'https://colab.research.google.com/assets/colab-badge.svg';
+            colabImg.style.verticalAlign = 'middle';
+            colabBadge.appendChild(colabImg);
+
+            // create the second badge element with a link
+            var githubBadge = document.createElement('a');
+            githubBadge.href = `https://github.com/unifyai/demos/blob/main/${path}`;
+            githubBadge.target = '_blank';
+            githubBadge.rel = 'noopener noreferrer';
+            var githubImg = document.createElement('img');
+            githubImg.src = 'https://badgen.net/badge/icon/github?icon=github&label';
+            githubImg.style.verticalAlign = 'middle';
+            githubBadge.appendChild(githubImg);
+            githubBadge.style.marginLeft = '10px';
+
+            // add the badges to the container
+            badgesContainer.appendChild(colabBadge);
+            badgesContainer.appendChild(githubBadge);
+            badgesContainer.style.marginBottom = '20px';
+
+            // insert the container after the h1 header
+            h1.parentNode.insertBefore(badgesContainer, h1.nextSibling);
+        }
+    }
+    generateBadges(); // call the function
+</script>
 
 
 
