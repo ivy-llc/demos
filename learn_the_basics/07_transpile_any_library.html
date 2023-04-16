@@ -280,45 +280,49 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>git clone https:<span class="op">//</span>github.com<span class="op">/</span>unifyai<span class="op">/</span>ivy.git</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd ivy <span class="op">&amp;&amp;</span> python3 <span class="op">-</span>m pip install <span class="op">--</span>user <span class="op">-</span>e .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>mkdir .ivy</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>printf YOUR_API_TOKEN <span class="op">&gt;&gt;</span> .ivy<span class="op">/</span>key.pem</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p>In previous tutorials, we demonstrated how to transpile simple functions from one framework to another using <code>ivy.transpile</code>. However, in real-world scenarios, you often need to access all functions from a specific library. Fortunately, the transpiler is capable of doing just that. Let’s explore a simple example where we convert the <code>kornia</code> library from <code>torch</code> to <code>jax</code>.</p>
 <p>First, let’s import everything we need:</p>
 <div class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ivy</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> kornia</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jax.numpy <span class="im">as</span> jnp</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PIL <span class="im">import</span> Image</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ivy</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> kornia</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jax.numpy <span class="im">as</span> jnp</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PIL <span class="im">import</span> Image</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now we can transpile the library to <code>jax</code>. Since it’s not practical to specify arguments for every function, we’ll transpile it lazily.</p>
 <div class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>jax_kornia <span class="op">=</span> ivy.transpile(kornia, source<span class="op">=</span><span class="st">"torch"</span>, to<span class="op">=</span><span class="st">"jax"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>jax_kornia <span class="op">=</span> ivy.transpile(kornia, source<span class="op">=</span><span class="st">"torch"</span>, to<span class="op">=</span><span class="st">"jax"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Let’s load a sample image and convert it to the format expected by kornia. Keep in mind that even though the operations will be performed in <code>jax</code>, the transpiler traces a computational graph, so we still need to use <code>kornia</code>’s data format.</p>
 <div class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"http://images.cocodataset.org/train2017/000000000034.jpg"</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>raw_img <span class="op">=</span> Image.<span class="bu">open</span>(requests.get(url, stream<span class="op">=</span><span class="va">True</span>).raw)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> jnp.transpose(jnp.array(raw_img), (<span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">1</span>))</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> jnp.expand_dims(img, <span class="dv">0</span>) <span class="op">/</span> <span class="dv">255</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>display(raw_img)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"http://images.cocodataset.org/train2017/000000000034.jpg"</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>raw_img <span class="op">=</span> Image.<span class="bu">open</span>(requests.get(url, stream<span class="op">=</span><span class="va">True</span>).raw)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> jnp.transpose(jnp.array(raw_img), (<span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> jnp.expand_dims(img, <span class="dv">0</span>) <span class="op">/</span> <span class="dv">255</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>display(raw_img)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="07_transpile_any_library_files/figure-html/cell-5-output-1.png" class="img-fluid"></p>
+<p><img src="07_transpile_any_library_files/figure-html/cell-6-output-1.png" class="img-fluid"></p>
 </div>
 </div>
 <p>Now that we have our sample image, we can easily call any <code>kornia</code> function using our transpiled version of the library, <code>jax_kornia</code>. As expected, both inputs and outputs of this function are <code>jax.Array</code> instances.</p>
 <div class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>out <span class="op">=</span> jax_kornia.enhance.sharpness(img, <span class="dv">10</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(out)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>out <span class="op">=</span> jax_kornia.enhance.sharpness(img, <span class="dv">10</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(out)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="5">
 <pre><code>jaxlib.xla_extension.ArrayImpl</code></pre>
 </div>
 </div>
 <p>Finally, we can verify that the transformation has been applied correctly!</p>
 <div class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>np_image <span class="op">=</span> np.uint8(np.array(out[<span class="dv">0</span>])<span class="op">*</span><span class="dv">255</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>display(Image.fromarray(np.transpose(np_image, (<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">0</span>))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>np_image <span class="op">=</span> np.uint8(np.array(out[<span class="dv">0</span>])<span class="op">*</span><span class="dv">255</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>display(Image.fromarray(np.transpose(np_image, (<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">0</span>))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="07_transpile_any_library_files/figure-html/cell-7-output-1.png" class="img-fluid"></p>
+<p><img src="07_transpile_any_library_files/figure-html/cell-8-output-1.png" class="img-fluid"></p>
 </div>
 </div>
 <section id="round-up" class="level2">
