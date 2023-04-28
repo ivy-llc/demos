@@ -254,10 +254,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd ivy <span class="op">&amp;&amp;</span> git checkout b92d408a19f64fe0b3c2504775bfb267a96bf538 <span class="op">&amp;&amp;</span> python3 <span class="op">-</span>m pip install <span class="op">--</span>user <span class="op">-</span>e .</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install dm<span class="op">-</span>haiku</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>For the installed package to be available you will have to restart your kernel. In Colab, you can do this by clicking on <strong>“Runtime &gt; Restart Runtime”</strong> 😄</p>
+<p>For the installed packages to be available you will have to restart your kernel. In Colab, you can do this by clicking on <strong>“Runtime &gt; Restart Runtime”</strong> 😄</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>mkdir <span class="op">-</span>p .ivy</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>echo YOUR_API_TOKEN <span class="op">&gt;</span> .ivy<span class="op">/</span>key.pem</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>echo <span class="op">-</span>n YOUR_API_TOKEN <span class="op">&gt;</span> .ivy<span class="op">/</span>key.pem</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Using what we learnt in the previous two notebooks for <a href="">Unify</a> and <a href="">Compile</a>, the workflow for converting directly from <code>torch</code> to <code>jax</code> would be as follows, first unifying to <code>ivy</code> code, and then compiling to the <code>jax</code> backend:</p>
 <div class="cell" data-execution_count="2">
