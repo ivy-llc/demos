@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.475">
+<meta name="generator" content="quarto-1.3.340">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Tutorials and Examples - Ivy – end_to_end_training_pipeline_in_ivy</title>
+<title>Tutorials and Examples - Ivy - End-to-End Training Pipeline in Ivy</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -17,9 +17,10 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -46,43 +47,13 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -130,11 +101,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-    <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title"></h1>
-      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
-        <i class="bi bi-chevron-right"></i>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">End-to-End Training Pipeline in Ivy</li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
       </button>
     </div>
   </nav>
@@ -142,123 +118,110 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
       <a href="../index.html" class="sidebar-logo-link">
       <img src="../assets/img/ivy_logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
       </a>
       </div>
-      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
         <div id="quarto-search" class="" title="Search"></div>
         </div>
-      </div>
+        </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../quickstart.html" class="sidebar-item-text sidebar-link">Quickstart</a>
-  </div>
-</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">Learn the Basics</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
+ <span class="menu-text">Learn the Basics</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../learn_the_basics/01_write_ivy_code.html" class="sidebar-item-text sidebar-link">Write Ivy code</a>
+  <a href="../learn_the_basics/01_write_ivy_code.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Write Ivy code</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../learn_the_basics/02_unify_code.html" class="sidebar-item-text sidebar-link">Unify code</a>
+  <a href="../learn_the_basics/02_unify_code.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Unify code</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../learn_the_basics/03_compile_code.html" class="sidebar-item-text sidebar-link">Compile code</a>
+  <a href="../learn_the_basics/03_compile_code.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compile code</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../learn_the_basics/04_transpile_code.html" class="sidebar-item-text sidebar-link">Transpile code</a>
+  <a href="../learn_the_basics/04_transpile_code.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Transpile code</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../learn_the_basics/05_lazy_vs_eager.html" class="sidebar-item-text sidebar-link">Lazy vs Eager</a>
+  <a href="../learn_the_basics/05_lazy_vs_eager.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lazy vs Eager</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../learn_the_basics/06_how_to_use_decorators.html" class="sidebar-item-text sidebar-link">How to use decorators</a>
+  <a href="../learn_the_basics/06_how_to_use_decorators.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">How to use decorators</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../learn_the_basics/07_transpile_any_library.html" class="sidebar-item-text sidebar-link">Transpile any library</a>
+  <a href="../learn_the_basics/07_transpile_any_library.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Transpile any library</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../learn_the_basics/08_transpile_any_model.html" class="sidebar-item-text sidebar-link">Transpile any model</a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../learn_the_basics/09_write_a_model_using_ivy.html" class="sidebar-item-text sidebar-link">Write a model using Ivy</a>
+  <a href="../learn_the_basics/08_transpile_any_model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Transpile any model</span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">Guides</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+ <span class="menu-text">Guides</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../guides/01_transpiling_a_torch_model.html" class="sidebar-item-text sidebar-link">Transpiling a PyTorch model to build on top</a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../guides/02_transpiling_a_haiku_model.html" class="sidebar-item-text sidebar-link">Transpiling a haiku model to build on top</a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../guides/03_transpiling_a_tf_model.html" class="sidebar-item-text sidebar-link">Transpiling a TensorFlow model to build on top</a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../guides/04_developing_a_convnet_with_ivy.html" class="sidebar-item-text sidebar-link">Developing a convolutional network using Ivy</a>
+  <a href="../guides/01_transpiling_a_torch_model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Transpiling a PyTorch model to build on top</span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
-      <span class="sidebar-item-text sidebar-link text-start">Examples and Demos</span>
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">Examples and Demos</span></span>
   </li>
     </ul>
     </div>
 </nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#end-to-end-training-pipeline-in-ivy" id="toc-end-to-end-training-pipeline-in-ivy" class="nav-link active" data-scroll-target="#end-to-end-training-pipeline-in-ivy">End-to-End Training Pipeline in Ivy</a></li>
-  <li><a href="#importing-libraries" id="toc-importing-libraries" class="nav-link" data-scroll-target="#importing-libraries">Importing libraries</a></li>
+  <li><a href="#importing-libraries" id="toc-importing-libraries" class="nav-link active" data-scroll-target="#importing-libraries">Importing libraries</a></li>
   <li><a href="#lets-build-the-pipeline-with-a-tensorflow-backend" id="toc-lets-build-the-pipeline-with-a-tensorflow-backend" class="nav-link" data-scroll-target="#lets-build-the-pipeline-with-a-tensorflow-backend">Let’s build the pipeline with a Tensorflow backend</a></li>
   <li><a href="#we-are-using-mnist-dataset-for-this-tutorial" id="toc-we-are-using-mnist-dataset-for-this-tutorial" class="nav-link" data-scroll-target="#we-are-using-mnist-dataset-for-this-tutorial">We are using MNIST dataset for this Tutorial</a></li>
   <li><a href="#temporary-dataset-and-dynamic-loader" id="toc-temporary-dataset-and-dynamic-loader" class="nav-link" data-scroll-target="#temporary-dataset-and-dynamic-loader">Temporary Dataset and Dynamic loader</a></li>
@@ -272,10 +235,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <!-- main -->
 <main class="content column-body" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">End-to-End Training Pipeline in Ivy</h1>
+</div>
 
 
-<section id="end-to-end-training-pipeline-in-ivy" class="level1">
-<h1>End-to-End Training Pipeline in Ivy</h1>
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
 <p>ToDo: description</p>
 <div id="colab-button">
 <p><a href="https://colab.research.google.com/github/unifyai/demos/blob/main/temp_demos/end_to_end_training_pipeline_in_ivy.ipynb"><img src="?var:remote_badge.colab" class="img-fluid" alt="Open in Colab"></a> <a href="https://github.com/unifyai/demos/blob/main/temp_demos/end_to_end_training_pipeline_in_ivy.ipynb"><img src="?var:remote_badge.github" class="img-fluid" alt="GitHub"></a></p>
@@ -335,7 +311,6 @@ Successfully installed colorama-0.4.5 einops-0.4.1 ivy-core-1.1.9 nvidia-ml-py-1
 <pre><code>Unable to display output for mime type(s): application/vnd.colab-display-data+json</code></pre>
 </div>
 </div>
-</section>
 <section id="importing-libraries" class="level1">
 <h1>Importing libraries</h1>
 <div class="cell" data-pycharm="{&quot;name&quot;:&quot;#%%\n&quot;}" data-execution_count="1">
@@ -624,181 +599,102 @@ Archive:  digit-recognizer.zip
 <div class="cell">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>train(images, classes, num_epochs, model, device, num_classes <span class="op">=</span> num_classes, batch_size <span class="op">=</span> batch_size)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Epoch [ 1/20]: : 157it [01:16,  2.06it/s, accuracy_percentage=0.2, running_loss=0.29]</code></pre>
+<pre><code>Epoch [ 1/20]: : 157it [01:16,  2.06it/s, accuracy_percentage=0.2, running_loss=0.29]
+Epoch [ 2/20]: : 157it [01:14,  2.11it/s, accuracy_percentage=0.14, running_loss=0.12]
+Epoch [ 3/20]: : 157it [01:13,  2.13it/s, accuracy_percentage=0.19, running_loss=0.0187]
+Epoch [ 4/20]: : 157it [01:14,  2.11it/s, accuracy_percentage=0.36, running_loss=0.0324]
+Epoch [ 5/20]: : 157it [01:15,  2.07it/s, accuracy_percentage=0.6, running_loss=0.00456]
+Epoch [ 6/20]: : 157it [01:26,  1.82it/s, accuracy_percentage=0.6, running_loss=0.00277]
+Epoch [ 7/20]: : 157it [01:16,  2.05it/s, accuracy_percentage=0.81, running_loss=0.00175]
+Epoch [ 8/20]: : 157it [01:14,  2.11it/s, accuracy_percentage=0.81, running_loss=0.00147]
+Epoch [ 9/20]: : 157it [01:14,  2.09it/s, accuracy_percentage=1.06, running_loss=0.00128]
+Epoch [10/20]: : 157it [01:14,  2.10it/s, accuracy_percentage=1.29, running_loss=0.00112]
+Epoch [11/20]: : 157it [01:13,  2.12it/s, accuracy_percentage=1.45, running_loss=0.000989]
+Epoch [12/20]: : 157it [01:15,  2.07it/s, accuracy_percentage=1.68, running_loss=0.000873]
+Epoch [13/20]: : 157it [01:15,  2.08it/s, accuracy_percentage=1.77, running_loss=0.000774]
+Epoch [14/20]: : 157it [01:15,  2.09it/s, accuracy_percentage=1.92, running_loss=0.000688]
+Epoch [15/20]: : 157it [01:13,  2.13it/s, accuracy_percentage=1.92, running_loss=0.000613]
+Epoch [16/20]: : 157it [01:13,  2.12it/s, accuracy_percentage=2.05, running_loss=0.000547]
+Epoch [17/20]: : 157it [01:13,  2.13it/s, accuracy_percentage=2.18, running_loss=0.000488]
+Epoch [18/20]: : 157it [01:13,  2.13it/s, accuracy_percentage=2.25, running_loss=0.000437]
+Epoch [19/20]: : 157it [01:14,  2.10it/s, accuracy_percentage=2.38, running_loss=0.000391]
+Epoch [20/20]: : 157it [01:19,  1.98it/s, accuracy_percentage=2.6, running_loss=0.000351]</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
-Average training loss: 0.475401, Train Correct: 20</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Epoch [ 2/20]: : 157it [01:14,  2.11it/s, accuracy_percentage=0.14, running_loss=0.12]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Average training loss: 0.081436, Train Correct: 14</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Epoch [ 3/20]: : 157it [01:13,  2.13it/s, accuracy_percentage=0.19, running_loss=0.0187]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Average training loss: 0.029279, Train Correct: 19</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Epoch [ 4/20]: : 157it [01:14,  2.11it/s, accuracy_percentage=0.36, running_loss=0.0324]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Average training loss: 0.008382, Train Correct: 36</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Epoch [ 5/20]: : 157it [01:15,  2.07it/s, accuracy_percentage=0.6, running_loss=0.00456]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Average training loss: 0.003816, Train Correct: 60</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Epoch [ 6/20]: : 157it [01:26,  1.82it/s, accuracy_percentage=0.6, running_loss=0.00277]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Average training loss: 0.002179, Train Correct: 60</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Epoch [ 7/20]: : 157it [01:16,  2.05it/s, accuracy_percentage=0.81, running_loss=0.00175]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Average training loss: 0.001569, Train Correct: 81</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Epoch [ 8/20]: : 157it [01:14,  2.11it/s, accuracy_percentage=0.81, running_loss=0.00147]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Average training loss: 0.001235, Train Correct: 81</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Epoch [ 9/20]: : 157it [01:14,  2.09it/s, accuracy_percentage=1.06, running_loss=0.00128]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Average training loss: 0.001005, Train Correct: 106</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Epoch [10/20]: : 157it [01:14,  2.10it/s, accuracy_percentage=1.29, running_loss=0.00112]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Average training loss: 0.000837, Train Correct: 129</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Epoch [11/20]: : 157it [01:13,  2.12it/s, accuracy_percentage=1.45, running_loss=0.000989]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Average training loss: 0.000709, Train Correct: 145</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Epoch [12/20]: : 157it [01:15,  2.07it/s, accuracy_percentage=1.68, running_loss=0.000873]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Average training loss: 0.000606, Train Correct: 168</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Epoch [13/20]: : 157it [01:15,  2.08it/s, accuracy_percentage=1.77, running_loss=0.000774]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Average training loss: 0.000524, Train Correct: 177</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Epoch [14/20]: : 157it [01:15,  2.09it/s, accuracy_percentage=1.92, running_loss=0.000688]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Average training loss: 0.000455, Train Correct: 192</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Epoch [15/20]: : 157it [01:13,  2.13it/s, accuracy_percentage=1.92, running_loss=0.000613]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Average training loss: 0.000398, Train Correct: 192</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Epoch [16/20]: : 157it [01:13,  2.12it/s, accuracy_percentage=2.05, running_loss=0.000547]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Average training loss: 0.000350, Train Correct: 205</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Epoch [17/20]: : 157it [01:13,  2.13it/s, accuracy_percentage=2.18, running_loss=0.000488]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Average training loss: 0.000308, Train Correct: 218</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Epoch [18/20]: : 157it [01:13,  2.13it/s, accuracy_percentage=2.25, running_loss=0.000437]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Average training loss: 0.000273, Train Correct: 225</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Epoch [19/20]: : 157it [01:14,  2.10it/s, accuracy_percentage=2.38, running_loss=0.000391]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Average training loss: 0.000243, Train Correct: 238</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Epoch [20/20]: : 157it [01:19,  1.98it/s, accuracy_percentage=2.6, running_loss=0.000351]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
+Average training loss: 0.475401, Train Correct: 20
+
+Average training loss: 0.081436, Train Correct: 14
+
+Average training loss: 0.029279, Train Correct: 19
+
+Average training loss: 0.008382, Train Correct: 36
+
+Average training loss: 0.003816, Train Correct: 60
+
+Average training loss: 0.002179, Train Correct: 60
+
+Average training loss: 0.001569, Train Correct: 81
+
+Average training loss: 0.001235, Train Correct: 81
+
+Average training loss: 0.001005, Train Correct: 106
+
+Average training loss: 0.000837, Train Correct: 129
+
+Average training loss: 0.000709, Train Correct: 145
+
+Average training loss: 0.000606, Train Correct: 168
+
+Average training loss: 0.000524, Train Correct: 177
+
+Average training loss: 0.000455, Train Correct: 192
+
+Average training loss: 0.000398, Train Correct: 192
+
+Average training loss: 0.000350, Train Correct: 205
+
+Average training loss: 0.000308, Train Correct: 218
+
+Average training loss: 0.000273, Train Correct: 225
+
+Average training loss: 0.000243, Train Correct: 238
+
 Average training loss: 0.000216, Train Correct: 260</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code></code></pre>
 </div>
 </div>
 </section>
 <section id="plotting-the-training-metrics" class="level1">
 <h1>Plotting the training metrics</h1>
 <div class="cell" data-outputid="f37fd882-94c1-4be6-9c86-de42a0b1140d">
-<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_summary(path):</span>
-<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> pd.read_csv(path)</span>
-<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a>    plt.style.use(<span class="st">'seaborn-whitegrid'</span>)</span>
-<span id="cb72-5"><a href="#cb72-5" aria-hidden="true" tabindex="-1"></a>    fig, (ax1, ax2) <span class="op">=</span> plt.subplots(nrows<span class="op">=</span><span class="dv">1</span>, ncols<span class="op">=</span><span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">4</span>))</span>
-<span id="cb72-6"><a href="#cb72-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb72-7"><a href="#cb72-7" aria-hidden="true" tabindex="-1"></a>    ax1.plot(data[<span class="st">'epoch'</span>], data[<span class="st">'epoch_loss'</span>], label<span class="op">=</span><span class="st">'Train Loss'</span>)</span>
-<span id="cb72-8"><a href="#cb72-8" aria-hidden="true" tabindex="-1"></a>    ax2.plot(data[<span class="st">'epoch'</span>], data[<span class="st">'training_accuracy'</span>], label<span class="op">=</span><span class="st">'Train Accuracy'</span>)</span>
-<span id="cb72-9"><a href="#cb72-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb72-10"><a href="#cb72-10" aria-hidden="true" tabindex="-1"></a>    ax1.legend()</span>
-<span id="cb72-11"><a href="#cb72-11" aria-hidden="true" tabindex="-1"></a>    ax1.set_title(<span class="st">'Running Loss'</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
-<span id="cb72-12"><a href="#cb72-12" aria-hidden="true" tabindex="-1"></a>    ax1.set_xlabel(<span class="st">'Epochs'</span>)</span>
-<span id="cb72-13"><a href="#cb72-13" aria-hidden="true" tabindex="-1"></a>    ax1.set_ylabel(<span class="st">'Loss'</span>)</span>
-<span id="cb72-14"><a href="#cb72-14" aria-hidden="true" tabindex="-1"></a>    ax1.grid(<span class="va">True</span>)</span>
-<span id="cb72-15"><a href="#cb72-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb72-16"><a href="#cb72-16" aria-hidden="true" tabindex="-1"></a>    ax2.legend()</span>
-<span id="cb72-17"><a href="#cb72-17" aria-hidden="true" tabindex="-1"></a>    ax2.set_title(<span class="st">'Running Accuracy'</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
-<span id="cb72-18"><a href="#cb72-18" aria-hidden="true" tabindex="-1"></a>    ax2.set_xlabel(<span class="st">'Epochs'</span>)</span>
-<span id="cb72-19"><a href="#cb72-19" aria-hidden="true" tabindex="-1"></a>    ax2.set_ylabel(<span class="st">'Accuracy'</span>)</span>
-<span id="cb72-20"><a href="#cb72-20" aria-hidden="true" tabindex="-1"></a>    ax2.grid(<span class="va">True</span>)</span>
-<span id="cb72-21"><a href="#cb72-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb72-22"><a href="#cb72-22" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
-<span id="cb72-23"><a href="#cb72-23" aria-hidden="true" tabindex="-1"></a>    fig.savefig(<span class="ss">f'summary_plots.png'</span>)</span>
-<span id="cb72-24"><a href="#cb72-24" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
-<span id="cb72-25"><a href="#cb72-25" aria-hidden="true" tabindex="-1"></a>    plt.close()</span>
-<span id="cb72-26"><a href="#cb72-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb72-27"><a href="#cb72-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb72-28"><a href="#cb72-28" aria-hidden="true" tabindex="-1"></a>plot_summary(<span class="ss">f'/</span><span class="sc">{</span>model_name<span class="sc">}</span><span class="ss">_train_summary.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_summary(path):</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> pd.read_csv(path)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>    plt.style.use(<span class="st">'seaborn-whitegrid'</span>)</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>    fig, (ax1, ax2) <span class="op">=</span> plt.subplots(nrows<span class="op">=</span><span class="dv">1</span>, ncols<span class="op">=</span><span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">4</span>))</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>    ax1.plot(data[<span class="st">'epoch'</span>], data[<span class="st">'epoch_loss'</span>], label<span class="op">=</span><span class="st">'Train Loss'</span>)</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>    ax2.plot(data[<span class="st">'epoch'</span>], data[<span class="st">'training_accuracy'</span>], label<span class="op">=</span><span class="st">'Train Accuracy'</span>)</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>    ax1.legend()</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>    ax1.set_title(<span class="st">'Running Loss'</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>    ax1.set_xlabel(<span class="st">'Epochs'</span>)</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>    ax1.set_ylabel(<span class="st">'Loss'</span>)</span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>    ax1.grid(<span class="va">True</span>)</span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>    ax2.legend()</span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>    ax2.set_title(<span class="st">'Running Accuracy'</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>    ax2.set_xlabel(<span class="st">'Epochs'</span>)</span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>    ax2.set_ylabel(<span class="st">'Accuracy'</span>)</span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>    ax2.grid(<span class="va">True</span>)</span>
+<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
+<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a>    fig.savefig(<span class="ss">f'summary_plots.png'</span>)</span>
+<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
+<span id="cb33-25"><a href="#cb33-25" aria-hidden="true" tabindex="-1"></a>    plt.close()</span>
+<span id="cb33-26"><a href="#cb33-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-27"><a href="#cb33-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-28"><a href="#cb33-28" aria-hidden="true" tabindex="-1"></a>plot_summary(<span class="ss">f'/</span><span class="sc">{</span>model_name<span class="sc">}</span><span class="ss">_train_summary.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <p><img src="end_to_end_training_pipeline_in_ivy_files/figure-html/cell-23-output-1.png" class="img-fluid"></p>
 </div>
@@ -807,7 +703,7 @@ Average training loss: 0.000216, Train Correct: 260</code></pre>
 <section id="save-the-trained-model" class="level1">
 <h1>Save the trained Model</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>model.save_weights(<span class="st">'model_params/ivynet_weights.hdf5'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>model.save_weights(<span class="st">'model_params/ivynet_weights.hdf5'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
@@ -841,9 +737,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -908,6 +818,92 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {

@@ -10,11 +10,7 @@
       "/learn_the_basics/06_how_to_use_decorators.html",
       "/learn_the_basics/07_transpile_any_library.html",
       "/learn_the_basics/08_transpile_any_model.html",
-      "/learn_the_basics/09_write_a_model_using_ivy.html",
-      "/guides/01_transpiling_a_torch_model.html",
-      "/guides/02_transpiling_a_haiku_model.html",
-      "/guides/03_transpiling_a_tf_model.html",
-      "/guides/04_developing_a_convnet_with_ivy.html"
+      "/guides/01_transpiling_a_torch_model.html"
     ]
   }
 ]
