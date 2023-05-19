@@ -244,7 +244,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#model-inference" id="toc-model-inference" class="nav-link" data-scroll-target="#model-inference">Model Inference</a>
   <ul class="collapse">
   <li><a href="#initializing-native-torch-resnet18" id="toc-initializing-native-torch-resnet18" class="nav-link" data-scroll-target="#initializing-native-torch-resnet18">Initializing Native Torch ResNet18</a></li>
-  <li><a href="#initializing-ivy-resnet18-wiht-pretrained-weights-through-ivy-container" id="toc-initializing-ivy-resnet18-wiht-pretrained-weights-through-ivy-container" class="nav-link" data-scroll-target="#initializing-ivy-resnet18-wiht-pretrained-weights-through-ivy-container">Initializing Ivy ResNet18 wiht Pretrained Weights through Ivy Container ⬇️</a></li>
+  <li><a href="#initializing-ivy-resnet18-with-pretrained-weights-through-ivy-container" id="toc-initializing-ivy-resnet18-with-pretrained-weights-through-ivy-container" class="nav-link" data-scroll-target="#initializing-ivy-resnet18-with-pretrained-weights-through-ivy-container">Initializing Ivy ResNet18 with Pretrained Weights through Ivy Container ⬇️</a></li>
   <li><a href="#use-the-model-to-classify-your-images" id="toc-use-the-model-to-classify-your-images" class="nav-link" data-scroll-target="#use-the-model-to-classify-your-images">Use the model to classify your images 🚀</a></li>
   </ul></li>
   </ul>
@@ -331,8 +331,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>torch_resnet <span class="op">=</span> resnet18(weights<span class="op">=</span>ResNet18_Weights.IMAGENET1K_V1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="initializing-ivy-resnet18-wiht-pretrained-weights-through-ivy-container" class="level3">
-<h3 class="anchored" data-anchor-id="initializing-ivy-resnet18-wiht-pretrained-weights-through-ivy-container">Initializing Ivy ResNet18 wiht Pretrained Weights through Ivy Container ⬇️</h3>
+<section id="initializing-ivy-resnet18-with-pretrained-weights-through-ivy-container" class="level3">
+<h3 class="anchored" data-anchor-id="initializing-ivy-resnet18-with-pretrained-weights-through-ivy-container">Initializing Ivy ResNet18 with Pretrained Weights through Ivy Container ⬇️</h3>
 <p>The pickled weights are loaded into <code>Ivy ResNet</code> as <code>ivy.Container</code>.</p>
 <div class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># equivalent to ResNet18_Weights.IMAGENET1K_V1</span></span>
