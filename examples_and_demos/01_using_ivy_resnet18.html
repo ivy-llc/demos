@@ -350,7 +350,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Compile the forward pass for efficiency.<br>
 PS: Comment out the code below if you don’t have an API key.</p>
 <div class="cell" data-execution_count="22">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">'numpy'</span>)</span>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">'torch'</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>ivy_resnet.<span class="bu">compile</span>(args<span class="op">=</span>(img,))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
@@ -378,13 +378,13 @@ Categories of the top 4 classes are: ['ashcan', 'plunger', 'hook', 'bucket']</co
 <li>Ivy ResNet18</li>
 </ol>
 <div class="cell" data-outputid="b59bb626-017d-418f-c93f-72dec30fec7d" data-execution_count="24">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> ivy.softmax(ivy_resnet(img)[<span class="st">"w"</span>])  <span class="co"># pass the image to the model</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>classes <span class="op">=</span> np.argsort(output[<span class="dv">0</span>])[<span class="op">-</span><span class="dv">4</span>:]  <span class="co"># get the top 4 classes</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>logits <span class="op">=</span> np.take(output[<span class="dv">0</span>], classes)  <span class="co"># get the logits</span></span>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> ivy.softmax(ivy_resnet(ivy.asarray(img))[<span class="st">"w"</span>])  <span class="co"># pass the image to the model</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>classes <span class="op">=</span> ivy.argsort(output[<span class="dv">0</span>])[<span class="op">-</span><span class="dv">4</span>:]  <span class="co"># get the top 4 classes</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>logits <span class="op">=</span> ivy.gather(output[<span class="dv">0</span>], classes)  <span class="co"># get the logits</span></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Indices of the top 4 classes are:"</span>, torch_classes)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Indices of the top 4 classes are:"</span>, classes)</span>
 <span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Logits of the top 4 classes are:"</span>, logits)</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Categories of the top 4 classes are:"</span>, [categories[i] <span class="cf">for</span> i <span class="kw">in</span> torch_classes])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Categories of the top 4 classes are:"</span>, [categories[i] <span class="cf">for</span> i <span class="kw">in</span> classes.to_list()])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Indices of the top 4 classes are: tensor([412, 731, 600, 463])
 Logits of the top 4 classes are: [0.00549888 0.005922   0.00626743 0.00846343]
