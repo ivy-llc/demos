@@ -127,9 +127,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: [{ data: ['index'] },{ data: ['categories'] }],
+      valueNames: ['listing-project','listing-website','listing-format','listing-language','listing-title','listing-path','listing-outputHref','listing-author','listing-description','listing-filename','listing-file-modified','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] }],
       
-      searchColumns: [],
+      searchColumns: ["listing-project","listing-website","listing-format","listing-language","listing-title","listing-path","listing-outputHref","listing-author","listing-description","listing-filename","listing-file-modified","listing-reading-time"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -401,6 +401,13 @@ No matching items
 <div id="listing-examples-and-demos" class="quarto-listing quarto-listing-container-custom">
 <link href="assets/css/custom.scss" rel="stylesheet" type="text/css">
 <div class="notebook-grid-gallery rwd-gallery-layout">
+  <a href="./examples_and_demos/01_using_ivy_resnet18.html">
+    <div class="notebook-card">
+      <div class="notebook-card-title">Using Ivy ResNet18</div>
+      <div class="notebook-card-title-border"></div>
+      <div class="notebook-card-body">Use the Ivy <code>ResNet18</code> model for image classification.</div>
+    </div>
+  </a>
 </div>
 <div class="listing-no-matching d-none">
 No matching items

@@ -10,7 +10,8 @@
       "/learn_the_basics/06_how_to_use_decorators.html",
       "/learn_the_basics/07_transpile_any_library.html",
       "/learn_the_basics/08_transpile_any_model.html",
-      "/guides/01_transpiling_a_torch_model.html"
+      "/guides/01_transpiling_a_torch_model.html",
+      "/examples_and_demos/01_using_ivy_resnet18.html"
     ]
   }
 ]
