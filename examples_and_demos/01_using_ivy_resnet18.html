@@ -273,7 +273,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Use the Ivy <code>ResNet18</code> model for image classification.</p>
 <p>If you already have <code>Ivy</code> and <code>Ivy Models</code> installed you can skip this cell, but if you are using Colab, you will have to install <code>Ivy</code> and <code>Ivy Models</code> manually. You can do so by running the cell below ⬇️</p>
 <p>Keep in mind that for the package to be available, you will have to click on <strong>“Runtime &gt; Restart Runtime”</strong> 😄</p>
-<div class="cell" data-outputid="78d1104b-43ce-4146-f4f2-ae4291636bed" data-execution_count="1">
+<div class="cell" data-outputid="78d1104b-43ce-4146-f4f2-ae4291636bed">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>git clone https:<span class="op">//</span>github.com<span class="op">/</span>unifyai<span class="op">/</span>ivy.git</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd ivy <span class="op">&amp;&amp;</span> python3 <span class="op">-</span>m pip install <span class="op">-</span>e .</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -281,109 +281,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd models <span class="op">&amp;&amp;</span> python3 <span class="op">-</span>m pip install <span class="op">-</span>e .</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="op">!</span> python3 <span class="op">-</span>m pip install torchvision</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>fatal: destination path 'ivy' already exists and is not an empty directory.
-Looking in indexes: https://pypi.org/simple, https://us-python.pkg.dev/colab-wheels/public/simple/
-Obtaining file:///content/ivy
-  Preparing metadata (setup.py) ... done
-Requirement already satisfied: numpy in /usr/local/lib/python3.10/dist-packages (from ivy-core==1.1.9) (1.22.4)
-Requirement already satisfied: einops==0.6.1 in /root/.local/lib/python3.10/site-packages (from ivy-core==1.1.9) (0.6.1)
-Requirement already satisfied: psutil==5.9.1 in /root/.local/lib/python3.10/site-packages (from ivy-core==1.1.9) (5.9.1)
-Requirement already satisfied: termcolor==1.1.0 in /root/.local/lib/python3.10/site-packages (from ivy-core==1.1.9) (1.1.0)
-Requirement already satisfied: colorama==0.4.5 in /root/.local/lib/python3.10/site-packages (from ivy-core==1.1.9) (0.4.5)
-Requirement already satisfied: packaging==21.3 in /root/.local/lib/python3.10/site-packages (from ivy-core==1.1.9) (21.3)
-Requirement already satisfied: nvidia-ml-py&lt;=11.495.46 in /root/.local/lib/python3.10/site-packages (from ivy-core==1.1.9) (11.495.46)
-Requirement already satisfied: diskcache in /root/.local/lib/python3.10/site-packages (from ivy-core==1.1.9) (5.6.1)
-Requirement already satisfied: google-auth in /usr/local/lib/python3.10/dist-packages (from ivy-core==1.1.9) (2.17.3)
-Requirement already satisfied: requests in /usr/local/lib/python3.10/dist-packages (from ivy-core==1.1.9) (2.27.1)
-Requirement already satisfied: pyparsing!=3.0.5,&gt;=2.0.2 in /usr/local/lib/python3.10/dist-packages (from packaging==21.3-&gt;ivy-core==1.1.9) (3.0.9)
-Requirement already satisfied: cachetools&lt;6.0,&gt;=2.0.0 in /usr/local/lib/python3.10/dist-packages (from google-auth-&gt;ivy-core==1.1.9) (5.3.0)
-Requirement already satisfied: pyasn1-modules&gt;=0.2.1 in /usr/local/lib/python3.10/dist-packages (from google-auth-&gt;ivy-core==1.1.9) (0.3.0)
-Requirement already satisfied: six&gt;=1.9.0 in /usr/local/lib/python3.10/dist-packages (from google-auth-&gt;ivy-core==1.1.9) (1.16.0)
-Requirement already satisfied: rsa&lt;5,&gt;=3.1.4 in /usr/local/lib/python3.10/dist-packages (from google-auth-&gt;ivy-core==1.1.9) (4.9)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/local/lib/python3.10/dist-packages (from requests-&gt;ivy-core==1.1.9) (1.26.15)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/local/lib/python3.10/dist-packages (from requests-&gt;ivy-core==1.1.9) (2022.12.7)
-Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/local/lib/python3.10/dist-packages (from requests-&gt;ivy-core==1.1.9) (2.0.12)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/local/lib/python3.10/dist-packages (from requests-&gt;ivy-core==1.1.9) (3.4)
-Requirement already satisfied: pyasn1&lt;0.6.0,&gt;=0.4.6 in /usr/local/lib/python3.10/dist-packages (from pyasn1-modules&gt;=0.2.1-&gt;google-auth-&gt;ivy-core==1.1.9) (0.5.0)
-Installing collected packages: ivy-core
-  Attempting uninstall: ivy-core
-    Found existing installation: ivy-core 1.1.9
-    Uninstalling ivy-core-1.1.9:
-ERROR: Operation cancelled by user
-fatal: destination path 'models' already exists and is not an empty directory.
-Looking in indexes: https://pypi.org/simple, https://us-python.pkg.dev/colab-wheels/public/simple/
-Obtaining file:///content/models
-  Preparing metadata (setup.py) ... done
-Requirement already satisfied: ivy-core in /content/ivy (from ivy-models==1.1.9) (1.1.9)
-Requirement already satisfied: numpy in /usr/local/lib/python3.10/dist-packages (from ivy-core-&gt;ivy-models==1.1.9) (1.22.4)
-Requirement already satisfied: einops==0.6.1 in /root/.local/lib/python3.10/site-packages (from ivy-core-&gt;ivy-models==1.1.9) (0.6.1)
-Requirement already satisfied: psutil==5.9.1 in /root/.local/lib/python3.10/site-packages (from ivy-core-&gt;ivy-models==1.1.9) (5.9.1)
-Requirement already satisfied: termcolor==1.1.0 in /root/.local/lib/python3.10/site-packages (from ivy-core-&gt;ivy-models==1.1.9) (1.1.0)
-Requirement already satisfied: colorama==0.4.5 in /root/.local/lib/python3.10/site-packages (from ivy-core-&gt;ivy-models==1.1.9) (0.4.5)
-Requirement already satisfied: packaging==21.3 in /root/.local/lib/python3.10/site-packages (from ivy-core-&gt;ivy-models==1.1.9) (21.3)
-Requirement already satisfied: nvidia-ml-py&lt;=11.495.46 in /root/.local/lib/python3.10/site-packages (from ivy-core-&gt;ivy-models==1.1.9) (11.495.46)
-Requirement already satisfied: diskcache in /root/.local/lib/python3.10/site-packages (from ivy-core-&gt;ivy-models==1.1.9) (5.6.1)
-Requirement already satisfied: google-auth in /usr/local/lib/python3.10/dist-packages (from ivy-core-&gt;ivy-models==1.1.9) (2.17.3)
-Requirement already satisfied: requests in /usr/local/lib/python3.10/dist-packages (from ivy-core-&gt;ivy-models==1.1.9) (2.27.1)
-Requirement already satisfied: pyparsing!=3.0.5,&gt;=2.0.2 in /usr/local/lib/python3.10/dist-packages (from packaging==21.3-&gt;ivy-core-&gt;ivy-models==1.1.9) (3.0.9)
-Requirement already satisfied: cachetools&lt;6.0,&gt;=2.0.0 in /usr/local/lib/python3.10/dist-packages (from google-auth-&gt;ivy-core-&gt;ivy-models==1.1.9) (5.3.0)
-Requirement already satisfied: pyasn1-modules&gt;=0.2.1 in /usr/local/lib/python3.10/dist-packages (from google-auth-&gt;ivy-core-&gt;ivy-models==1.1.9) (0.3.0)
-Requirement already satisfied: six&gt;=1.9.0 in /usr/local/lib/python3.10/dist-packages (from google-auth-&gt;ivy-core-&gt;ivy-models==1.1.9) (1.16.0)
-Requirement already satisfied: rsa&lt;5,&gt;=3.1.4 in /usr/local/lib/python3.10/dist-packages (from google-auth-&gt;ivy-core-&gt;ivy-models==1.1.9) (4.9)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/local/lib/python3.10/dist-packages (from requests-&gt;ivy-core-&gt;ivy-models==1.1.9) (1.26.15)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/local/lib/python3.10/dist-packages (from requests-&gt;ivy-core-&gt;ivy-models==1.1.9) (2022.12.7)
-Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/local/lib/python3.10/dist-packages (from requests-&gt;ivy-core-&gt;ivy-models==1.1.9) (2.0.12)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/local/lib/python3.10/dist-packages (from requests-&gt;ivy-core-&gt;ivy-models==1.1.9) (3.4)
-Requirement already satisfied: pyasn1&lt;0.6.0,&gt;=0.4.6 in /usr/local/lib/python3.10/dist-packages (from pyasn1-modules&gt;=0.2.1-&gt;google-auth-&gt;ivy-core-&gt;ivy-models==1.1.9) (0.5.0)
-Installing collected packages: ivy-models
-  Attempting uninstall: ivy-models
-    Found existing installation: ivy-models 1.1.9
-    Uninstalling ivy-models-1.1.9:
-      Successfully uninstalled ivy-models-1.1.9
-  Running setup.py develop for ivy-models
-Successfully installed ivy-models
-Looking in indexes: https://pypi.org/simple, https://us-python.pkg.dev/colab-wheels/public/simple/
-Requirement already satisfied: torchvision in /usr/local/lib/python3.10/dist-packages (0.15.2+cu118)
-Requirement already satisfied: numpy in /usr/local/lib/python3.10/dist-packages (from torchvision) (1.22.4)
-Requirement already satisfied: requests in /usr/local/lib/python3.10/dist-packages (from torchvision) (2.27.1)
-Requirement already satisfied: torch==2.0.1 in /usr/local/lib/python3.10/dist-packages (from torchvision) (2.0.1+cu118)
-Requirement already satisfied: pillow!=8.3.*,&gt;=5.3.0 in /usr/local/lib/python3.10/dist-packages (from torchvision) (8.4.0)
-Requirement already satisfied: filelock in /usr/local/lib/python3.10/dist-packages (from torch==2.0.1-&gt;torchvision) (3.12.0)
-Requirement already satisfied: typing-extensions in /usr/local/lib/python3.10/dist-packages (from torch==2.0.1-&gt;torchvision) (4.5.0)
-Requirement already satisfied: sympy in /usr/local/lib/python3.10/dist-packages (from torch==2.0.1-&gt;torchvision) (1.11.1)
-Requirement already satisfied: networkx in /usr/local/lib/python3.10/dist-packages (from torch==2.0.1-&gt;torchvision) (3.1)
-Requirement already satisfied: jinja2 in /usr/local/lib/python3.10/dist-packages (from torch==2.0.1-&gt;torchvision) (3.1.2)
-Requirement already satisfied: triton==2.0.0 in /usr/local/lib/python3.10/dist-packages (from torch==2.0.1-&gt;torchvision) (2.0.0)
-Requirement already satisfied: cmake in /usr/local/lib/python3.10/dist-packages (from triton==2.0.0-&gt;torch==2.0.1-&gt;torchvision) (3.25.2)
-Requirement already satisfied: lit in /usr/local/lib/python3.10/dist-packages (from triton==2.0.0-&gt;torch==2.0.1-&gt;torchvision) (16.0.5)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/local/lib/python3.10/dist-packages (from requests-&gt;torchvision) (1.26.15)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/local/lib/python3.10/dist-packages (from requests-&gt;torchvision) (2022.12.7)
-Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/local/lib/python3.10/dist-packages (from requests-&gt;torchvision) (2.0.12)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/local/lib/python3.10/dist-packages (from requests-&gt;torchvision) (3.4)
-Requirement already satisfied: MarkupSafe&gt;=2.0 in /usr/local/lib/python3.10/dist-packages (from jinja2-&gt;torch==2.0.1-&gt;torchvision) (2.1.2)
-Requirement already satisfied: mpmath&gt;=0.19 in /usr/local/lib/python3.10/dist-packages (from sympy-&gt;torch==2.0.1-&gt;torchvision) (1.3.0)</code></pre>
-</div>
 </div>
 <p>To use the compiler and the transpiler now you will need an API Key. If you already have one, you should replace the string in the next cell.</p>
 <div class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>API_KEY <span class="op">=</span> <span class="st">"PASTE_YOUR_KEY_HERE"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>API_KEY <span class="op">=</span> <span class="st">"PASTE_YOUR_KEY_HERE"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>mkdir <span class="op">-</span>p .ivy</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>echo <span class="op">-</span>n $API_KEY <span class="op">&gt;</span> .ivy<span class="op">/</span>key.pem</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>mkdir <span class="op">-</span>p .ivy</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>echo <span class="op">-</span>n $API_KEY <span class="op">&gt;</span> .ivy<span class="op">/</span>key.pem</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="imports" class="level2">
 <h2 class="anchored" data-anchor-id="imports">Imports</h2>
-<div class="cell" data-outputid="af40b7fd-e278-4a3a-f304-6a4771edd42b" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ivy</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>WARNING:root:To preserve the compiler and transpiler caches across multiple machines, ensure that the relative path of your projects from the .ivy folder is consistent across all machines. You can do this by adding .ivy to your home folder and placing all projects in the same place relative to the home folder on all machines.</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Alpha access</code></pre>
-</div>
+<div class="cell" data-outputid="af40b7fd-e278-4a3a-f304-6a4771edd42b">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ivy</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="data-preparation" class="level2">
@@ -391,36 +302,23 @@ Requirement already satisfied: mpmath&gt;=0.19 in /usr/local/lib/python3.10/dist
 <section id="prepare-the-set-of-labels" class="level3">
 <h3 class="anchored" data-anchor-id="prepare-the-set-of-labels">Prepare the set of labels</h3>
 <p>To show the predicted category, we download the labels associated with the pretrained weights.</p>
-<div class="cell" data-outputid="8186508f-d8a6-4b6e-ca4d-38161d8b32a3" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>wget https:<span class="op">//</span>raw.githubusercontent.com<span class="op">/</span>pytorch<span class="op">/</span>hub<span class="op">/</span>master<span class="op">/</span>imagenet_classes.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>--2023-05-19 15:19:16--  https://raw.githubusercontent.com/pytorch/hub/master/imagenet_classes.txt
-Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.108.133, 185.199.109.133, 185.199.110.133, ...
-Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.108.133|:443... connected.
-HTTP request sent, awaiting response... 200 OK
-Length: 10472 (10K) [text/plain]
-Saving to: ‘imagenet_classes.txt.1’
-
-imagenet_classes.tx   0%[                    ]       0  --.-KB/s               imagenet_classes.tx 100%[===================&gt;]  10.23K  --.-KB/s    in 0s      
-
-2023-05-19 15:19:16 (41.6 MB/s) - ‘imagenet_classes.txt.1’ saved [10472/10472]
-</code></pre>
-</div>
+<div class="cell" data-outputid="8186508f-d8a6-4b6e-ca4d-38161d8b32a3">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>wget https:<span class="op">//</span>raw.githubusercontent.com<span class="op">/</span>pytorch<span class="op">/</span>hub<span class="op">/</span>master<span class="op">/</span>imagenet_classes.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The labels are then loaded into a Python list.</p>
 <div class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read the categories</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"imagenet_classes.txt"</span>, <span class="st">"r"</span>) <span class="im">as</span> f:</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    categories <span class="op">=</span> [s.strip() <span class="cf">for</span> s <span class="kw">in</span> f.readlines()]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read the categories</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"imagenet_classes.txt"</span>, <span class="st">"r"</span>) <span class="im">as</span> f:</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    categories <span class="op">=</span> [s.strip() <span class="cf">for</span> s <span class="kw">in</span> f.readlines()]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="load-the-image-example" class="level3">
 <h3 class="anchored" data-anchor-id="load-the-image-example">Load the image example 🖼️</h3>
 <div class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import numpy to load the image example .npy</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np </span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>img_path <span class="op">=</span> <span class="st">"models/ivy_models_tests/img_resnet.npy"</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> np.load(img_path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import numpy to load the image example .npy</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>img_path <span class="op">=</span> <span class="st">"models/ivy_models_tests/img_resnet.npy"</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> np.load(img_path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
@@ -429,135 +327,31 @@ imagenet_classes.tx   0%[                    ]       0  --.-KB/s               i
 <section id="initializing-native-torch-resnet18" class="level3">
 <h3 class="anchored" data-anchor-id="initializing-native-torch-resnet18">Initializing Native Torch ResNet18</h3>
 <div class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torchvision.models <span class="im">import</span> resnet18, ResNet18_Weights</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>torch_resnet <span class="op">=</span> resnet18(weights<span class="op">=</span>ResNet18_Weights.IMAGENET1K_V1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torchvision.models <span class="im">import</span> resnet18, ResNet18_Weights</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>torch_resnet <span class="op">=</span> resnet18(weights<span class="op">=</span>ResNet18_Weights.IMAGENET1K_V1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="initializing-ivy-resnet18-wiht-pretrained-weights-through-ivy-container" class="level3">
 <h3 class="anchored" data-anchor-id="initializing-ivy-resnet18-wiht-pretrained-weights-through-ivy-container">Initializing Ivy ResNet18 wiht Pretrained Weights through Ivy Container ⬇️</h3>
 <p>The pickled weights are loaded into <code>Ivy ResNet</code> as <code>ivy.Container</code>.</p>
 <div class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># equivalent to ResNet18_Weights.IMAGENET1K_V1</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>pretrained_weights_path <span class="op">=</span> <span class="st">"models/ivy_models/resnet/pretrained_weights/resnet_18.pickled"</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># equivalent to ResNet18_Weights.IMAGENET1K_V1</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>pretrained_weights_path <span class="op">=</span> <span class="st">"models/ivy_models/resnet/pretrained_weights/resnet_18.pickled"</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>weights <span class="op">=</span> ivy.Container.cont_from_disk_as_pickled(pretrained_weights_path) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>weights <span class="op">=</span> ivy.Container.cont_from_disk_as_pickled(pretrained_weights_path) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The model is then initialized with the Pretrained Weights 🔗.</p>
-<div class="cell" data-outputid="1cf52bf8-2c2d-403f-cf03-bd756ef2d2a5" data-execution_count="21">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load the resnet18 model from ivy_models</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ivy_models.resnet <span class="im">import</span> resnet_18 </span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>ivy_resnet <span class="op">=</span> resnet_18(v<span class="op">=</span>weights) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.</code></pre>
-</div>
+<div class="cell" data-outputid="1cf52bf8-2c2d-403f-cf03-bd756ef2d2a5">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load the resnet18 model from ivy_models</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ivy_models.resnet <span class="im">import</span> resnet_18 </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>ivy_resnet <span class="op">=</span> resnet_18(v<span class="op">=</span>weights) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Compile the forward pass for efficiency.<br>
 PS: Comment out the code below if you don’t have an API key.</p>
 <div class="cell" data-execution_count="22">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">'numpy'</span>)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>ivy_resnet.<span class="bu">compile</span>(args<span class="op">=</span>(img,))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">'numpy'</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>ivy_resnet.<span class="bu">compile</span>(args<span class="op">=</span>(img,))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="use-the-model-to-classify-your-images" class="level3">
@@ -567,13 +361,13 @@ PS: Comment out the code below if you don’t have an API key.</p>
 <li>Torch ResNet18</li>
 </ol>
 <div class="cell" data-outputid="56ba24b2-0ac4-4890-f9d9-5c3f984b4b2c" data-execution_count="23">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>torch_output <span class="op">=</span> torch.softmax(torch_resnet(torch.from_numpy(img).reshape(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">224</span>, <span class="dv">224</span>)), dim<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>torch_classes <span class="op">=</span> torch.argsort(torch_output[<span class="dv">0</span>])[<span class="op">-</span><span class="dv">4</span>:]</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>torch_logits <span class="op">=</span> torch.take(torch_output[<span class="dv">0</span>], torch_classes)</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Indices of the top 4 classes are:"</span>, torch_classes)</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Logits of the top 4 classes are:"</span>, torch_logits)</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Categories of the top 4 classes are:"</span>, [categories[i] <span class="cf">for</span> i <span class="kw">in</span> torch_classes])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>torch_output <span class="op">=</span> torch.softmax(torch_resnet(torch.from_numpy(img).reshape(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">224</span>, <span class="dv">224</span>)), dim<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>torch_classes <span class="op">=</span> torch.argsort(torch_output[<span class="dv">0</span>])[<span class="op">-</span><span class="dv">4</span>:]</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>torch_logits <span class="op">=</span> torch.take(torch_output[<span class="dv">0</span>], torch_classes)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Indices of the top 4 classes are:"</span>, torch_classes)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Logits of the top 4 classes are:"</span>, torch_logits)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Categories of the top 4 classes are:"</span>, [categories[i] <span class="cf">for</span> i <span class="kw">in</span> torch_classes])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Indices of the top 4 classes are: tensor([412, 731, 600, 463])
 Logits of the top 4 classes are: tensor([0.0055, 0.0064, 0.0065, 0.0082], grad_fn=&lt;TakeBackward0&gt;)
@@ -584,13 +378,13 @@ Categories of the top 4 classes are: ['ashcan', 'plunger', 'hook', 'bucket']</co
 <li>Ivy ResNet18</li>
 </ol>
 <div class="cell" data-outputid="b59bb626-017d-418f-c93f-72dec30fec7d" data-execution_count="24">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> ivy.softmax(ivy_resnet(img)[<span class="st">"w"</span>])  <span class="co"># pass the image to the model</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>classes <span class="op">=</span> np.argsort(output[<span class="dv">0</span>])[<span class="op">-</span><span class="dv">4</span>:]  <span class="co"># get the top 4 classes</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>logits <span class="op">=</span> np.take(output[<span class="dv">0</span>], classes)  <span class="co"># get the logits</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Indices of the top 4 classes are:"</span>, torch_classes)</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Logits of the top 4 classes are:"</span>, logits)</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Categories of the top 4 classes are:"</span>, [categories[i] <span class="cf">for</span> i <span class="kw">in</span> torch_classes])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> ivy.softmax(ivy_resnet(img)[<span class="st">"w"</span>])  <span class="co"># pass the image to the model</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>classes <span class="op">=</span> np.argsort(output[<span class="dv">0</span>])[<span class="op">-</span><span class="dv">4</span>:]  <span class="co"># get the top 4 classes</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>logits <span class="op">=</span> np.take(output[<span class="dv">0</span>], classes)  <span class="co"># get the logits</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Indices of the top 4 classes are:"</span>, torch_classes)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Logits of the top 4 classes are:"</span>, logits)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Categories of the top 4 classes are:"</span>, [categories[i] <span class="cf">for</span> i <span class="kw">in</span> torch_classes])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Indices of the top 4 classes are: tensor([412, 731, 600, 463])
 Logits of the top 4 classes are: [0.00549888 0.005922   0.00626743 0.00846343]
