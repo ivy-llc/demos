@@ -235,11 +235,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#ivy-backend-handler" id="toc-ivy-backend-handler" class="nav-link active" data-scroll-target="#ivy-backend-handler">Ivy Backend Handler</a></li>
-  <li><a href="#data-structures" id="toc-data-structures" class="nav-link" data-scroll-target="#data-structures">Data Structures</a></li>
-  <li><a href="#ivy-functional-api" id="toc-ivy-functional-api" class="nav-link" data-scroll-target="#ivy-functional-api">Ivy Functional API</a></li>
-  <li><a href="#ivy-stateful-api" id="toc-ivy-stateful-api" class="nav-link" data-scroll-target="#ivy-stateful-api">Ivy Stateful API</a></li>
-  <li><a href="#round-up" id="toc-round-up" class="nav-link" data-scroll-target="#round-up">Round Up</a></li>
+  <li><a href="#contents" id="toc-contents" class="nav-link active" data-scroll-target="#contents">Contents</a>
+  <ul class="collapse">
+  <li><a href="#installing-ivy" id="toc-installing-ivy" class="nav-link" data-scroll-target="#installing-ivy">Installing Ivy </a><a class="anchor nav-link" id="Installing-Ivy" data-scroll-target="undefined"></a></li>
+  <li><a href="#importing-ivy" id="toc-importing-ivy" class="nav-link" data-scroll-target="#importing-ivy">Importing Ivy </a><a class="anchor nav-link" id="Importing-Ivy" data-scroll-target="undefined"></a></li>
+  <li><a href="#ivy-backend-handler" id="toc-ivy-backend-handler" class="nav-link" data-scroll-target="#ivy-backend-handler">Ivy Backend Handler </a><a class="anchor nav-link" id="Ivy-Backend-Handler" data-scroll-target="undefined"></a></li>
+  <li><a href="#data-structures" id="toc-data-structures" class="nav-link" data-scroll-target="#data-structures">Data Structures </a><a class="anchor nav-link" id="Ivy-Data-Structures" data-scroll-target="undefined"></a></li>
+  <li><a href="#ivy-functional-api" id="toc-ivy-functional-api" class="nav-link" data-scroll-target="#ivy-functional-api">Ivy Functional API </a><a class="anchor nav-link" id="Ivy-Functions" data-scroll-target="undefined"></a></li>
+  <li><a href="#ivy-stateful-api" id="toc-ivy-stateful-api" class="nav-link" data-scroll-target="#ivy-stateful-api">Ivy Stateful API </a><a class="anchor nav-link" id="Ivy-Stateful-API" data-scroll-target="undefined"></a></li>
+  <li><a href="#round-up" id="toc-round-up" class="nav-link" data-scroll-target="#round-up">Round Up </a><a class="anchor nav-link" id="Roundup" data-scroll-target="undefined"></a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -263,7 +268,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
+<p><a class="anchor" id="Top"></a></p>
 <p>Get familiar with Ivy’s basic concepts and start writing framework-agnostic code.</p>
+<section id="contents" class="level2">
+<h2 class="anchored" data-anchor-id="contents">Contents</h2>
+<ul>
+<li><a href="#Installing-Ivy">Installing Ivy</a></li>
+<li><a href="#Importing-Ivy">Importing Ivy</a></li>
+<li><a href="#Ivy-Backend-Handler">Ivy Backend Handler</a></li>
+<li><a href="#Ivy-Data-Structures">Ivy Data Structures</a></li>
+<li><a href="#Ivy-Functions">Ivy Functional API</a></li>
+<li><a href="#Ivy-Stateful-API">Ivy Stateful API</a></li>
+<li><a href="#Roundup">Roundup</a></li>
+</ul>
+<section id="installing-ivy" class="level3">
+<h3 class="anchored" data-anchor-id="installing-ivy">Installing Ivy <a class="anchor" id="Installing-Ivy"></a></h3>
 <p>⚠️ If you are running this notebook in Colab, you will have to install <code>Ivy</code> and some dependencies manually. You can do so by running the cell below ⬇️</p>
 <p>If you want to run the notebook locally but don’t have Ivy installed just yet, you can check out the <a href="https://unify.ai/docs/ivy/overview/contributing/setting_up.html">Setting Up section of the docs.</a></p>
 <div class="cell">
@@ -273,12 +292,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>For the installed packages to be available you will have to restart your kernel. In Colab, you can do this by clicking on <strong>“Runtime &gt; Restart Runtime”</strong>. Once the runtime has been restarted you should skip the previous cell 😄</p>
 <p>In this introduction we’ll go over the basics of using Ivy to write your own framework-indepent, future-proof code!</p>
 <p>If you want to delve deeper into the theory behind the contents of this notebook you can check out the <a href="https://lets-unify.ai/docs/ivy/overview/design.html">Design</a> and the <a href="https://lets-unify.ai/docs/ivy/overview/deep_dive.html">Deep Dive</a> sections of the documentation!</p>
+</section>
+<section id="importing-ivy" class="level3">
+<h3 class="anchored" data-anchor-id="importing-ivy">Importing Ivy <a class="anchor" id="Importing-Ivy"></a></h3>
 <p>First of all, let’s import Ivy!</p>
 <div class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ivy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="ivy-backend-handler" class="level2">
-<h2 class="anchored" data-anchor-id="ivy-backend-handler">Ivy Backend Handler</h2>
+</section>
+<section id="ivy-backend-handler" class="level3">
+<h3 class="anchored" data-anchor-id="ivy-backend-handler">Ivy Backend Handler <a class="anchor" id="Ivy-Backend-Handler"></a></h3>
 <p>Ivy, when used as a ML framework, is esentially an abstraction layer that supports multiple frameworks as the backend. This means that any code written in Ivy can be executed in any of the supported frameworks, with their framework-specific data structures, functions, optimizations, quirks and perks, all managed by Ivy under the hood.</p>
 <p>To change the backend, we can simply call <code>ivy.set_backend</code> with the appropiate framework passed as a string. This is the simplest way to interact with the <strong>Backend Handler</strong> submodule, which keeps track of the current backend and links Ivy’s objects and functions with the appropriate framework-specific ones.</p>
 <p>For example:</p>
@@ -286,8 +309,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">"tensorflow"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="data-structures" class="level2">
-<h2 class="anchored" data-anchor-id="data-structures">Data Structures</h2>
+<section id="data-structures" class="level3">
+<h3 class="anchored" data-anchor-id="data-structures">Data Structures <a class="anchor" id="Ivy-Data-Structures"></a></h3>
 <p>The basic data structure in Ivy is the <code>ivy.Array</code>. This is an abstraction of the <code>array</code> classes of the supported frameworks. Likewise, we also have <code>ivy.NativeArray</code>, which is an alias for the <code>array</code> class of the selected backend.</p>
 <p>Lastly, there is another structure, the <code>ivy.Container</code>, which is a subclass of <code>dict</code> optimized for recursive operations, you can learn more about it <a href="">here</a>!</p>
 <p>Let’s create an array using <code>ivy.array()</code>. In a similar fashion, we can use <code>ivy.native_array()</code> to create a <code>torch.Tensor</code>, as the backend is now <code>torch</code>.</p>
@@ -305,8 +328,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="ivy-functional-api" class="level2">
-<h2 class="anchored" data-anchor-id="ivy-functional-api">Ivy Functional API</h2>
+<section id="ivy-functional-api" class="level3">
+<h3 class="anchored" data-anchor-id="ivy-functional-api">Ivy Functional API <a class="anchor" id="Ivy-Functions"></a></h3>
 <p>Ivy does not implement its own low-level (C++/CUDA) backend for its functions. Instead, it wraps the functional API of existing frameworks, unifying their fundamental functions under a common signature. For example, let’s take a look at <code>ivy.matmul()</code>:</p>
 <div class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">"jax"</span>)</span>
@@ -362,16 +385,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ivy.divide(<span class="dv">1</span>, (<span class="dv">1</span> <span class="op">+</span> ivy.exp(<span class="op">-</span>z)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="ivy-stateful-api" class="level2">
-<h2 class="anchored" data-anchor-id="ivy-stateful-api">Ivy Stateful API</h2>
+<section id="ivy-stateful-api" class="level3">
+<h3 class="anchored" data-anchor-id="ivy-stateful-api">Ivy Stateful API <a class="anchor" id="Ivy-Stateful-API"></a></h3>
 <p>Alongside the Functional API, Ivy also has a stateful API, which builds on its functional API and the <code>ivy.Container</code> class to provide high-level classes such as optimizers, network layers, or trainable modules.</p>
 <p>The most important stateful class within Ivy is <code>ivy.Module</code>, which can be used to create trainable layers and entire networks. Given the importance of this class, we will explore it further in the <a href="https://lets-unify.ai/demos/learn_the_basics/09_write_a_model_using_ivy.html">Write a model using Ivy</a> tutorial!</p>
 </section>
-<section id="round-up" class="level2">
-<h2 class="anchored" data-anchor-id="round-up">Round Up</h2>
+<section id="round-up" class="level3">
+<h3 class="anchored" data-anchor-id="round-up">Round Up <a class="anchor" id="Roundup"></a></h3>
 <p>Congratulations! There is much more to come, but you now have a basic understanding of Ivy and how it can be used to write framework-independent, future-proof code! Now that you have a good foundation, let’s keep exploring Ivy’s tools and their powerful features! 🚀</p>
+<p><a href="#Top">Back to the top</a></p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
