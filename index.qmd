@@ -47,7 +47,7 @@ If you are in a rush, you can jump straight into the **[Quickstart](quickstart.i
 :::{#learn-the-basics}
 :::
 
-### Guides 
+### Guides
 :::{#guides}
 :::
 
