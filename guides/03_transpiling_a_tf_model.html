@@ -244,11 +244,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
 <div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#round-up" id="toc-round-up" class="nav-link active" data-scroll-target="#round-up">Round Up</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content column-page-right" id="quarto-document-content">
+<main class="content column-body" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -283,8 +289,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>mkdir <span class="op">-</span>p .ivy</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>echo <span class="op">-</span>n $API_KEY <span class="op">&gt;</span> .ivy<span class="op">/</span>key.pem</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>In Transpile Any Model we have seen how to transpile a torch model, now let’s do the same with a model from keras. In the Guides, we will focus on transpiling more involved models developed in different frameworks.</p>
-<p>In this first notebook, we will transpile a model from Keras to Torch, building a classifier on top of the resulting module.</p>
+<p>In Transpile Any Model we have seen how to transpile a torch model, now let’s do the same with a model from keras transpiling a model from Keras to Torch and building a classifier on top of the resulting module.</p>
 <p>As usual, let’s start with the imports</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ivy</span>
@@ -293,7 +298,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now, instead of building our own Keras model, we will get one directly from Keras.</p>
-<p>In this case, we are going to use a EfficientNet. We can download the pretrained weights with pretrained=True and set num_classes=0 to only retrieve the feature extractor.</p>
+<p>In this case, we are going to use a EfficientNet. We can download the pretrained weights with <code>weights="imagenet"</code> and set <code>include_top=False</code> to only retrieve the feature extractor.</p>
 <div class="cell" data-outputid="7b1da773-d0cf-4c5e-d11f-73fff07b2178">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get a pretrained keras model</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>eff_encoder <span class="op">=</span> tf.keras.applications.efficientnet_v2.EfficientNetV2B0(</span>
@@ -304,13 +309,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 24274472/24274472 [==============================] - 0s 0us/step</code></pre>
 </div>
 </div>
-<p>Now, we will transpile the EfficientNet feature extractor to PyTorch using ivy.transpile and passing a sample tf.tensor with noise.</p>
+<p>Now, we will transpile the EfficientNet feature extractor to PyTorch using <code>ivy.transpile</code> and passing a sample <code>tf.tensor</code> with noise.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transpile it into a torch.nn.Module with the corresponding parameters</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>noise <span class="op">=</span> tf.random.normal(shape<span class="op">=</span>(<span class="dv">1</span>, <span class="dv">224</span>, <span class="dv">224</span>, <span class="dv">3</span>))</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>torch_eff_encoder <span class="op">=</span> ivy.transpile(eff_encoder, to<span class="op">=</span><span class="st">"torch"</span>, args<span class="op">=</span>(noise,))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>To ensure that the transpilation has been correct, let’s check with a new input in both frameworks. Keep in mind that all the functions called within torch_eff_encoder are now Pytorch functions 🔀</p>
+<p>To ensure that the transpilation has been correct, let’s check with a new input in both frameworks. Keep in mind that all the functions called within torch_eff_encoder are now PyTorch functions 🔀</p>
 <div class="cell" data-outputid="dd77938a-c983-4e78-f403-778e8e85a0ed">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.random.random(size<span class="op">=</span>(<span class="dv">1</span>, <span class="dv">224</span>, <span class="dv">224</span>, <span class="dv">3</span>)).astype(np.float32)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>output_tf <span class="op">=</span> eff_encoder(tf.constant(x, dtype<span class="op">=</span>tf.float32))</span>
@@ -342,9 +347,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>&lt;class 'torch.Tensor'&gt; torch.Size([1, 7, 7, 20])</code></pre>
 </div>
 </div>
-<p>Round Up That’s it! Now you are ready to transpile any TensorFlow model, layer or trainable module and integrate it within PyTorch, but let’s keep exploring how we can convert trainable modules from (and to!) other frameworks ➡️</p>
+<section id="round-up" class="level2">
+<h2 class="anchored" data-anchor-id="round-up">Round Up</h2>
+<p>That’s it! Now you are ready to transpile any TensorFlow model, layer or trainable module and integrate it within PyTorch, but let’s keep exploring how we can convert trainable modules from (and to!) other frameworks ➡️</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -580,7 +588,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-<nav class="page-navigation column-page-right">
+<nav class="page-navigation column-body">
   <div class="nav-page nav-page-previous">
       <a href="../guides/01_transpiling_a_torch_model.html" class="pagination-link">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Transpiling a PyTorch model to build on top</span>
