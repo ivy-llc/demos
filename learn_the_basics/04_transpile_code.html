@@ -278,48 +278,40 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>If you want to run the notebook locally but don’t have Ivy installed just yet, you can check out the <a href="https://unify.ai/docs/ivy/overview/contributing/setting_up.html">Setting Up section of the docs.</a></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>git clone https:<span class="op">//</span>github.com<span class="op">/</span>unifyai<span class="op">/</span>ivy.git</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd ivy <span class="op">&amp;&amp;</span> python3 <span class="op">-</span>m pip install <span class="op">--</span>user <span class="op">-</span>e .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>For the installed packages to be available you will have to restart your kernel. In Colab, you can do this by clicking on <strong>“Runtime &gt; Restart Runtime”</strong>. Once the runtime has been restarted you should skip the previous cell 😄</p>
-<p>To use the compiler and the transpiler now you will need an API Key. If you already have one, you should replace the string in the next cell.</p>
-<div class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>API_KEY <span class="op">=</span> <span class="st">"PASTE_YOUR_KEY_HERE"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>mkdir <span class="op">-</span>p .ivy</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>echo <span class="op">-</span>n $API_KEY <span class="op">&gt;</span> .ivy<span class="op">/</span>key.pem</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd ivy <span class="op">&amp;&amp;</span> python3 <span class="op">-</span>m pip install <span class="op">--</span>user <span class="op">-</span>e .</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>exit()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Using what we learnt in the previous two notebooks for <a href="">Unify</a> and <a href="">Compile</a>, the workflow for converting directly from <code>torch</code> to <code>jax</code> would be as follows, first unifying to <code>ivy</code> code, and then compiling to the <code>jax</code> backend:</p>
 <div class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ivy</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">"jax"</span>)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> normalize(x):</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    mean <span class="op">=</span> torch.mean(x)</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    std <span class="op">=</span> torch.std(x)</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> torch.div(torch.sub(x, mean), std)</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co"># convert the function to Ivy code</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>ivy_normalize <span class="op">=</span> ivy.unify(normalize)</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co"># compile the Ivy code into jax functions</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>jax_normalize <span class="op">=</span> ivy.<span class="bu">compile</span>(ivy_normalize)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ivy</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">"jax"</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> normalize(x):</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    mean <span class="op">=</span> torch.mean(x)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    std <span class="op">=</span> torch.std(x)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> torch.div(torch.sub(x, mean), std)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># convert the function to Ivy code</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>ivy_normalize <span class="op">=</span> ivy.unify(normalize)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># compile the Ivy code into jax functions</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>jax_normalize <span class="op">=</span> ivy.<span class="bu">compile</span>(ivy_normalize)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><code>normalize</code> is now compiled to <code>jax</code>, ready to be integrated into your wider <code>jax</code> project.</p>
 <p>This workflow is common, and so in order to avoid repeated calls to <code>ivy.unify</code> followed by <code>ivy.compile</code>, there is another convenience function <code>ivy.transpile</code>, which basically acts as a shorthand for this pair of function calls:</p>
 <div class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>jax_normalize <span class="op">=</span> ivy.transpile(normalize, source<span class="op">=</span><span class="st">"torch"</span>, to<span class="op">=</span><span class="st">"jax"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>jax_normalize <span class="op">=</span> ivy.transpile(normalize, source<span class="op">=</span><span class="st">"torch"</span>, to<span class="op">=</span><span class="st">"jax"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Again, <code>normalize</code> is now a <code>jax</code> function, ready to be integrated into your <code>jax</code> project.</p>
 <div class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jax</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>key <span class="op">=</span> jax.random.PRNGKey(<span class="dv">42</span>)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>jax.config.update(<span class="st">'jax_enable_x64'</span>, <span class="va">True</span>)</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> jax.random.uniform(key, shape<span class="op">=</span>(<span class="dv">10</span>,))</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(jax_normalize(x))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jax</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>key <span class="op">=</span> jax.random.PRNGKey(<span class="dv">42</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>jax.config.update(<span class="st">'jax_enable_x64'</span>, <span class="va">True</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> jax.random.uniform(key, shape<span class="op">=</span>(<span class="dv">10</span>,))</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(jax_normalize(x))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[-0.93968587  0.26075466 -0.22723222 -1.06276492 -0.47426987  1.72835908
   1.71737559 -0.50411096 -0.65419174  0.15576624]</code></pre>

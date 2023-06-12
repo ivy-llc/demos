@@ -297,19 +297,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="op">!</span> python3 <span class="op">-</span>m pip install torchvision</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>To use the compiler and the transpiler now you will need an API Key. If you already have one, you should replace the string in the next cell.</p>
-<div class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>API_KEY <span class="op">=</span> <span class="st">"PASTE_YOUR_KEY_HERE"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>mkdir <span class="op">-</span>p .ivy</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>echo <span class="op">-</span>n $API_KEY <span class="op">&gt;</span> .ivy<span class="op">/</span>key.pem</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 <section id="imports" class="level2">
 <h2 class="anchored" data-anchor-id="imports">Imports</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ivy</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ivy</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="data-preparation" class="level2">
@@ -318,49 +310,49 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="prepare-the-set-of-labels">Prepare the set of labels</h3>
 <p>To show the predicted category, we download the labels associated with the pretrained weights.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>wget https:<span class="op">//</span>raw.githubusercontent.com<span class="op">/</span>pytorch<span class="op">/</span>hub<span class="op">/</span>master<span class="op">/</span>imagenet_classes.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>wget https:<span class="op">//</span>raw.githubusercontent.com<span class="op">/</span>pytorch<span class="op">/</span>hub<span class="op">/</span>master<span class="op">/</span>imagenet_classes.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The labels are then loaded into a Python list.</p>
 <div class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read the categories</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"imagenet_classes.txt"</span>, <span class="st">"r"</span>) <span class="im">as</span> f:</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    categories <span class="op">=</span> [s.strip() <span class="cf">for</span> s <span class="kw">in</span> f.readlines()]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read the categories</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"imagenet_classes.txt"</span>, <span class="st">"r"</span>) <span class="im">as</span> f:</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    categories <span class="op">=</span> [s.strip() <span class="cf">for</span> s <span class="kw">in</span> f.readlines()]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="load-the-image-example" class="level3">
 <h3 class="anchored" data-anchor-id="load-the-image-example">Load the image example 🖼️</h3>
 <div class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>filename <span class="op">=</span> <span class="st">"models/images/cat.jpg"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>filename <span class="op">=</span> <span class="st">"models/images/cat.jpg"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Preprocess torch image</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torchvision <span class="im">import</span> transforms</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PIL <span class="im">import</span> Image</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>preprocess <span class="op">=</span> transforms.Compose([</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    transforms.Resize(<span class="dv">256</span>),</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    transforms.CenterCrop(<span class="dv">224</span>),</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    transforms.ToTensor(),</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    transforms.Normalize(</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    mean<span class="op">=</span>[<span class="fl">0.485</span>, <span class="fl">0.456</span>, <span class="fl">0.406</span>],</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    std<span class="op">=</span>[<span class="fl">0.229</span>, <span class="fl">0.224</span>, <span class="fl">0.225</span>]</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>)])</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>torch_img <span class="op">=</span> Image.<span class="bu">open</span>(filename)</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>torch_img <span class="op">=</span> preprocess(torch_img)</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>torch_img <span class="op">=</span> torch.unsqueeze(torch_img, <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Preprocess torch image</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torchvision <span class="im">import</span> transforms</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PIL <span class="im">import</span> Image</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>preprocess <span class="op">=</span> transforms.Compose([</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    transforms.Resize(<span class="dv">256</span>),</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    transforms.CenterCrop(<span class="dv">224</span>),</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    transforms.ToTensor(),</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    transforms.Normalize(</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    mean<span class="op">=</span>[<span class="fl">0.485</span>, <span class="fl">0.456</span>, <span class="fl">0.406</span>],</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    std<span class="op">=</span>[<span class="fl">0.229</span>, <span class="fl">0.224</span>, <span class="fl">0.225</span>]</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>)])</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>torch_img <span class="op">=</span> Image.<span class="bu">open</span>(filename)</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>torch_img <span class="op">=</span> preprocess(torch_img)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>torch_img <span class="op">=</span> torch.unsqueeze(torch_img, <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to numpy</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> torch_img.numpy().reshape(<span class="dv">1</span>, <span class="dv">224</span>, <span class="dv">224</span>, <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to numpy</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> torch_img.numpy().reshape(<span class="dv">1</span>, <span class="dv">224</span>, <span class="dv">224</span>, <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="visualise-image" class="level3">
 <h3 class="anchored" data-anchor-id="visualise-image">Visualise image</h3>
 <div class="cell" data-outputid="e5caa8df-a182-4178-b888-9632ca9863c4" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> Image, display</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>display(Image(filename))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> Image, display</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>display(Image(filename))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="01_using_ivy_resnet18_files/figure-html/cell-11-output-1.jpeg" class="img-fluid"></p>
+<p><img src="01_using_ivy_resnet18_files/figure-html/cell-9-output-1.jpeg" class="img-fluid"></p>
 </div>
 </div>
 </section>
@@ -370,32 +362,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="initializing-native-torch-resnet18" class="level3">
 <h3 class="anchored" data-anchor-id="initializing-native-torch-resnet18">Initializing Native Torch ResNet18</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torchvision.models <span class="im">import</span> resnet18, ResNet18_Weights</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>torch_resnet <span class="op">=</span> resnet18(weights<span class="op">=</span>ResNet18_Weights.IMAGENET1K_V1)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>torch_resnet.<span class="bu">eval</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torchvision.models <span class="im">import</span> resnet18, ResNet18_Weights</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>torch_resnet <span class="op">=</span> resnet18(weights<span class="op">=</span>ResNet18_Weights.IMAGENET1K_V1)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>torch_resnet.<span class="bu">eval</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="initializing-ivy-resnet18-with-pretrained-weights-through-ivy-container" class="level3">
 <h3 class="anchored" data-anchor-id="initializing-ivy-resnet18-with-pretrained-weights-through-ivy-container">Initializing Ivy ResNet18 with Pretrained Weights through Ivy Container ⬇️</h3>
 <p>The pickled weights are loaded into <code>Ivy ResNet</code> as <code>ivy.Container</code>.</p>
 <div class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># equivalent to ResNet18_Weights.IMAGENET1K_V1</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>pretrained_weights_path <span class="op">=</span> <span class="st">"models/ivy_models/resnet/pretrained_weights/resnet_18.pickled"</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># equivalent to ResNet18_Weights.IMAGENET1K_V1</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>pretrained_weights_path <span class="op">=</span> <span class="st">"models/ivy_models/resnet/pretrained_weights/resnet_18.pickled"</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>weights <span class="op">=</span> ivy.Container.cont_from_disk_as_pickled(pretrained_weights_path) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>weights <span class="op">=</span> ivy.Container.cont_from_disk_as_pickled(pretrained_weights_path) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The model is then initialized with the Pretrained Weights 🔗.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load the resnet18 model from ivy_models</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ivy_models.resnet <span class="im">import</span> resnet_18 </span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>ivy_resnet <span class="op">=</span> resnet_18(v<span class="op">=</span>weights) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load the resnet18 model from ivy_models</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ivy_models.resnet <span class="im">import</span> resnet_18 </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>ivy_resnet <span class="op">=</span> resnet_18(v<span class="op">=</span>weights) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Compile the forward pass for efficiency.<br>
 PS: Comment out the code below if you don’t have an API key.</p>
 <div class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">'torch'</span>)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>ivy_resnet.<span class="bu">compile</span>(args<span class="op">=</span>(img,))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">'torch'</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>ivy_resnet.<span class="bu">compile</span>(args<span class="op">=</span>(img,))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="use-the-model-to-classify-your-images" class="level3">
@@ -405,13 +397,13 @@ PS: Comment out the code below if you don’t have an API key.</p>
 <li>Torch ResNet18</li>
 </ol>
 <div class="cell" data-outputid="9e85a769-0efd-4cf0-b248-943c093e25ac" data-execution_count="18">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>torch_output <span class="op">=</span> torch.softmax(torch_resnet(torch_img), dim<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>torch_classes <span class="op">=</span> torch.argsort(torch_output[<span class="dv">0</span>], descending<span class="op">=</span><span class="va">True</span>)[:<span class="dv">3</span>]</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>torch_logits <span class="op">=</span> torch.take(torch_output[<span class="dv">0</span>], torch_classes)</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Indices of the top 3 classes are:"</span>, torch_classes)</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Logits of the top 3 classes are:"</span>, torch_logits)</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Categories of the top 3 classes are:"</span>, [categories[i] <span class="cf">for</span> i <span class="kw">in</span> torch_classes])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>torch_output <span class="op">=</span> torch.softmax(torch_resnet(torch_img), dim<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>torch_classes <span class="op">=</span> torch.argsort(torch_output[<span class="dv">0</span>], descending<span class="op">=</span><span class="va">True</span>)[:<span class="dv">3</span>]</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>torch_logits <span class="op">=</span> torch.take(torch_output[<span class="dv">0</span>], torch_classes)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Indices of the top 3 classes are:"</span>, torch_classes)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Logits of the top 3 classes are:"</span>, torch_logits)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Categories of the top 3 classes are:"</span>, [categories[i] <span class="cf">for</span> i <span class="kw">in</span> torch_classes])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Indices of the top 3 classes are: tensor([282, 281, 285])
 Logits of the top 3 classes are: tensor([0.7069, 0.2663, 0.0231], grad_fn=&lt;TakeBackward0&gt;)
@@ -422,13 +414,13 @@ Categories of the top 3 classes are: ['tiger cat', 'tabby', 'Egyptian cat']</cod
 <li>Ivy ResNet18</li>
 </ol>
 <div class="cell" data-outputid="4032ce9e-0e60-4978-82e2-066d348db0e7" data-execution_count="19">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> ivy.softmax(ivy_resnet(ivy.asarray(img))[<span class="st">"w"</span>])  <span class="co"># pass the image to the model</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>classes <span class="op">=</span> ivy.argsort(output[<span class="dv">0</span>], descending<span class="op">=</span><span class="va">True</span>)[:<span class="dv">3</span>]  <span class="co"># get the top 3 classes</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>logits <span class="op">=</span> ivy.gather(output[<span class="dv">0</span>], classes)  <span class="co"># get the logits</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Indices of the top 3 classes are:"</span>, classes)</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Logits of the top 3 classes are:"</span>, logits)</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Categories of the top 3 classes are:"</span>, [categories[i] <span class="cf">for</span> i <span class="kw">in</span> classes.to_list()])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> ivy.softmax(ivy_resnet(ivy.asarray(img))[<span class="st">"w"</span>])  <span class="co"># pass the image to the model</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>classes <span class="op">=</span> ivy.argsort(output[<span class="dv">0</span>], descending<span class="op">=</span><span class="va">True</span>)[:<span class="dv">3</span>]  <span class="co"># get the top 3 classes</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>logits <span class="op">=</span> ivy.gather(output[<span class="dv">0</span>], classes)  <span class="co"># get the logits</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Indices of the top 3 classes are:"</span>, classes)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Logits of the top 3 classes are:"</span>, logits)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Categories of the top 3 classes are:"</span>, [categories[i] <span class="cf">for</span> i <span class="kw">in</span> classes.to_list()])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Indices of the top 3 classes are: ivy.array([282, 285, 281])
 Logits of the top 3 classes are: ivy.array([0.35499179, 0.3492949 , 0.16783968])
