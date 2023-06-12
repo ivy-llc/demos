@@ -247,7 +247,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#round-up" id="toc-round-up" class="nav-link active" data-scroll-target="#round-up">Round Up</a></li>
+  <li><a href="#get-familiar-with-ivy" id="toc-get-familiar-with-ivy" class="nav-link active" data-scroll-target="#get-familiar-with-ivy">Get familiar with Ivy</a>
+  <ul class="collapse">
+  <li><a href="#functional-api" id="toc-functional-api" class="nav-link" data-scroll-target="#functional-api">Functional API</a></li>
+  <li><a href="#stateful-api" id="toc-stateful-api" class="nav-link" data-scroll-target="#stateful-api">Stateful API</a></li>
+  </ul></li>
+  <li><a href="#compiling-code" id="toc-compiling-code" class="nav-link" data-scroll-target="#compiling-code">Compiling code</a></li>
+  <li><a href="#ivy-as-a-transpiler" id="toc-ivy-as-a-transpiler" class="nav-link" data-scroll-target="#ivy-as-a-transpiler">Ivy as a Transpiler</a>
+  <ul class="collapse">
+  <li><a href="#any-function" id="toc-any-function" class="nav-link" data-scroll-target="#any-function">Any function</a></li>
+  <li><a href="#any-library" id="toc-any-library" class="nav-link" data-scroll-target="#any-library">Any library</a></li>
+  <li><a href="#any-model" id="toc-any-model" class="nav-link" data-scroll-target="#any-model">Any model</a></li>
+  </ul></li>
+  <li><a href="#round-up" id="toc-round-up" class="nav-link" data-scroll-target="#round-up">Round Up</a></li>
   </ul>
 </nav>
     </div>
@@ -272,56 +284,318 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 <p>Get up to speed with Ivy with a quick, general introduction of its features and capabilities!</p>
-<p>Firstly, let’s import the dependencies and define the <code>torch</code> function.</p>
+<p>⚠️ If you are running this notebook in Colab, you will have to install <code>Ivy</code> and some dependencies manually. You can do so by running the cell below ⬇️</p>
+<p>If you want to run the notebook locally but don’t have Ivy installed just yet, you can check out the <a href="https://unify.ai/docs/ivy/overview/contributing/setting_up.html">Setting Up section of the docs.</a></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ivy</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> normalize(x, mean, std):</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> torch.div(torch.sub(x, mean), std)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>git clone https:<span class="op">//</span>github.com<span class="op">/</span>unifyai<span class="op">/</span>ivy.git</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd ivy <span class="op">&amp;&amp;</span> python3 <span class="op">-</span>m pip install <span class="op">--</span>user <span class="op">-</span>e .</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install dm<span class="op">-</span>haiku</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install kornia</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install timm</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install pyvis</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>exit()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Now, let’s unify the function!</p>
+<p>To use the compiler and the transpiler now you will need an API Key. If you already have one, you should replace the string in the next cell.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>normalize <span class="op">=</span> ivy.unify(normalize)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>API_KEY <span class="op">=</span> <span class="st">"PASTE_YOUR_KEY_HERE"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>And that’s it! The <code>normalize</code> function can now be used with <strong>any ML framework</strong>. It’s as simple as that!</p>
-<p>So, let’s give it a try!</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import numpy</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># create random numpy arrays for testing</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.randon.uniform(size<span class="op">=</span><span class="dv">10</span>)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>mean <span class="op">=</span> np.mean(x)</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>std <span class="op">=</span> np.std(x)</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># numpy</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(normalize(x, mean, std))</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co"># jax</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jax.numpy <span class="im">as</span> jnp</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>x_ <span class="op">=</span> jnp.array(x)</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>mean_ <span class="op">=</span> jnp.array(mean)</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>std_ <span class="op">=</span> jnp.array(std)</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(normalize(x_, mean_, std_))</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co"># tensorflow</span></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>x_ <span class="op">=</span> tf.constant(x)</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>mean_ <span class="op">=</span> tf.constant(mean)</span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>std_ <span class="op">=</span> tf.constant(std)</span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(normalize(x_, mean_, std_))</span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="co"># torch</span></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>x_ <span class="op">=</span> torch.tensor(x)</span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>mean_ <span class="op">=</span> torch.tensor(mean)</span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>std_ <span class="op">=</span> torch.tensor(std)</span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(normalize(x_, mean_, std_))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>mkdir <span class="op">-</span>p .ivy</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>echo <span class="op">-</span>n $API_KEY <span class="op">&gt;</span> .ivy<span class="op">/</span>key.pem</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We can see that the new <code>normalize</code> function can operate with any ML framework. <code>ivy.unify</code> is able to detect that the original <code>normalize</code> function is implemented in <code>torch</code> by using the <code>inspection</code> module. <code>ivy.unify</code> then converts the framework-specific <code>torch</code> implementation into a framework-agnostic <code>ivy</code> implementation, which is compatible with all frameworks.</p>
+<p>In this notebook we’ll go over the basic aspects of Ivy, which is both a transpiler and a ML framework that you can use to write framework-agnostic code and to integrate code from any framework into your preferred framework existing code, tools, or infrastructure!</p>
+<p>Let’s import Ivy and get started!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ivy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="get-familiar-with-ivy" class="level2">
+<h2 class="anchored" data-anchor-id="get-familiar-with-ivy">Get familiar with Ivy</h2>
+<p>When used as a ML framework, Ivy allows you to write framework-agnostic code that can be executed as native code in your framework of choice. This means that when executed, Ivy code will use the corresponding functions and data structures, allowing you to seamlessly integrate your code with any code and to leverage any framework-specific benefits.</p>
+<p>To change the backend, we simply have to call <code>ivy.set_backend()</code> with the framework we want to use as a string, for example:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">"torch"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now we can take a look at the data structures of Ivy. The main one is <code>ivy.Array</code>, which is an abstraction of the <code>array</code> classes of the underlying frameworks. You can also access the underlying class directly through <code>ivy.NativeArray</code>.</p>
+<p>There is also another structure called the <code>ivy.Container</code>, which is a subclass of dict that is optimized for recursive operations. If you want to learn more about it, you can defer to the following <a href="https://unify.ai/docs/ivy/overview/design/ivy_as_a_framework/ivy_container.html">link</a>!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">"torch"</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> ivy.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>])</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(x))</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> ivy.native_array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>])</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(x))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="functional-api" class="level3">
+<h3 class="anchored" data-anchor-id="functional-api">Functional API</h3>
+<p>In a similar manner, Ivy’s functional API wraps the functional API of the backends, and therefore uses native operations under the hood. Let’s see an example of this.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">"jax"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>x1, x2 <span class="op">=</span> ivy.array([[<span class="dv">1</span>], [<span class="dv">2</span>], [<span class="dv">3</span>]]), ivy.array([[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]])</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> ivy.matmul(x1, x2)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(output.to_native()))</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">"tensorflow"</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>x1, x2 <span class="op">=</span> ivy.array([[<span class="dv">1</span>], [<span class="dv">2</span>], [<span class="dv">3</span>]]), ivy.array([[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]])</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> ivy.matmul(x1, x2)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(output.to_native()))</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">"torch"</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>x1, x2 <span class="op">=</span> ivy.array([[<span class="dv">1</span>], [<span class="dv">2</span>], [<span class="dv">3</span>]]), ivy.array([[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]])</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> ivy.matmul(x1, x2)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(output.to_native()))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>As expected, calling <code>ivy.matmul</code> with different backends performs the corresponding operation in each one of those backends.</p>
+<p>Using the functional API, we can define any framework-independent function that we want:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sigmoid(z):</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ivy.divide(<span class="dv">1</span>, (<span class="dv">1</span> <span class="op">+</span> ivy.exp(<span class="op">-</span>z)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="stateful-api" class="level3">
+<h3 class="anchored" data-anchor-id="stateful-api">Stateful API</h3>
+<p>Ivy also has a stateful API which builds on its functional API and the <code>ivy.Container</code> class to provide high-level classes such as optimizers, network layers, or trainable modules.</p>
+<p>The most important stateful class within Ivy is <code>ivy.Module</code>, which can be used to create trainable layers and entire networks. A very simple example of an <code>ivy.Module</code> could be:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Regressor(ivy.Module):</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, input_dim, output_dim):</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.linear0 <span class="op">=</span> ivy.Linear(input_dim, <span class="dv">128</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.linear1 <span class="op">=</span> ivy.Linear(<span class="dv">128</span>, output_dim)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>        ivy.Module.<span class="fu">__init__</span>(<span class="va">self</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> _forward(<span class="va">self</span>, x):</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="va">self</span>.linear0(x)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> ivy.functional.relu(x)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="va">self</span>.linear1(x)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To use this model, we would simply have to set a backend and instantiate the model:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">'torch'</span>)  <span class="co"># set backend to PyTorch</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> Regressor(input_dim<span class="op">=</span><span class="dv">1</span>, output_dim<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>optimizer <span class="op">=</span> ivy.Adam(<span class="fl">0.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now we can generate some sample data and train the model using Ivy as well.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>n_training_examples <span class="op">=</span> <span class="dv">2000</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>noise <span class="op">=</span> ivy.random.random_normal(shape<span class="op">=</span>(n_training_examples, <span class="dv">1</span>), mean<span class="op">=</span><span class="dv">0</span>, std<span class="op">=</span><span class="fl">0.1</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> ivy.linspace(<span class="op">-</span><span class="dv">6</span>, <span class="dv">3</span>, n_training_examples).reshape((n_training_examples, <span class="dv">1</span>))</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> <span class="fl">0.2</span> <span class="op">*</span> x <span class="op">**</span> <span class="dv">2</span> <span class="op">+</span> <span class="fl">0.5</span> <span class="op">*</span> x <span class="op">+</span> <span class="fl">0.1</span> <span class="op">+</span> noise</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> loss_fn(pred, target):</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ivy.mean((pred <span class="op">-</span> target)<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">50</span>):</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># forward pass</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    pred <span class="op">=</span> model(x)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># compute loss and gradients</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    loss, grads <span class="op">=</span> ivy.execute_with_gradients(<span class="kw">lambda</span> v: loss_fn(pred, y), model.v)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># update parameters</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    model.v <span class="op">=</span> optimizer.step(model.v, grads)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># print current loss</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'Epoch: </span><span class="sc">{</span>epoch <span class="op">+</span> <span class="dv">1</span><span class="sc">:2d}</span><span class="ss"> --- Loss: </span><span class="sc">{</span>ivy<span class="sc">.</span>to_numpy(loss)<span class="sc">.</span>item()<span class="sc">:.5f}</span><span class="ss">'</span>)</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Finished training!'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="compiling-code" class="level2">
+<h2 class="anchored" data-anchor-id="compiling-code">Compiling code</h2>
+<p>We have just explored how to create framework agnostic functions and models with Ivy. Nonetheless, due to the wrapping Ivy performs on top of native functions, there is a slight performance overhead introduced with each function call. To address this, we can use Ivy’s graph compiler.</p>
+<p>The purpose of the Graph Compiler is to extract a fully functional, efficient graph composed only of functions from the corresponding functional APIs of the underlying framework (backend).</p>
+<p>On top of using the Graph Compiler to remove the overhead introduced by Ivy, it can also be used with functions and modules written directly with a given framework. In this case, the GC will decompose any high-level API into a fully-functional graph of functions from said framework.</p>
+<p>As an example, let’s write a simple <code>normalize</code> function using Ivy:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> normalize(x):</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    mean <span class="op">=</span> ivy.mean(x)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    std <span class="op">=</span> ivy.std(x)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ivy.divide(ivy.subtract(x, mean), std)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To compile this function, simply call <code>ivy.compile()</code>. To specify the underlying framework, you can pass the name of the framework as an argument using <code>to</code>. Otherwise, the current backend will be used by default.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>x0 <span class="op">=</span> torch.tensor([<span class="fl">1.</span>, <span class="fl">2.</span>, <span class="fl">3.</span>])</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>normalize_comp <span class="op">=</span> ivy.<span class="bu">compile</span>(normalize, to<span class="op">=</span><span class="st">"torch"</span>, args<span class="op">=</span>(x0,))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This results in the following graph:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> HTML</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>normalize_comp.show(fname<span class="op">=</span><span class="st">"graph.html"</span>, notebook<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>HTML(filename<span class="op">=</span><span class="st">"graph.html"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>As anticipated, the compiled function, which uses native <code>torch</code> operations directly, is faster than the original function:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>timeit</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>normalize(x0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>timeit</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>normalize_comp(x0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Additionally, we can set the <code>return_backend_compiled_fn</code> arg to <code>True</code> to apply the (native) target framework compilation function to Ivy’s compiled graph, making the resulting function even more efficient.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>normalize_native_comp <span class="op">=</span> ivy.<span class="bu">compile</span>(normalize, return_backend_compiled_fn<span class="op">=</span><span class="va">True</span>, to<span class="op">=</span><span class="st">"torch"</span>, args<span class="op">=</span>(x0,))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>timeit</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>normalize_native_comp(x0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In the example above, we compiled the function eagerly, which means that the compilation process happened immediately, as we have passed the arguments for tracing. However, if we don’t pass any arguments to the <code>compile</code> function, compilation will occur lazily, and the graph will be built only when we call the compiled function for the first time. To summarize:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>x1 <span class="op">=</span> torch.tensor([<span class="fl">1.</span>, <span class="fl">2.</span>, <span class="fl">3.</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Arguments are available -&gt; compilation happens eagerly</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>eager_graph <span class="op">=</span> ivy.<span class="bu">compile</span>(normalize, to<span class="op">=</span><span class="st">"torch"</span>, args<span class="op">=</span>(x1,))</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># eager_graph is now torch code and runs efficiently</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>ret <span class="op">=</span> eager_graph(x1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Arguments are not available -&gt; compilation happens lazily</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>lazy_graph <span class="op">=</span> ivy.<span class="bu">compile</span>(normalize, to<span class="op">=</span><span class="st">"torch"</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co"># The compiled graph is initialized, compilation will happen here</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>ret <span class="op">=</span> lazy_graph(x1)</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="co"># lazy_graph is now torch code and runs efficiently</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>ret <span class="op">=</span> lazy_graph(x1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="ivy-as-a-transpiler" class="level2">
+<h2 class="anchored" data-anchor-id="ivy-as-a-transpiler">Ivy as a Transpiler</h2>
+<p>We have just learned how to write framework-agnostic code and compile it into an efficient graph. However, many codebases, libraries, and models have already been developed (and will continue to be!) using other frameworks.</p>
+<p>To allow for speed-of-thought research and development, Ivy also allows you to use any code directly into your project, regardless of the framework it was written in. No matter what ML code you want to use, Ivy’s Transpiler is the tool for the job 🛠️</p>
+<section id="any-function" class="level3">
+<h3 class="anchored" data-anchor-id="any-function">Any function</h3>
+<p>Let’s start by transpiling a very simple <code>torch</code> function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> normalize(x):</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    mean <span class="op">=</span> torch.mean(x)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    std <span class="op">=</span> torch.std(x)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> torch.div(torch.sub(x, mean), std)</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>jax_normalize <span class="op">=</span> ivy.transpile(normalize, source<span class="op">=</span><span class="st">"torch"</span>, to<span class="op">=</span><span class="st">"jax"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Similar to <code>compile</code>, the <code>transpile</code> function can be used eagerly or lazily. In this particular example, transpilation is being performed lazily, since we haven’t passed any arguments or keyword arguments to <code>ivy.transpile</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jax</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>key <span class="op">=</span> jax.random.PRNGKey(<span class="dv">42</span>)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>jax.config.update(<span class="st">'jax_enable_x64'</span>, <span class="va">True</span>)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> jax.random.uniform(key, shape<span class="op">=</span>(<span class="dv">10</span>,))</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>jax_out <span class="op">=</span> jax_normalize(x)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(jax_out, <span class="bu">type</span>(jax_out))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>That’s pretty much it! You can now use any function you need in your projects regardless of the framework you’re using 🚀</p>
+<p>However, transpiling functions one by one is far from ideal. But don’t worry, with <code>transpile</code>, you can transpile entire libraries at once and easily bring them into your projects. Let’s see how this works by transpiling <code>kornia</code>, a wisely-used computer vision library written in <code>torch</code>:</p>
+</section>
+<section id="any-library" class="level3">
+<h3 class="anchored" data-anchor-id="any-library">Any library</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> kornia</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jax.numpy <span class="im">as</span> jnp</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PIL <span class="im">import</span> Image</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s get the transpiled library by calling <code>transpile</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>jax_kornia <span class="op">=</span> ivy.transpile(kornia, source<span class="op">=</span><span class="st">"torch"</span>, to<span class="op">=</span><span class="st">"jax"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now let’s get a sample image and preprocess so that it has the format kornia expects:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"http://images.cocodataset.org/train2017/000000000034.jpg"</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>raw_img <span class="op">=</span> Image.<span class="bu">open</span>(requests.get(url, stream<span class="op">=</span><span class="va">True</span>).raw)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> jnp.transpose(jnp.array(raw_img), (<span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> jnp.expand_dims(img, <span class="dv">0</span>) <span class="op">/</span> <span class="dv">255</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>display(raw_img)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>And we can call any function from kornia in <code>jax</code>, as simple as that!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>out <span class="op">=</span> jax_kornia.enhance.sharpness(img, <span class="dv">10</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(out)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Finally, let’s see if the transformation has been applied correctly:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>np_image <span class="op">=</span> np.uint8(np.array(out[<span class="dv">0</span>])<span class="op">*</span><span class="dv">255</span>)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>display(Image.fromarray(np.transpose(np_image, (<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">0</span>))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>It’s worth noting that every operation in the transpiled functions is performed natively in the target framework, which means that gradients can be tracked and the resulting functions are fully differentiable. Even after transpilation, you can still take advantage of the powerful features of your chosen framework.</p>
+<p>While transpiling functions and libraries is useful, trainable modules play a critical role in ML and DL. The good news is that Ivy makes it just as easy to transpile modules and models from one framework to another with just one line of code.</p>
+</section>
+<section id="any-model" class="level3">
+<h3 class="anchored" data-anchor-id="any-model">Any model</h3>
+<p>For the purpose of this demonstration, let’s define a very basic CNN block using the Sequential API of <code>keras</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> tf.keras.Sequential([</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Conv2D(<span class="dv">32</span>, kernel_size<span class="op">=</span>(<span class="dv">3</span>, <span class="dv">3</span>), activation<span class="op">=</span><span class="st">'relu'</span>, input_shape<span class="op">=</span>(<span class="dv">28</span>, <span class="dv">28</span>, <span class="dv">3</span>)),</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Flatten(),</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Dense(<span class="dv">10</span>, activation<span class="op">=</span><span class="st">'softmax'</span>)</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The model we just defined is an instance of <code>tf.keras.Model</code>. Using <code>ivy.transpile</code>, we can effortlessly convert it into a <code>torch.nn.Module</code>, for instance.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>input_array <span class="op">=</span> tf.random.normal((<span class="dv">1</span>, <span class="dv">28</span>, <span class="dv">28</span>, <span class="dv">3</span>))</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>torch_model <span class="op">=</span> ivy.transpile(model, to<span class="op">=</span><span class="st">"torch"</span>, args<span class="op">=</span>(input_array,))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>After transpilation, we can pass a <code>torch</code> tensor and obtain the expected output. As mentioned previously, all operations are now PyTorch native functions, making them differentiable. Additionally, Ivy automatically converts all parameters of the original model to the new one, allowing you to transpile pre-trained models and fine-tune them in your preferred framework.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="bu">isinstance</span>(torch_model, torch.nn.Module)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>input_array <span class="op">=</span> torch.rand((<span class="dv">1</span>, <span class="dv">28</span>, <span class="dv">28</span>, <span class="dv">3</span>)).to(ivy.default_device(as_native<span class="op">=</span><span class="st">"True"</span>))</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>torch_model.to(ivy.default_device(as_native<span class="op">=</span><span class="st">"True"</span>))</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>output_array <span class="op">=</span> torch_model(input_array)</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(output_array)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>While we have only transpiled a simple model for demonstration purposes, we can certainly transpile more complex models as well. Let’s take a more complex model from <code>timm</code> and see how we can build upon transpiled modules.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> timm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We will only be using the encoder, so we can remove the unnecessary layers by setting <code>num_classes=0</code>, and then pass <code>pretrained=True</code> to download the pre-trained parameters.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>mlp_encoder <span class="op">=</span> timm.create_model(<span class="st">"mixer_b16_224"</span>, pretrained<span class="op">=</span><span class="va">True</span>, num_classes<span class="op">=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s transpile the model to tensorflow with <code>ivy.transpile</code> 🔀</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>noise <span class="op">=</span> torch.randn(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">224</span>, <span class="dv">224</span>)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>tf_mlp_encoder <span class="op">=</span> ivy.transpile(mlp_encoder, to<span class="op">=</span><span class="st">"tensorflow"</span>, args<span class="op">=</span>(noise,))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>And now let’s build a model on top of our pretrained encoder!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Classifier(tf.keras.Model):</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>(Classifier, <span class="va">self</span>).<span class="fu">__init__</span>()</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.encoder <span class="op">=</span> tf_mlp_encoder</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.output_dense <span class="op">=</span> tf.keras.layers.Dense(units<span class="op">=</span><span class="dv">1000</span>, activation<span class="op">=</span><span class="st">"softmax"</span>)</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> call(<span class="va">self</span>, x):</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="va">self</span>.encoder(x)</span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.output_dense(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> Classifier()</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> tf.random.normal(shape<span class="op">=</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">224</span>, <span class="dv">224</span>))</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>ret <span class="op">=</span> model(x)</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(ret), ret.shape)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>As the encoder now consists of <code>tensorflow</code> functions, we can extend the transpiled modules as much as we want, leveraging existing weights and the tools and infrastructure of all frameworks 🚀</p>
+</section>
+</section>
 <section id="round-up" class="level2">
 <h2 class="anchored" data-anchor-id="round-up">Round Up</h2>
-<p>That’s it, you can now unify ML code! However, there are several other important topics to master before you’re ready to unify ML code like a pro 🥷. Next, we’ll be learning how to make our unified Ivy code <a href="">run much more efficiently</a>! ⚡</p>
+<p>TODO</p>
 
 
 </section>
