@@ -669,8 +669,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>_forward <span class="op">=</span> jax.jit(_forward)</span>
 <span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>rng_key <span class="op">=</span> jax.random.PRNGKey(<span class="dv">42</span>)</span>
-<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>jax_mlp_forward <span class="op">=</span> hk.transform(_forward)</span>
-<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a>params <span class="op">=</span> jax_mlp_forward.init(rng<span class="op">=</span>rng_key, <span class="op">**</span>inputs_jax)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>jax_forward <span class="op">=</span> hk.transform(_forward)</span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a>params <span class="op">=</span> jax_forward.init(rng<span class="op">=</span>rng_key, <span class="op">**</span>inputs_jax)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now that both models are compiled in their corresponding frameworks, let’s see how their runtime speeds compare to each other:</p>
 <div class="cell">
@@ -679,9 +679,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>timeit</span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>out <span class="op">=</span> jax_mlp_forward.<span class="bu">apply</span>(params, <span class="va">None</span>, <span class="op">**</span>inputs_jax)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>_ <span class="op">=</span> jax_forward.<span class="bu">apply</span>(params, <span class="va">None</span>, <span class="op">**</span>inputs_jax)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>As expected, we have made the model significantly faster with just one line of code, getting a ~3x increase in its execution speed 🚀</p>
+<p>As expected, we have made the model significantly faster with just one line of code, getting a ~2x increase in its execution speed 🚀</p>
 <p>Finally, as a sanity check, let’s load a different image and make sure that the results are the same in both models</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"http://images.cocodataset.org/train2017/000000283921.jpg"</span></span>
@@ -689,7 +689,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>inputs <span class="op">=</span> feature_extractor(images<span class="op">=</span>image, return_tensors<span class="op">=</span><span class="st">"pt"</span>).to(<span class="st">"cuda"</span>)</span>
 <span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>inputs_jax <span class="op">=</span> feature_extractor(images<span class="op">=</span>image, return_tensors<span class="op">=</span><span class="st">"jax"</span>)</span>
 <span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>out_torch <span class="op">=</span> comp_model(<span class="op">**</span>inputs)</span>
-<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>out_jax <span class="op">=</span> jax_mlp_forward.<span class="bu">apply</span>(params, <span class="va">None</span>, <span class="op">**</span>inputs_jax)</span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>out_jax <span class="op">=</span> jax_forward.<span class="bu">apply</span>(params, <span class="va">None</span>, <span class="op">**</span>inputs_jax)</span>
 <span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>np.allclose(out_torch.last_hidden_state.detach().cpu().numpy(), out_jax, atol<span class="op">=</span><span class="fl">1e-4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
