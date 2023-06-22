@@ -2,150 +2,150 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://github.com/unifyai/demos/index.html</loc>
-    <lastmod>2023-06-22T13:12:49.284Z</lastmod>
+    <lastmod>2023-06-22T13:18:15.577Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/learn_the_basics/05_lazy_vs_eager.html</loc>
-    <lastmod>2023-06-22T13:12:51.080Z</lastmod>
+    <lastmod>2023-06-22T13:18:16.341Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/learn_the_basics/01_write_ivy_code.html</loc>
-    <lastmod>2023-06-22T13:12:51.544Z</lastmod>
+    <lastmod>2023-06-22T13:18:16.809Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/learn_the_basics/04_transpile_code.html</loc>
-    <lastmod>2023-06-22T13:12:51.896Z</lastmod>
+    <lastmod>2023-06-22T13:18:17.169Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/learn_the_basics/02_unify_code.html</loc>
-    <lastmod>2023-06-22T13:12:52.252Z</lastmod>
+    <lastmod>2023-06-22T13:18:17.521Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/learn_the_basics/08_transpile_any_model.html</loc>
-    <lastmod>2023-06-22T13:12:52.620Z</lastmod>
+    <lastmod>2023-06-22T13:18:17.893Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/learn_the_basics/07_transpile_any_library.html</loc>
-    <lastmod>2023-06-22T13:12:53.040Z</lastmod>
+    <lastmod>2023-06-22T13:18:18.305Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/learn_the_basics/06_how_to_use_decorators.html</loc>
-    <lastmod>2023-06-22T13:12:53.424Z</lastmod>
+    <lastmod>2023-06-22T13:18:18.701Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/learn_the_basics/03_compile_code.html</loc>
-    <lastmod>2023-06-22T13:12:53.796Z</lastmod>
+    <lastmod>2023-06-22T13:18:19.077Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/learn_the_basics/09_write_a_model_using_ivy.html</loc>
-    <lastmod>2023-06-22T13:12:54.092Z</lastmod>
+    <lastmod>2023-06-22T13:18:19.373Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/guides/01_transpiling_a_torch_model.html</loc>
-    <lastmod>2023-06-22T13:12:54.520Z</lastmod>
+    <lastmod>2023-06-22T13:18:19.777Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/guides/04_developing_a_convnet_with_ivy.html</loc>
-    <lastmod>2023-06-22T13:12:54.812Z</lastmod>
+    <lastmod>2023-06-22T13:18:20.073Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/guides/03_transpiling_a_tf_model.html</loc>
-    <lastmod>2023-06-22T13:12:55.196Z</lastmod>
+    <lastmod>2023-06-22T13:18:20.465Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/guides/02_transpiling_a_haiku_model.html</loc>
-    <lastmod>2023-06-22T13:12:55.500Z</lastmod>
+    <lastmod>2023-06-22T13:18:20.765Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/assets/01_template.html</loc>
-    <lastmod>2023-06-22T13:12:55.820Z</lastmod>
+    <lastmod>2023-06-22T13:18:21.073Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/wip/deepmind_perceiverio.html</loc>
-    <lastmod>2023-06-22T13:12:56.368Z</lastmod>
+    <lastmod>2023-06-22T13:18:21.637Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/wip/compilation_of_a_basic_function.html</loc>
-    <lastmod>2023-06-22T13:12:56.708Z</lastmod>
+    <lastmod>2023-06-22T13:18:21.990Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/wip/3_models/3_1_stable_diffusion.html</loc>
-    <lastmod>2023-06-22T13:12:56.992Z</lastmod>
+    <lastmod>2023-06-22T13:18:22.314Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/wip/3_models/3_0_perceiver.html</loc>
-    <lastmod>2023-06-22T13:12:57.284Z</lastmod>
+    <lastmod>2023-06-22T13:18:22.610Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/wip/2_libraries/2_0_kornia.html</loc>
-    <lastmod>2023-06-22T13:12:57.568Z</lastmod>
+    <lastmod>2023-06-22T13:18:22.906Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/wip/ivy_as_a_transpiler_intro.html</loc>
-    <lastmod>2023-06-22T13:12:57.932Z</lastmod>
+    <lastmod>2023-06-22T13:18:23.282Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/wip/end_to_end_training_pipeline_in_ivy.html</loc>
-    <lastmod>2023-06-22T13:12:58.468Z</lastmod>
+    <lastmod>2023-06-22T13:18:23.814Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/wip/1_the_basics/1_0_lazy_vs_eager.html</loc>
-    <lastmod>2023-06-22T13:12:58.880Z</lastmod>
+    <lastmod>2023-06-22T13:18:24.198Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/wip/1_the_basics/1_3_dynamic_vs_static.html</loc>
-    <lastmod>2023-06-22T13:12:59.200Z</lastmod>
+    <lastmod>2023-06-22T13:18:24.542Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/wip/1_the_basics/1_1_framework_selection.html</loc>
-    <lastmod>2023-06-22T13:12:59.652Z</lastmod>
+    <lastmod>2023-06-22T13:18:24.998Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/wip/1_the_basics/1_2_as_a_decorator.html</loc>
-    <lastmod>2023-06-22T13:13:00.044Z</lastmod>
+    <lastmod>2023-06-22T13:18:25.382Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/wip/hf_tensorflow_deit.html</loc>
-    <lastmod>2023-06-22T13:13:00.456Z</lastmod>
+    <lastmod>2023-06-22T13:18:25.802Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/wip/resnet_18.html</loc>
-    <lastmod>2023-06-22T13:13:00.872Z</lastmod>
+    <lastmod>2023-06-22T13:18:26.214Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/wip/0_building_blocks/0_1_compile.html</loc>
-    <lastmod>2023-06-22T13:13:01.268Z</lastmod>
+    <lastmod>2023-06-22T13:18:26.610Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/wip/0_building_blocks/0_2_transpile.html</loc>
-    <lastmod>2023-06-22T13:13:01.620Z</lastmod>
+    <lastmod>2023-06-22T13:18:26.982Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/wip/0_building_blocks/0_0_unify.html</loc>
-    <lastmod>2023-06-22T13:13:01.964Z</lastmod>
+    <lastmod>2023-06-22T13:18:27.326Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/wip/basic_operations_with_ivy.html</loc>
-    <lastmod>2023-06-22T13:13:02.416Z</lastmod>
+    <lastmod>2023-06-22T13:18:27.782Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/wip/deepmind_perceiver_io.html</loc>
-    <lastmod>2023-06-22T13:13:03.200Z</lastmod>
+    <lastmod>2023-06-22T13:18:28.578Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/misc/odsc.html</loc>
-    <lastmod>2023-06-22T13:13:03.968Z</lastmod>
+    <lastmod>2023-06-22T13:18:29.334Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/examples_and_demos/01_using_ivy_resnet18.html</loc>
-    <lastmod>2023-06-22T13:13:04.380Z</lastmod>
+    <lastmod>2023-06-22T13:18:29.722Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/examples_and_demos/torch_to_jax.html</loc>
-    <lastmod>2023-06-22T13:13:04.756Z</lastmod>
+    <lastmod>2023-06-22T13:18:30.106Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/unifyai/demos/quickstart.html</loc>
-    <lastmod>2023-06-22T13:13:05.436Z</lastmod>
+    <lastmod>2023-06-22T13:18:30.750Z</lastmod>
   </url>
 </urlset>
