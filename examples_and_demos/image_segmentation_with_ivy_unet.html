@@ -287,6 +287,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#custom-masking-function" id="toc-custom-masking-function" class="nav-link" data-scroll-target="#custom-masking-function">Custom masking function</a></li>
   <li><a href="#use-the-model-to-segment-your-images" id="toc-use-the-model-to-segment-your-images" class="nav-link" data-scroll-target="#use-the-model-to-segment-your-images">Use the model to segment your images 🚀</a></li>
   </ul></li>
+  <li><a href="#tensorflow-backend" id="toc-tensorflow-backend" class="nav-link" data-scroll-target="#tensorflow-backend">TensorFlow backend</a></li>
+  <li><a href="#jax" id="toc-jax" class="nav-link" data-scroll-target="#jax">JAX</a></li>
+  <li><a href="#appendix-the-ivy-native-implementation-of-unet" id="toc-appendix-the-ivy-native-implementation-of-unet" class="nav-link" data-scroll-target="#appendix-the-ivy-native-implementation-of-unet">Appendix: the Ivy native implementation of UNet</a></li>
   </ul>
 </nav>
     </div>
@@ -311,19 +314,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 <p>Use the Ivy <code>UNet</code> model for image segmentation.<br>
-Please use GPU for running this notebook!</p>
+Make sure you are using the GPU when using this notebook!</p>
 <p>If you already have <code>Ivy</code> and <code>Ivy Models</code> installed you can skip this cell, but if you are using Colab, you will have to install <code>Ivy</code> and <code>Ivy Models</code> manually. You can do so by running the cell below ⬇️</p>
 <p>Keep in mind that for the package to be available, you will have to click on <strong>“Runtime &gt; Restart Runtime”</strong> 😄</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>git clone https:<span class="op">//</span>github.com<span class="op">/</span>unifyai<span class="op">/</span>ivy.git</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd ivy <span class="op">&amp;&amp;</span> python3 <span class="op">-</span>m pip install <span class="op">-</span>e .</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd ivy <span class="op">&amp;&amp;</span> python3 <span class="op">-</span>m pip install <span class="op">-</span>q <span class="op">-</span>e .</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>git clone https:<span class="op">//</span>github.com<span class="op">/</span>unifyai<span class="op">/</span>models.git</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd models <span class="op">&amp;&amp;</span> python3 <span class="op">-</span>m pip install <span class="op">-</span>e .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd models <span class="op">&amp;&amp;</span> python3 <span class="op">-</span>m pip install <span class="op">-</span>q <span class="op">-</span>e .</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>exit()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="imports" class="level2">
 <h2 class="anchored" data-anchor-id="imports">Imports</h2>
-<div class="cell" data-execution_count="21">
+<div class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ivy</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -333,7 +338,7 @@ Please use GPU for running this notebook!</p>
 <h2 class="anchored" data-anchor-id="data-preparation">Data Preparation</h2>
 <section id="custom-preprocessing" class="level3">
 <h3 class="anchored" data-anchor-id="custom-preprocessing">Custom Preprocessing</h3>
-<div class="cell" data-execution_count="22">
+<div class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ref: https://github.com/milesial/Pytorch-UNet/blob/2f62e6b1c8e98022a6418d31a76f6abd800e5ae7/utils/data_loading.py#L65</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> preprocess(mask_values, pil_img, scale, is_mask):</span>
@@ -367,22 +372,23 @@ Please use GPU for running this notebook!</p>
 </section>
 <section id="load-the-image-example" class="level3">
 <h3 class="anchored" data-anchor-id="load-the-image-example">Load the image example 🖼️</h3>
-<div class="cell" data-execution_count="23">
+<div class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Preprocess image</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PIL <span class="im">import</span> Image</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>filename <span class="op">=</span> <span class="st">"models/images/car.jpg"</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>full_img <span class="op">=</span> Image.<span class="bu">open</span>(filename)</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>torch_img <span class="op">=</span> torch.from_numpy(preprocess(<span class="va">None</span>, full_img, <span class="fl">0.5</span>, <span class="va">False</span>)).unsqueeze(<span class="dv">0</span>).to(<span class="st">"cuda"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="25">
+<div class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to ivy</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>ivy.set_torch_backend()</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> ivy.asarray(torch_img.permute((<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>)), dtype<span class="op">=</span><span class="st">"float32"</span>, device<span class="op">=</span><span class="st">"gpu:0"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">"torch"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> ivy.asarray(torch_img.permute((<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>)), dtype<span class="op">=</span><span class="st">"float32"</span>, device<span class="op">=</span><span class="st">"gpu:0"</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>img_numpy <span class="op">=</span> img.cpu().numpy()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="visualise-image" class="level3">
 <h3 class="anchored" data-anchor-id="visualise-image">Visualise image</h3>
-<div class="cell" data-outputid="cce1aa78-19ac-4dc7-f5b0-62e8f4f746a1" data-execution_count="26">
+<div class="cell" data-outputid="b74622ae-baee-4bfc-dc89-6a052aa2d015" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> Image <span class="im">as</span> I, display</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>display(I(filename))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
@@ -396,28 +402,27 @@ Please use GPU for running this notebook!</p>
 <section id="initializing-native-torch-unet" class="level3">
 <h3 class="anchored" data-anchor-id="initializing-native-torch-unet">Initializing Native Torch UNet</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># todo: check</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>torch_unet <span class="op">=</span> torch.hub.load(<span class="st">'milesial/Pytorch-UNet'</span>, <span class="st">'unet_carvana'</span>, pretrained<span class="op">=</span><span class="va">True</span>, scale<span class="op">=</span><span class="fl">1.0</span>)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>torch_unet.to(<span class="st">"cuda"</span>)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>torch_unet.<span class="bu">eval</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>torch_unet <span class="op">=</span> torch.hub.load(<span class="st">'milesial/Pytorch-UNet'</span>, <span class="st">'unet_carvana'</span>, pretrained<span class="op">=</span><span class="va">True</span>, scale<span class="op">=</span><span class="fl">1.0</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>torch_unet.to(<span class="st">"cuda"</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>torch_unet.<span class="bu">eval</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="initializing-ivy-unet-with-pretrained-weights" class="level3">
 <h3 class="anchored" data-anchor-id="initializing-ivy-unet-with-pretrained-weights">Initializing Ivy UNet with Pretrained Weights ⬇️</h3>
 <p>The model is then initialized with the Pretrained Weights when <code>pretrained=True</code> 🔗.</p>
-<div class="cell" data-execution_count="28">
+<div class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load the unet model from ivy_models</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ivy_models</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>ivy_unet <span class="op">=</span> ivy_models.unet_carvana(n_channels<span class="op">=</span><span class="dv">3</span>, n_classes<span class="op">=</span><span class="dv">2</span>, pretrained<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Compile the forward pass for efficiency.</p>
-<div class="cell" data-execution_count="29">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>ivy_unet.<span class="bu">compile</span>(args<span class="op">=</span>(img,))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="custom-masking-function" class="level3">
 <h3 class="anchored" data-anchor-id="custom-masking-function">Custom masking function</h3>
-<div class="cell" data-execution_count="30">
+<div class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ref: https://github.com/milesial/Pytorch-UNet/blob/2f62e6b1c8e98022a6418d31a76f6abd800e5ae7/predict.py#L62</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mask_to_image(mask: np.ndarray, mask_values):</span>
@@ -439,11 +444,11 @@ Please use GPU for running this notebook!</p>
 </section>
 <section id="use-the-model-to-segment-your-images" class="level3">
 <h3 class="anchored" data-anchor-id="use-the-model-to-segment-your-images">Use the model to segment your images 🚀</h3>
-<p>For comparison, both results from <code>Torch ResNet18</code> and <code>Ivy ResNet18</code> are shown below.</p>
+<p>First, we will generate the reference mask from the <a href="https://github.com/milesial/Pytorch-UNet">reference model</a>.</p>
 <ol type="1">
 <li>Torch UNet</li>
 </ol>
-<div class="cell" data-outputid="520e9b44-908e-43ac-ed79-f4b85ede02d0" data-execution_count="33">
+<div class="cell" data-outputid="57aedeeb-28eb-4ab7-834e-a4303ac93c59" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>torch_output <span class="op">=</span> torch_unet(torch_img.to(torch.float32))</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>torch_output <span class="op">=</span> torch.nn.functional.interpolate(torch_output, (full_img.size[<span class="dv">1</span>], full_img.size[<span class="dv">0</span>]), mode<span class="op">=</span><span class="st">"bilinear"</span>)</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>torch_mask <span class="op">=</span> torch_output.argmax(axis<span class="op">=</span><span class="dv">1</span>)</span>
@@ -454,10 +459,11 @@ Please use GPU for running this notebook!</p>
 <p><img src="image_segmentation_with_ivy_unet_files/figure-html/cell-12-output-1.png" class="img-fluid"></p>
 </div>
 </div>
+<p>Next we will generate the mask from the Ivy native implementation</p>
 <ol start="2" type="1">
 <li>Ivy UNet</li>
 </ol>
-<div class="cell" data-outputid="5805083f-2552-4a05-e1cc-d63eec54d599" data-execution_count="34">
+<div class="cell" data-outputid="889273ec-777b-4198-e183-9adb1cd35af5" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> ivy_unet(img)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> ivy.interpolate(output.permute((<span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>)), (full_img.size[<span class="dv">1</span>], full_img.size[<span class="dv">0</span>]), mode<span class="op">=</span><span class="st">"bilinear"</span>)</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>mask <span class="op">=</span> output.argmax(axis<span class="op">=</span><span class="dv">1</span>)</span>
@@ -468,9 +474,197 @@ Please use GPU for running this notebook!</p>
 <p><img src="image_segmentation_with_ivy_unet_files/figure-html/cell-13-output-1.png" class="img-fluid"></p>
 </div>
 </div>
-
-
+<p>Great! The ivy native model and the torch model give the same result!</p>
 </section>
+</section>
+<section id="tensorflow-backend" class="level1">
+<h1>TensorFlow backend</h1>
+<p>Let’s look at using the TensorFlow backend.</p>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">"tensorflow"</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>ivy_unet <span class="op">=</span> ivy_models.unet_carvana(n_channels<span class="op">=</span><span class="dv">3</span>, n_classes<span class="op">=</span><span class="dv">2</span>, pretrained<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>img_tf <span class="op">=</span> ivy.asarray(img_numpy)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>ivy_unet <span class="op">=</span> ivy.<span class="bu">compile</span>(ivy_unet, args<span class="op">=</span>(img_tf,))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-outputid="714af9ed-4501-4f56-eca5-097b5a01e694" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> ivy_unet(img_tf)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> ivy.interpolate(tf.transpose(output, (<span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>)), (full_img.size[<span class="dv">1</span>], full_img.size[<span class="dv">0</span>]), mode<span class="op">=</span><span class="st">"bilinear"</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>mask <span class="op">=</span> tf.math.argmax(output, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>mask <span class="op">=</span> tf.squeeze(mask[<span class="dv">0</span>], axis<span class="op">=</span><span class="va">None</span>).numpy()</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> mask_to_image(mask, [<span class="dv">0</span>,<span class="dv">1</span>])</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>result.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="image_segmentation_with_ivy_unet_files/figure-html/cell-15-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>As expected, we ended up with the same mask as before. Note how with the TensorFlow backend, we were able to use TensorFlow native functions to do the post-processing.</p>
+</section>
+<section id="jax" class="level1">
+<h1>JAX</h1>
+<p>Next up is the JAX backend. We’ve used a lot of the notebook memory so far, so we’ll free up some space.</p>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">del</span> torch_unet</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="kw">del</span> ivy_unet</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>torch.cuda.empty_cache()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install <span class="op">-</span>q dm<span class="op">-</span>haiku</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jax</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> haiku <span class="im">as</span> hk</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>jax.config.update(<span class="st">'jax_enable_x64'</span>, <span class="va">True</span>)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">"jax"</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>ivy_unet <span class="op">=</span> ivy_models.unet_carvana(n_channels<span class="op">=</span><span class="dv">3</span>, n_classes<span class="op">=</span><span class="dv">2</span>, pretrained<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-outputid="9d75ddc0-80b4-475d-e590-3190d2b2585c" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>img_jax <span class="op">=</span> ivy.asarray(img_numpy)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> ivy_unet(img_jax)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> ivy.interpolate(ivy.permute_dims(output, (<span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>)), (full_img.size[<span class="dv">1</span>], full_img.size[<span class="dv">0</span>]), mode<span class="op">=</span><span class="st">"bilinear"</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>mask <span class="op">=</span> output.argmax(axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>mask <span class="op">=</span> ivy.squeeze(mask[<span class="dv">0</span>], axis<span class="op">=</span><span class="va">None</span>).to_numpy()</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> mask_to_image(mask, [<span class="dv">0</span>,<span class="dv">1</span>])</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>result.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="image_segmentation_with_ivy_unet_files/figure-html/cell-18-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>Once again, we ended up with the same mask as in the reference torch implementation!</p>
+</section>
+<section id="appendix-the-ivy-native-implementation-of-unet" class="level1">
+<h1>Appendix: the Ivy native implementation of UNet</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> UNET(ivy.Module):</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, n_channels, n_classes, bilinear<span class="op">=</span><span class="va">False</span>, v<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.n_channels <span class="op">=</span> n_channels</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.n_classes <span class="op">=</span> n_classes</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.bilinear <span class="op">=</span> bilinear</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.factor <span class="op">=</span> <span class="dv">2</span> <span class="cf">if</span> bilinear <span class="cf">else</span> <span class="dv">1</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>(UNET, <span class="va">self</span>).<span class="fu">__init__</span>(v<span class="op">=</span>v)</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> _build(<span class="va">self</span>, <span class="op">*</span>args, <span class="op">**</span>kwargs):</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.inc <span class="op">=</span> UNetDoubleConv(<span class="va">self</span>.n_channels, <span class="dv">64</span>)</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.down1 <span class="op">=</span> UNetDown(<span class="dv">64</span>, <span class="dv">128</span>)</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.down2 <span class="op">=</span> UNetDown(<span class="dv">128</span>, <span class="dv">256</span>)</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.down3 <span class="op">=</span> UNetDown(<span class="dv">256</span>, <span class="dv">512</span>)</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.down4 <span class="op">=</span> UNetDown(<span class="dv">512</span>, <span class="dv">1024</span> <span class="op">//</span> <span class="va">self</span>.factor)</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.up1 <span class="op">=</span> UNetUp(<span class="dv">1024</span>, <span class="dv">512</span> <span class="op">//</span> <span class="va">self</span>.factor, <span class="va">self</span>.bilinear)</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.up2 <span class="op">=</span> UNetUp(<span class="dv">512</span>, <span class="dv">256</span> <span class="op">//</span> <span class="va">self</span>.factor, <span class="va">self</span>.bilinear)</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.up3 <span class="op">=</span> UNetUp(<span class="dv">256</span>, <span class="dv">128</span> <span class="op">//</span> <span class="va">self</span>.factor, <span class="va">self</span>.bilinear)</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.up4 <span class="op">=</span> UNetUp(<span class="dv">128</span>, <span class="dv">64</span>, <span class="va">self</span>.bilinear)</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.outc <span class="op">=</span> UNetOutConv(<span class="dv">64</span>, <span class="va">self</span>.n_classes)</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> _forward(<span class="va">self</span>, x):</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>        x1 <span class="op">=</span> <span class="va">self</span>.inc(x)</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>        x2 <span class="op">=</span> <span class="va">self</span>.down1(x1)</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>        x3 <span class="op">=</span> <span class="va">self</span>.down2(x2)</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>        x4 <span class="op">=</span> <span class="va">self</span>.down3(x3)</span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>        x5 <span class="op">=</span> <span class="va">self</span>.down4(x4)</span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="va">self</span>.up1(x5, x4)</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="va">self</span>.up2(x, x3)</span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="va">self</span>.up3(x, x2)</span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="va">self</span>.up4(x, x1)</span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>        logits <span class="op">=</span> <span class="va">self</span>.outc(x)</span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> logits</span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> UNetDoubleConv(ivy.Module):</span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, in_channels, out_channels, mid_channels<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.in_channels <span class="op">=</span> in_channels</span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.out_channels <span class="op">=</span> out_channels</span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.mid_channels <span class="op">=</span> mid_channels <span class="cf">if</span> mid_channels <span class="cf">else</span> out_channels</span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>(UNetDoubleConv, <span class="va">self</span>).<span class="fu">__init__</span>()</span>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> _build(<span class="va">self</span>, <span class="op">*</span>args, <span class="op">**</span>kwargs):</span>
+<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.double_conv <span class="op">=</span> ivy.Sequential(</span>
+<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a>            ivy.Conv2D(</span>
+<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.in_channels, <span class="va">self</span>.mid_channels, [<span class="dv">3</span>, <span class="dv">3</span>], <span class="dv">1</span>, <span class="dv">1</span>, with_bias<span class="op">=</span><span class="va">False</span></span>
+<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a>            ),</span>
+<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a>            ivy.BatchNorm2D(<span class="va">self</span>.mid_channels),</span>
+<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a>            ivy.ReLU(),</span>
+<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a>            ivy.Conv2D(</span>
+<span id="cb18-50"><a href="#cb18-50" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.mid_channels, <span class="va">self</span>.out_channels, [<span class="dv">3</span>, <span class="dv">3</span>], <span class="dv">1</span>, <span class="dv">1</span>, with_bias<span class="op">=</span><span class="va">False</span></span>
+<span id="cb18-51"><a href="#cb18-51" aria-hidden="true" tabindex="-1"></a>            ),</span>
+<span id="cb18-52"><a href="#cb18-52" aria-hidden="true" tabindex="-1"></a>            ivy.BatchNorm2D(<span class="va">self</span>.out_channels),</span>
+<span id="cb18-53"><a href="#cb18-53" aria-hidden="true" tabindex="-1"></a>            ivy.ReLU(),</span>
+<span id="cb18-54"><a href="#cb18-54" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb18-55"><a href="#cb18-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-56"><a href="#cb18-56" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> _forward(<span class="va">self</span>, x):</span>
+<span id="cb18-57"><a href="#cb18-57" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.double_conv(x)</span>
+<span id="cb18-58"><a href="#cb18-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-59"><a href="#cb18-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-60"><a href="#cb18-60" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> UNetDown(ivy.Module):</span>
+<span id="cb18-61"><a href="#cb18-61" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Downscaling with maxpool then double conv"""</span></span>
+<span id="cb18-62"><a href="#cb18-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-63"><a href="#cb18-63" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, in_channels, out_channels):</span>
+<span id="cb18-64"><a href="#cb18-64" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.in_channels <span class="op">=</span> in_channels</span>
+<span id="cb18-65"><a href="#cb18-65" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.out_channels <span class="op">=</span> out_channels</span>
+<span id="cb18-66"><a href="#cb18-66" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb18-67"><a href="#cb18-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-68"><a href="#cb18-68" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> _build(<span class="va">self</span>, <span class="op">*</span>args, <span class="op">**</span>kwargs):</span>
+<span id="cb18-69"><a href="#cb18-69" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.maxpool_conv <span class="op">=</span> ivy.Sequential(</span>
+<span id="cb18-70"><a href="#cb18-70" aria-hidden="true" tabindex="-1"></a>            ivy.MaxPool2D(<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">0</span>), UNetDoubleConv(<span class="va">self</span>.in_channels, <span class="va">self</span>.out_channels)</span>
+<span id="cb18-71"><a href="#cb18-71" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb18-72"><a href="#cb18-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-73"><a href="#cb18-73" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> _forward(<span class="va">self</span>, x):</span>
+<span id="cb18-74"><a href="#cb18-74" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.maxpool_conv(x)</span>
+<span id="cb18-75"><a href="#cb18-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-76"><a href="#cb18-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-77"><a href="#cb18-77" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> UNetUp(ivy.Module):</span>
+<span id="cb18-78"><a href="#cb18-78" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Upscaling then double conv"""</span></span>
+<span id="cb18-79"><a href="#cb18-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-80"><a href="#cb18-80" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, in_channels, out_channels, bilinear<span class="op">=</span><span class="va">True</span>):</span>
+<span id="cb18-81"><a href="#cb18-81" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.in_channels <span class="op">=</span> in_channels</span>
+<span id="cb18-82"><a href="#cb18-82" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.out_channels <span class="op">=</span> out_channels</span>
+<span id="cb18-83"><a href="#cb18-83" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.bilinear <span class="op">=</span> bilinear</span>
+<span id="cb18-84"><a href="#cb18-84" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb18-85"><a href="#cb18-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-86"><a href="#cb18-86" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> _build(<span class="va">self</span>, <span class="op">*</span>args, <span class="op">**</span>kwargs):</span>
+<span id="cb18-87"><a href="#cb18-87" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="va">self</span>.bilinear:</span>
+<span id="cb18-88"><a href="#cb18-88" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.up <span class="op">=</span> ivy.interpolate(</span>
+<span id="cb18-89"><a href="#cb18-89" aria-hidden="true" tabindex="-1"></a>                scale_factor<span class="op">=</span><span class="dv">2</span>, mode<span class="op">=</span><span class="st">"bilinear"</span>, align_corners<span class="op">=</span><span class="va">True</span></span>
+<span id="cb18-90"><a href="#cb18-90" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb18-91"><a href="#cb18-91" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.conv <span class="op">=</span> UNetDoubleConv(</span>
+<span id="cb18-92"><a href="#cb18-92" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.in_channels, <span class="va">self</span>.out_channels, <span class="va">self</span>.in_channels <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb18-93"><a href="#cb18-93" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb18-94"><a href="#cb18-94" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb18-95"><a href="#cb18-95" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.up <span class="op">=</span> ivy.Conv2DTranspose(</span>
+<span id="cb18-96"><a href="#cb18-96" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.in_channels, <span class="va">self</span>.in_channels <span class="op">//</span> <span class="dv">2</span>, [<span class="dv">2</span>, <span class="dv">2</span>], <span class="dv">2</span>, <span class="st">"VALID"</span></span>
+<span id="cb18-97"><a href="#cb18-97" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb18-98"><a href="#cb18-98" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.conv <span class="op">=</span> UNetDoubleConv(<span class="va">self</span>.in_channels, <span class="va">self</span>.out_channels)</span>
+<span id="cb18-99"><a href="#cb18-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-100"><a href="#cb18-100" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> _forward(<span class="va">self</span>, x1, x2):</span>
+<span id="cb18-101"><a href="#cb18-101" aria-hidden="true" tabindex="-1"></a>        x1 <span class="op">=</span> <span class="va">self</span>.up(x1)</span>
+<span id="cb18-102"><a href="#cb18-102" aria-hidden="true" tabindex="-1"></a>        <span class="co"># input is BHWC</span></span>
+<span id="cb18-103"><a href="#cb18-103" aria-hidden="true" tabindex="-1"></a>        diff_H <span class="op">=</span> x2.shape[<span class="dv">1</span>] <span class="op">-</span> x1.shape[<span class="dv">1</span>]</span>
+<span id="cb18-104"><a href="#cb18-104" aria-hidden="true" tabindex="-1"></a>        diff_W <span class="op">=</span> x2.shape[<span class="dv">2</span>] <span class="op">-</span> x1.shape[<span class="dv">2</span>]</span>
+<span id="cb18-105"><a href="#cb18-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-106"><a href="#cb18-106" aria-hidden="true" tabindex="-1"></a>        pad_width <span class="op">=</span> (</span>
+<span id="cb18-107"><a href="#cb18-107" aria-hidden="true" tabindex="-1"></a>            (<span class="dv">0</span>, <span class="dv">0</span>),</span>
+<span id="cb18-108"><a href="#cb18-108" aria-hidden="true" tabindex="-1"></a>            (diff_H <span class="op">-</span> diff_H <span class="op">//</span> <span class="dv">2</span>, diff_H <span class="op">//</span> <span class="dv">2</span>),</span>
+<span id="cb18-109"><a href="#cb18-109" aria-hidden="true" tabindex="-1"></a>            (diff_W <span class="op">//</span> <span class="dv">2</span>, diff_W <span class="op">-</span> diff_W <span class="op">//</span> <span class="dv">2</span>),</span>
+<span id="cb18-110"><a href="#cb18-110" aria-hidden="true" tabindex="-1"></a>            (<span class="dv">0</span>, <span class="dv">0</span>),</span>
+<span id="cb18-111"><a href="#cb18-111" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb18-112"><a href="#cb18-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-113"><a href="#cb18-113" aria-hidden="true" tabindex="-1"></a>        x1 <span class="op">=</span> ivy.constant_pad(x1, pad_width)</span>
+<span id="cb18-114"><a href="#cb18-114" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> ivy.concat((x2, x1), axis<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb18-115"><a href="#cb18-115" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.conv(x)</span>
+<span id="cb18-116"><a href="#cb18-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-117"><a href="#cb18-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-118"><a href="#cb18-118" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> UNetOutConv(ivy.Module):</span>
+<span id="cb18-119"><a href="#cb18-119" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, in_channels, out_channels):</span>
+<span id="cb18-120"><a href="#cb18-120" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.in_channels <span class="op">=</span> in_channels</span>
+<span id="cb18-121"><a href="#cb18-121" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.out_channels <span class="op">=</span> out_channels</span>
+<span id="cb18-122"><a href="#cb18-122" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>(UNetOutConv, <span class="va">self</span>).<span class="fu">__init__</span>()</span>
+<span id="cb18-123"><a href="#cb18-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-124"><a href="#cb18-124" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> _build(<span class="va">self</span>, <span class="op">*</span>args, <span class="op">**</span>kwargs):</span>
+<span id="cb18-125"><a href="#cb18-125" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.conv <span class="op">=</span> ivy.Conv2D(<span class="va">self</span>.in_channels, <span class="va">self</span>.out_channels, [<span class="dv">1</span>, <span class="dv">1</span>], <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb18-126"><a href="#cb18-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-127"><a href="#cb18-127" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> _forward(<span class="va">self</span>, x):</span>
+<span id="cb18-128"><a href="#cb18-128" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.conv(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+
 </section>
 
 </main> <!-- /main -->
