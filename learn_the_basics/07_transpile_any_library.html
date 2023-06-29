@@ -301,10 +301,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>⚠️ If you are running this notebook in Colab, you will have to install <code>Ivy</code> and some dependencies manually. You can do so by running the cell below ⬇️</p>
 <p>If you want to run the notebook locally but don’t have Ivy installed just yet, you can check out the <a href="https://unify.ai/docs/ivy/overview/contributing/setting_up.html">Setting Up section of the docs.</a></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>git clone https:<span class="op">//</span>github.com<span class="op">/</span>unifyai<span class="op">/</span>ivy.git</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cd ivy <span class="op">&amp;&amp;</span> python3 <span class="op">-</span>m pip install <span class="op">-</span>q <span class="op">--</span>user <span class="op">-</span>e .</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install kornia</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>exit()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install ivy<span class="op">%</span>pip install kornia</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>exit()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In previous tutorials, we demonstrated how to transpile simple functions from one framework to another using <code>ivy.transpile</code>. However, in real-world scenarios, you often need to access all functions from a specific library. Fortunately, the transpiler is capable of doing just that. Let’s explore a simple example where we convert the <code>kornia</code> library from <code>torch</code> to <code>jax</code>.</p>
 <p>First, let’s import everything we need:</p>
