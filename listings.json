@@ -12,6 +12,7 @@
       "/learn_the_basics/08_transpile_any_model.html",
       "/guides/01_transpiling_a_torch_model.html",
       "/guides/03_transpiling_a_tf_model.html",
+      "/examples_and_demos/resnet_demo.html",
       "/examples_and_demos/torch_to_jax.html",
       "/examples_and_demos/mmpretrain_to_jax.html",
       "/examples_and_demos/image_segmentation_with_ivy_unet.html",
