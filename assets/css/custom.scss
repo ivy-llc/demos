@@ -36,7 +36,7 @@ $code-block-border-left-size: 3px;
 $btn-code-copy-color-active: $ivy-green;
 
 // navbar
-$navbar-bg: $ivy-light-grey;
+$navbar-bg: white;
 $navbar-fg: black;
 
 // sidebar
@@ -154,7 +154,11 @@ h3 {
 }
 
 img.navbar-logo {
-    max-height: 76px;
+    max-height: 60px;
+}
+
+.navbar {
+    box-shadow: 0px 1px 0px 1px $ivy-grey;
 }
 
 .navbar-nav {

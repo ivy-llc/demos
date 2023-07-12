@@ -13,6 +13,7 @@ website:
   navbar:
     title: false
     search: true
+    pinned: true
     logo: "assets/img/ivy_logo_text.png"
     logo-href: https://unify.ai
     left:
