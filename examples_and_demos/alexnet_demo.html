@@ -499,13 +499,13 @@ Categories of the top 3 classes are: ['tiger cat', 'tabby', 'Egyptian cat']</cod
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  module <span class="op">=</span> jax_alexnet()</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> module(x)</span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>forward <span class="op">=</span> jax.jit(forward)</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>forward <span class="op">=</span> hk.transform(forward)</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> hk.PRNGSequence(jax.random.PRNGKey(<span class="dv">42</span>))</span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>params <span class="op">=</span> forward.init(<span class="bu">next</span>(rng), img_jax)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>forward <span class="op">=</span> hk.transform(forward)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> hk.PRNGSequence(jax.random.PRNGKey(<span class="dv">42</span>))</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>params <span class="op">=</span> forward.init(<span class="bu">next</span>(rng), img_jax)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="bu">apply</span> <span class="op">=</span> jax.jit(forward.<span class="bu">apply</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-outputid="d77d44d7-173a-4958-c303-e68e364e116c" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>logits <span class="op">=</span> forward.<span class="bu">apply</span>(params, <span class="bu">next</span>(rng), img_jax)</span>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>logits <span class="op">=</span> <span class="bu">apply</span>(params, <span class="bu">next</span>(rng), img_jax)</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> jax.nn.softmax(logits)  <span class="co"># pass the image to the model</span></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>classes <span class="op">=</span> jax.numpy.argsort(<span class="op">-</span>output[<span class="dv">0</span>])[:<span class="dv">3</span>]  <span class="co"># get the top 3 classes</span></span>
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>logits <span class="op">=</span> ivy.gather(output[<span class="dv">0</span>], classes)  <span class="co"># get the logits</span></span>
@@ -550,7 +550,7 @@ Categories of the top 3 classes are: ['tiger cat', 'tabby', 'Egyptian cat']</cod
 </div>
 <div class="cell" data-outputid="20f13b09-3e9d-4014-92bc-a3af012af8df" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>img_jax <span class="op">=</span> jax.numpy.asarray(img)</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>logits <span class="op">=</span> forward.<span class="bu">apply</span>(params, <span class="bu">next</span>(rng), img_jax)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>logits <span class="op">=</span> <span class="bu">apply</span>(params, <span class="bu">next</span>(rng), img_jax)</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> jax.nn.softmax(logits)  <span class="co"># pass the image to the model</span></span>
 <span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>classes <span class="op">=</span> jax.numpy.argsort(<span class="op">-</span>output[<span class="dv">0</span>])[:<span class="dv">3</span>]  <span class="co"># get the top 3 classes</span></span>
 <span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>logits <span class="op">=</span> ivy.gather(output[<span class="dv">0</span>], classes)  <span class="co"># get the logits</span></span>

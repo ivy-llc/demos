@@ -381,10 +381,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  module <span class="op">=</span> transpiled_graph()</span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> module(<span class="op">**</span>kwargs).last_hidden_state</span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>_forward <span class="op">=</span> jax.jit(_forward)</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>rng_key <span class="op">=</span> jax.random.PRNGKey(<span class="dv">42</span>)</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>jax_mlp_forward <span class="op">=</span> hk.transform(_forward)</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>params <span class="op">=</span> jax_mlp_forward.init(rng<span class="op">=</span>rng_key, <span class="op">**</span>inputs_jax)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>rng_key <span class="op">=</span> jax.random.PRNGKey(<span class="dv">42</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>jax_forward <span class="op">=</span> hk.transform(_forward)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>params <span class="op">=</span> jax_forward.init(rng<span class="op">=</span>rng_key, <span class="op">**</span>inputs_jax)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>jit_apply <span class="op">=</span> jax.jit(jax_forward.<span class="bu">apply</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now that we have both models optimized, let’s see how their runtime speeds compare to each other!</p>
 <div class="cell">
@@ -393,7 +393,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>timeit</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>out <span class="op">=</span> jax_mlp_forward.<span class="bu">apply</span>(params, <span class="va">None</span>, <span class="op">**</span>inputs_jax)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>out <span class="op">=</span> jit_apply(params, <span class="va">None</span>, <span class="op">**</span>inputs_jax)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>As expected, we have made the model significantly faster with just one line of code, getting a ~2x increase in its execution speed! 🚀</p>
 <p>Finally, as a sanity check, let’s load a different image and make sure that the results are the same in both models</p>
@@ -407,7 +407,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    images<span class="op">=</span>image, return_tensors<span class="op">=</span><span class="st">"jax"</span></span>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>out_torch <span class="op">=</span> comp_model(<span class="op">**</span>inputs)</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>out_jax <span class="op">=</span> jax_mlp_forward.<span class="bu">apply</span>(params, <span class="va">None</span>, <span class="op">**</span>inputs_jax)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>out_jax <span class="op">=</span> jit_apply(params, <span class="va">None</span>, <span class="op">**</span>inputs_jax)</span>
 <span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>np.allclose(out_torch.last_hidden_state.detach().cpu().numpy(), out_jax, atol<span class="op">=</span><span class="fl">1e-4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>

@@ -404,10 +404,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  module <span class="op">=</span> transpiled_graph()</span>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> module(args)</span>
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>_forward <span class="op">=</span> jax.jit(_forward)</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>rng_key <span class="op">=</span> jax.random.PRNGKey(<span class="dv">42</span>)</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>jax_mlp_forward <span class="op">=</span> hk.transform(_forward)</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>params <span class="op">=</span> jax_mlp_forward.init(rng<span class="op">=</span>rng_key, args<span class="op">=</span>np_image)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>rng_key <span class="op">=</span> jax.random.PRNGKey(<span class="dv">42</span>)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>jax_mlp_forward <span class="op">=</span> hk.transform(_forward)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>params <span class="op">=</span> jax_mlp_forward.init(rng<span class="op">=</span>rng_key, args<span class="op">=</span>np_image)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="bu">apply</span> <span class="op">=</span> jax.jit(jax_mlp_forward.<span class="bu">apply</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now that we have both models optimized, let’s see how their runtime speeds compare to each other!</p>
 <div class="cell" data-outputid="31f645bf-296c-411c-d662-286ff158e591" data-execution_count="11">
@@ -419,7 +419,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="cell" data-outputid="2116425e-59a7-45f3-dfd2-eee5e5efe8ae" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>timeit</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>out <span class="op">=</span> jax_mlp_forward.<span class="bu">apply</span>(params, <span class="va">None</span>, np_image)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>out <span class="op">=</span> <span class="bu">apply</span>(params, <span class="va">None</span>, np_image)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>2.79 ms ± 133 µs per loop (mean ± std. dev. of 7 runs, 1 loop each)</code></pre>
 </div>
@@ -432,7 +432,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>tensor_image <span class="op">=</span> transform(image).unsqueeze(<span class="dv">0</span>).to(<span class="st">"cuda"</span>)</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>np_image <span class="op">=</span> tensor_image.detach().cpu().numpy()</span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>out_torch <span class="op">=</span> comp_model(tensor_image)</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>out_jax <span class="op">=</span> jax_mlp_forward.<span class="bu">apply</span>(params, <span class="va">None</span>, np_image)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>out_jax <span class="op">=</span> <span class="bu">apply</span>(params, <span class="va">None</span>, np_image)</span>
 <span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>np.allclose(out_torch.detach().cpu().numpy(), out_jax, atol<span class="op">=</span><span class="fl">1e-4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="13">
