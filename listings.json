@@ -16,8 +16,7 @@
       "/examples_and_demos/torch_to_jax.html",
       "/examples_and_demos/mmpretrain_to_jax.html",
       "/examples_and_demos/image_segmentation_with_ivy_unet.html",
-      "/examples_and_demos/alexnet_demo.html",
-      "/examples_and_demos/mpt_to_jax.html"
+      "/examples_and_demos/alexnet_demo.html"
     ]
   }
 ]
