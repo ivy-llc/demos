@@ -339,7 +339,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Now, we can use <code>ivy.transpile</code> to convert this <code>Keras</code> model to <code>PyTorch</code>. Since we are passing a framework-specific object to the <code>transpile</code> function, there is no need to specify the <code>source</code> keyword argument this time.</p>
 <div class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>input_array <span class="op">=</span> tf.random.normal((<span class="dv">1</span>, <span class="dv">28</span>, <span class="dv">28</span>, <span class="dv">3</span>))</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>torch_model <span class="op">=</span> ivy.transpile(model, to<span class="op">=</span><span class="st">"torch"</span>, args<span class="op">=</span>(input_array,))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>torch_model <span class="op">=</span> ivy.transpile(model, source <span class="op">=</span> <span class="st">"tensorflow"</span>, to<span class="op">=</span><span class="st">"torch"</span>, args<span class="op">=</span>(input_array,))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Thanks to (eager) transpilation, we now have a fully-fledged <code>torch.nn.module</code> 🚀</p>
 <div class="cell" data-execution_count="6">
