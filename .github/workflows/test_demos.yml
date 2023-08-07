@@ -15,7 +15,7 @@ jobs:
       - name: run demo testing
         id: tests
         run: |
-          cd ivy-demos
+          echo $PWD
           pip install -r requirements.txt
           mkdir .ivy
           touch .ivy/key.pem
