@@ -1,0 +1,31 @@
+name: test-demos
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'master'
+jobs:
+  Ubuntu:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout Demos🛎
+        uses: actions/checkout@v3
+        with:
+          path: ivy
+          persist-credentials: false
+          submodules: "recursive"
+          fetch-depth: 100
+
+      - name: run demo testing
+        id: tests
+        run: |
+          pip install -r requirements.txt
+          cd ivy-demos
+          mkdir .ivy
+          touch .ivy/key.pem
+          echo -n ${{ secrets.USER_API_KEY }} > .ivy/key.pem
+          docker run --rm --gpus all unifyai/ivy:latest python3 tests/notebook_testing.py
+
+      - name: Check on failures
+        if: steps.tests.outcome != 'success'
+        run: exit 1
