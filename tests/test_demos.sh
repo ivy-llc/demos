@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # install dependencies
-cd ivy/demos
+ls
 python3 -m pip install -r requirements.txt
 
 # run test
