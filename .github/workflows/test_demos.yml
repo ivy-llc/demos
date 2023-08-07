@@ -1,9 +1,5 @@
 name: test-demos
-on:
-  workflow_dispatch:
-  push:
-    branches:
-      - 'master'
+on: [push, pull_request, workflow_dispatch]
 jobs:
   Ubuntu:
     runs-on: ubuntu-20.04
