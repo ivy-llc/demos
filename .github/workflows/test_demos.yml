@@ -16,12 +16,10 @@ jobs:
         id: tests
         run: |
           cd demos
-          ls
-          pip install -r requirements.txt
           mkdir .ivy
           touch .ivy/key.pem
           echo -n ${{ secrets.USER_API_KEY }} > .ivy/key.pem
-          docker run -v `pwd`:/ivy/demos unifyai/ivy:latest python3 tests/notebook_testing.py
+          docker run -v `pwd`:/ivy/demos unifyai/ivy:latest python3 demos/tests/notebook_testing.py
 
       - name: Check on failures
         if: steps.tests.outcome != 'success'
