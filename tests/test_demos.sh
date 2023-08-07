@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # install dependencies
-ls
+cd demos
 python3 -m pip install -r requirements.txt
 
 # run test
