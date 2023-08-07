@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # install dependencies
+cd ..
 python3 -m pip install -r requirements.txt
 
 # run test
