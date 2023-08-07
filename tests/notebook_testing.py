@@ -6,7 +6,6 @@ Each cell is submitted to the kernel, and the outputs are compared with those st
 Tested with python 3.6 and jupyter 5.0
 """
 # License: MIT, but credit is nice (Min RK, ociule).
-
 import os, sys, time
 import base64
 import re
