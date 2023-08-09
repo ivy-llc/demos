@@ -227,7 +227,7 @@ def test_notebook(nb):
 
 
 if __name__ == "__main__":
-    for ipynb in ["learn_the_basics/03_compile_code.ipynb"]:  # sys.argv[1:]:
+    for ipynb in ["learn_the_basics/_compile_code_test.ipynb"]:  # sys.argv[1:]:
         print("testing %s" % ipynb)
         with open(ipynb) as f:
             nb = nbformat.reads(f.read(), nbformat.current_nbformat)
