@@ -5,7 +5,7 @@
 
 	"build": {
 		"dockerfile": "../docker/dockerfile",
-		"context": "../.."
+		"context": ".."
 	},
 
 	"customizations": {
