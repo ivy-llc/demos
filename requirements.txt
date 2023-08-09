@@ -1,2 +1,2 @@
-jupyter-client==8.3.0
+jupyter
 ivy
