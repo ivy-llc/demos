@@ -1,24 +1,18 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.236.0/containers/docker-existing-dockerfile
 {
-	"name": "Ivy Development Environment (build)",
+	"name": "Demos",
 
 	"build": {
 		"dockerfile": "../docker/Dockerfile",
-		"context": "..",
-		"args": {
-      "pycon": ["3.10"]
-    }
+		"context": ".."
 	},
 
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"ms-python.python"
-			],
-			"settings": {
-				"python.defaultInterpreterPath": "/opt/miniconda/envs/multienv/bin/python3"
-			}
+				"ms-python.python",
+			]
 		}
 	},
 
@@ -47,16 +41,6 @@
 			"installOhMyZsh": true,
 			"upgradePackages": false
 		},
-        "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
-			"moby": true,
-			"installDockerBuildx": true,
-			"version": "20.10",
-			"dockerDashComposeVersion": "v2"
-		},
-		"ghcr.io/devcontainers/features/github-cli:1": {
-			"installDirectlyFromGitHubRelease": true,
-			"version": "latest"
-		}
+		"ghcr.io/devcontainers/features/docker-in-docker:2": {},
     }
 }
-
