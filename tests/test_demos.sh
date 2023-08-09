@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # import ivy
-export PYTHONPATH=$PYTHONPATH:'/ivy/ivy'
+# export PYTHONPATH=$PYTHONPATH:'/ivy/ivy'
 
 cd demos
 
