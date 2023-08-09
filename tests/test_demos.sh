@@ -1,9 +1,11 @@
 #!/bin/bash
 
+# import ivy
 export PYTHONPATH=$PYTHONPATH:'/ivy/ivy'
 
 cd demos
 
+# Compiler/Transpiler API keys
 mkdir .ivy
 touch .ivy/key.pem
 echo -n "$1"> .ivy/key.pem
