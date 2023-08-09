@@ -1,0 +1,36 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.236.0/containers/docker-existing-dockerfile
+{
+	"name": "Demos",
+
+	// Sets the run context to one level up instead of the .devcontainer folder.
+	"dockerFile": "../docker/Dockerfile",
+	"context": "..",
+
+	// Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename.
+
+	"runArgs": [
+		"--gpus",
+		"all"
+	],
+
+	// An array of extensions that should be installed into the container.
+	"extensions": ["ms-python.python","NVIDIA.nsight-vscode-edition"],
+
+	"features": {
+		"ghcr.io/devcontainers/features/common-utils:2": {
+			"installZsh": true,
+			"configureZshAsDefaultShell": true,
+			"installOhMyZsh": true,
+			"upgradePackages": false
+		},
+        "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+			"moby": true,
+			"installDockerBuildx": true,
+			"version": "20.10",
+			"dockerDashComposeVersion": "v2"
+		}
+    },
+	// Uncomment the next line to run commands after the container is created - for example installing curl.
+	"postCreateCommand": "bash .devcontainer/post_commands.sh"
+}
