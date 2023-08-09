@@ -2,11 +2,6 @@
 
 cd demos
 
-# Compiler/Transpiler API keys
-mkdir .ivy
-touch .ivy/key.pem
-echo -n "$1"> .ivy/key.pem
-
 # install dependencies
 python3 -m pip install -r requirements.txt >/dev/null 2>&1
 
