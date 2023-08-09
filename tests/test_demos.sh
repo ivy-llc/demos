@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export PYTHONPATH=$PYTHONPATH:'/ivy/ivy'
+
 cd demos
 
 mkdir .ivy
