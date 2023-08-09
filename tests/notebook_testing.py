@@ -176,7 +176,7 @@ def test_notebook(nb):
     # kc.execute("ivy.set_backend('jax')")
     # kc.execute("ivy.unset_backend()")
     # TODO
-    kc.execute("import os;os.environ['IVY_ROOT']='.ivy/'")
+    # kc.execute("import os;os.environ['IVY_ROOT']='ivy-demos/.ivy'")
 
     while True:
         try:
@@ -227,7 +227,7 @@ def test_notebook(nb):
 
 
 if __name__ == "__main__":
-    for ipynb in ["learn_the_basics/_compile_code_test.ipynb"]:  # sys.argv[1:]:
+    for ipynb in ["../learn_the_basics/03_compile_code.ipynb"]:  # sys.argv[1:]:
         print("testing %s" % ipynb)
         with open(ipynb) as f:
             nb = nbformat.reads(f.read(), nbformat.current_nbformat)
