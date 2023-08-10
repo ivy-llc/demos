@@ -176,6 +176,7 @@ def test_notebook(nb):
     # kc.execute("ivy.set_backend('jax')")
     # kc.execute("ivy.unset_backend()")
     # TODO
+    print(os.listdir(os.getcwd()))
     kc.execute("import os;os.environ['IVY_ROOT']='./.ivy'")
 
     while True:
