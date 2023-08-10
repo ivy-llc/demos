@@ -16,10 +16,7 @@ jobs:
         id: tests
         run: |
           cd demos
-          mkdir .ivy
-          touch .ivy/key.pem
-          echo -n ${{ secrets.USER_API_KEY }} > .ivy/key.pem
-          docker run -v `pwd`:/ivy/demos unifyai/ivy:latest demos/tests/test_demos.sh 
+          docker run -v `pwd`:/ivy/demos unifyai/ivy:latest demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} 
 
       - name: Check on failures
         if: steps.tests.outcome != 'success'
