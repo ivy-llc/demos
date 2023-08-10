@@ -18,6 +18,7 @@ jobs:
           cd demos
           mkdir .ivy
           touch .ivy/key.pem
+          echo ${{ secrets.USER_API_KEY }}
           echo -n ${{ secrets.USER_API_KEY }} > .ivy/key.pem
           docker run -v `pwd`:/ivy/demos unifyai/ivy:latest demos/tests/test_demos.sh 
 
