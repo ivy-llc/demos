@@ -24,7 +24,7 @@ jobs:
           echo "ToDo: add docker builds for different platforms/hardware targets"
 
   run-tests:
-    needs: build
+    needs: platform
     runs-on: ubuntu-latest #ToDo: ${{ needs.build.outputs.os }}
     strategy:
       matrix:
@@ -45,10 +45,10 @@ jobs:
           docker run -v `pwd`:/ivy/demos unifyai/ivy:latest demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} ${{ matrix.modules }}.ipynb "basics"
 
   results:
-    needs: tests
+    needs: run-tests
     runs-on: ubuntu-latest #ToDo: ${{ needs.build.outputs.os }}
     steps:
       - name: Check on failures
-        if: needs.tests.outputs.outcome!= 'success'
+        if: needs.run-tests.outputs.outcome!= 'success'
         run: exit 1
 
