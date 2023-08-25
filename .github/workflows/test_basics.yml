@@ -43,4 +43,5 @@ jobs:
       # Use the customized job name in the workflow display
       - name: Job Finished
         if: always()
-        run: echo "Job finished: ${{ job.outputs.job_name }}"
+        run: |
+        echo "Job finished: ${{ job.outputs.job_name }}"
