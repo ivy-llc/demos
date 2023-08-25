@@ -49,6 +49,6 @@ jobs:
     runs-on: ubuntu-latest #ToDo: ${{ needs.build.outputs.os }}
     steps:
       - name: Check on failures
-        if: needs.tests.outputs.outcome!= "success"
+        if: needs.tests.outputs.outcome!= 'success'
         run: exit 1
 
