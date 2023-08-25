@@ -17,12 +17,6 @@ jobs:
           submodules: "recursive"
           fetch-depth: 100
 
-      - name: Set Short Job Name
-        id: preprocess
-        run: |
-          short_name="${{ matrix.modules/^[0-9]+_(.*)$/\1/ }}"
-          echo "::set-output name=short_name::$short_name"
-
       - name: Run Demo Testing
         id: tests
         run: |
@@ -32,7 +26,3 @@ jobs:
       - name: Check on Failures
         if: steps.tests.outcome != 'success'
         run: exit 1
-
-      - name: Post-process Job Name
-        run: |
-          echo "Job name: ${{ job.jobname }} / ${{ steps.preprocess.outputs.short_name }}"
