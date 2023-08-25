@@ -290,7 +290,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#imports" id="toc-imports" class="nav-link active" data-scroll-target="#imports">Imports</a></li>
+  <li><a href="#installation" id="toc-installation" class="nav-link active" data-scroll-target="#installation">Installation</a></li>
+  <li><a href="#imports" id="toc-imports" class="nav-link" data-scroll-target="#imports">Imports</a></li>
   <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation">Data Preparation</a>
   <ul class="collapse">
   <li><a href="#prepare-the-set-of-labels" id="toc-prepare-the-set-of-labels" class="nav-link" data-scroll-target="#prepare-the-set-of-labels">Prepare the set of labels</a></li>
@@ -333,8 +334,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 <p>Use the Ivy <code>ResNet</code> model for image classification.</p>
-<p>If you already have <code>Ivy</code> and <code>Ivy Models</code> installed you can skip this cell, but if you are using Colab, you will have to install <code>Ivy</code> and <code>Ivy Models</code> manually. You can do so by running the cell below ⬇️</p>
-<div class="cell" data-outputid="7fb401d4-b7c9-4520-85ea-3a843ae27a5b" data-execution_count="1">
+<section id="installation" class="level2">
+<h2 class="anchored" data-anchor-id="installation">Installation</h2>
+<p>Since we want the packages to be available after installing, after running the first cell, the notebook will automatically restart.</p>
+<p>You can then do <strong>Runtime -&gt; Run all</strong> after the notebook has restarted, to run all of the cells.</p>
+<p>Make sure you run this demo with GPU enabled!</p>
+<div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install <span class="op">-</span>q ivy</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>git clone https:<span class="op">//</span>github.com<span class="op">/</span>unifyai<span class="op">/</span>models.git</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -344,108 +349,57 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>python3 <span class="op">-</span>m pip install torchvision</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>exit()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 10.0/10.0 MB 61.7 MB/s eta 0:00:00
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 42.2/42.2 kB 3.8 MB/s eta 0:00:00
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 45.6/45.6 kB 4.4 MB/s eta 0:00:00
-Cloning into 'models'...
-remote: Enumerating objects: 1481, done.
-remote: Counting objects: 100% (573/573), done.
-remote: Compressing objects: 100% (256/256), done.
-remote: Total 1481 (delta 383), reused 436 (delta 290), pack-reused 908
-Receiving objects: 100% (1481/1481), 287.11 MiB | 17.55 MiB/s, done.
-Resolving deltas: 100% (737/737), done.
-  Preparing metadata (setup.py) ... done
-Requirement already satisfied: torchvision in /usr/local/lib/python3.10/dist-packages (0.15.2+cu118)
-Requirement already satisfied: numpy in /usr/local/lib/python3.10/dist-packages (from torchvision) (1.22.4)
-Requirement already satisfied: requests in /usr/local/lib/python3.10/dist-packages (from torchvision) (2.27.1)
-Requirement already satisfied: torch==2.0.1 in /usr/local/lib/python3.10/dist-packages (from torchvision) (2.0.1+cu118)
-Requirement already satisfied: pillow!=8.3.*,&gt;=5.3.0 in /usr/local/lib/python3.10/dist-packages (from torchvision) (8.4.0)
-Requirement already satisfied: filelock in /usr/local/lib/python3.10/dist-packages (from torch==2.0.1-&gt;torchvision) (3.12.2)
-Requirement already satisfied: typing-extensions in /usr/local/lib/python3.10/dist-packages (from torch==2.0.1-&gt;torchvision) (4.6.3)
-Requirement already satisfied: sympy in /usr/local/lib/python3.10/dist-packages (from torch==2.0.1-&gt;torchvision) (1.11.1)
-Requirement already satisfied: networkx in /usr/local/lib/python3.10/dist-packages (from torch==2.0.1-&gt;torchvision) (3.1)
-Requirement already satisfied: jinja2 in /usr/local/lib/python3.10/dist-packages (from torch==2.0.1-&gt;torchvision) (3.1.2)
-Requirement already satisfied: triton==2.0.0 in /usr/local/lib/python3.10/dist-packages (from torch==2.0.1-&gt;torchvision) (2.0.0)
-Requirement already satisfied: cmake in /usr/local/lib/python3.10/dist-packages (from triton==2.0.0-&gt;torch==2.0.1-&gt;torchvision) (3.25.2)
-Requirement already satisfied: lit in /usr/local/lib/python3.10/dist-packages (from triton==2.0.0-&gt;torch==2.0.1-&gt;torchvision) (16.0.6)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/local/lib/python3.10/dist-packages (from requests-&gt;torchvision) (1.26.16)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/local/lib/python3.10/dist-packages (from requests-&gt;torchvision) (2023.5.7)
-Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/local/lib/python3.10/dist-packages (from requests-&gt;torchvision) (2.0.12)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/local/lib/python3.10/dist-packages (from requests-&gt;torchvision) (3.4)
-Requirement already satisfied: MarkupSafe&gt;=2.0 in /usr/local/lib/python3.10/dist-packages (from jinja2-&gt;torch==2.0.1-&gt;torchvision) (2.1.3)
-Requirement already satisfied: mpmath&gt;=0.19 in /usr/local/lib/python3.10/dist-packages (from sympy-&gt;torch==2.0.1-&gt;torchvision) (1.3.0)</code></pre>
 </div>
-</div>
+</section>
 <section id="imports" class="level2">
 <h2 class="anchored" data-anchor-id="imports">Imports</h2>
 <div class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ivy</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ivy</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="data-preparation" class="level2">
 <h2 class="anchored" data-anchor-id="data-preparation">Data Preparation</h2>
 <section id="prepare-the-set-of-labels" class="level3">
 <h3 class="anchored" data-anchor-id="prepare-the-set-of-labels">Prepare the set of labels</h3>
-<p>To show the predicted category, we download the labels associated with the pretrained weights.</p>
-<div class="cell" data-outputid="bfa0c5c2-b384-478b-b4d4-6ac0abb8ba0e" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>wget https:<span class="op">//</span>raw.githubusercontent.com<span class="op">/</span>pytorch<span class="op">/</span>hub<span class="op">/</span>master<span class="op">/</span>imagenet_classes.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>--2023-07-10 08:52:54--  https://raw.githubusercontent.com/pytorch/hub/master/imagenet_classes.txt
-Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.109.133, 185.199.111.133, 185.199.108.133, ...
-Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.109.133|:443... connected.
-HTTP request sent, awaiting response... 200 OK
-Length: 10472 (10K) [text/plain]
-Saving to: ‘imagenet_classes.txt’
-
-imagenet_classes.tx   0%[                    ]       0  --.-KB/s               imagenet_classes.tx 100%[===================&gt;]  10.23K  --.-KB/s    in 0s      
-
-2023-07-10 08:52:55 (24.2 MB/s) - ‘imagenet_classes.txt’ saved [10472/10472]
-</code></pre>
-</div>
-</div>
-<p>The labels are then loaded into a Python list.</p>
-<div class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read the categories</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"imagenet_classes.txt"</span>, <span class="st">"r"</span>) <span class="im">as</span> f:</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    categories <span class="op">=</span> [s.strip() <span class="cf">for</span> s <span class="kw">in</span> f.readlines()]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To show the predicted category, we download the labels associated with the pretrained weights. The labels are then loaded into a Python list.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>wget https:<span class="op">//</span>raw.githubusercontent.com<span class="op">/</span>pytorch<span class="op">/</span>hub<span class="op">/</span>master<span class="op">/</span>imagenet_classes.txt</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"imagenet_classes.txt"</span>, <span class="st">"r"</span>) <span class="im">as</span> f:</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    categories <span class="op">=</span> [s.strip() <span class="cf">for</span> s <span class="kw">in</span> f.readlines()]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="load-the-image-example" class="level3">
 <h3 class="anchored" data-anchor-id="load-the-image-example">Load the image example 🖼️</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>wget https:<span class="op">//</span>raw.githubusercontent.com<span class="op">/</span>unifyai<span class="op">/</span>models<span class="op">/</span>master<span class="op">/</span>images<span class="op">/</span>cat.jpg</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>filename <span class="op">=</span> <span class="st">"cat.jpg"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <div class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>filename <span class="op">=</span> <span class="st">"models/images/cat.jpg"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Preprocess torch image</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torchvision <span class="im">import</span> transforms</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PIL <span class="im">import</span> Image</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>preprocess <span class="op">=</span> transforms.Compose([</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    transforms.Resize(<span class="dv">256</span>),</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    transforms.CenterCrop(<span class="dv">224</span>),</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    transforms.ToTensor(),</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    transforms.Normalize(</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    mean<span class="op">=</span>[<span class="fl">0.485</span>, <span class="fl">0.456</span>, <span class="fl">0.406</span>],</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    std<span class="op">=</span>[<span class="fl">0.229</span>, <span class="fl">0.224</span>, <span class="fl">0.225</span>]</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>)])</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>torch_img <span class="op">=</span> Image.<span class="bu">open</span>(filename)</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>torch_img <span class="op">=</span> preprocess(torch_img)</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>torch_img <span class="op">=</span> torch.unsqueeze(torch_img, <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to numpy</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> torch_img.permute((<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>)).detach().numpy()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Preprocess torch image</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torchvision <span class="im">import</span> transforms</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PIL <span class="im">import</span> Image</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>preprocess <span class="op">=</span> transforms.Compose([</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    transforms.Resize(<span class="dv">256</span>),</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    transforms.CenterCrop(<span class="dv">224</span>),</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    transforms.ToTensor(),</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    transforms.Normalize(</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    mean<span class="op">=</span>[<span class="fl">0.485</span>, <span class="fl">0.456</span>, <span class="fl">0.406</span>],</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    std<span class="op">=</span>[<span class="fl">0.229</span>, <span class="fl">0.224</span>, <span class="fl">0.225</span>]</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>)])</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>torch_img <span class="op">=</span> Image.<span class="bu">open</span>(filename)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>torch_img <span class="op">=</span> preprocess(torch_img)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>torch_img <span class="op">=</span> torch.unsqueeze(torch_img, <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="visualise-image" class="level3">
 <h3 class="anchored" data-anchor-id="visualise-image">Visualise image</h3>
-<div class="cell" data-outputid="4fdee9fd-2918-4194-c817-c2386e4baf48" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> Image, display</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>display(Image(filename))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-outputid="3e2ba33c-6df6-4550-f12a-2744d82b5dc9" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> Image, display</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>display(Image(filename))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="resnet_demo_files/figure-html/cell-9-output-1.jpeg" class="img-fluid"></p>
+<p><img src="resnet_demo_files/figure-html/cell-7-output-1.jpeg" class="img-fluid"></p>
 </div>
 </div>
 </section>
@@ -454,541 +408,27 @@ imagenet_classes.tx   0%[                    ]       0  --.-KB/s               i
 <h2 class="anchored" data-anchor-id="model-inference-resnet34">Model Inference ResNet34</h2>
 <section id="initializing-native-torch-resnet34" class="level3">
 <h3 class="anchored" data-anchor-id="initializing-native-torch-resnet34">Initializing Native Torch ResNet34</h3>
-<div class="cell" data-outputid="e34d7f9e-65e2-42b3-b6d5-e8d818028abb" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torchvision.models <span class="im">import</span> resnet34, ResNet34_Weights</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>torch_resnet_34 <span class="op">=</span> resnet34(weights<span class="op">=</span>ResNet34_Weights.IMAGENET1K_V1)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>torch_resnet_34.<span class="bu">eval</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Downloading: "https://download.pytorch.org/models/resnet34-b627a593.pth" to /root/.cache/torch/hub/checkpoints/resnet34-b627a593.pth
-100%|██████████| 83.3M/83.3M [00:00&lt;00:00, 98.7MB/s]</code></pre>
-</div>
-<div class="cell-output cell-output-display" data-execution_count="8">
-<pre><code>ResNet(
-  (conv1): Conv2d(3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
-  (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-  (relu): ReLU(inplace=True)
-  (maxpool): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
-  (layer1): Sequential(
-    (0): BasicBlock(
-      (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace=True)
-      (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-    )
-    (1): BasicBlock(
-      (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace=True)
-      (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-    )
-    (2): BasicBlock(
-      (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace=True)
-      (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-    )
-  )
-  (layer2): Sequential(
-    (0): BasicBlock(
-      (conv1): Conv2d(64, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
-      (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace=True)
-      (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (downsample): Sequential(
-        (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(2, 2), bias=False)
-        (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      )
-    )
-    (1): BasicBlock(
-      (conv1): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace=True)
-      (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-    )
-    (2): BasicBlock(
-      (conv1): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace=True)
-      (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-    )
-    (3): BasicBlock(
-      (conv1): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace=True)
-      (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-    )
-  )
-  (layer3): Sequential(
-    (0): BasicBlock(
-      (conv1): Conv2d(128, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
-      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace=True)
-      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (downsample): Sequential(
-        (0): Conv2d(128, 256, kernel_size=(1, 1), stride=(2, 2), bias=False)
-        (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      )
-    )
-    (1): BasicBlock(
-      (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace=True)
-      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-    )
-    (2): BasicBlock(
-      (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace=True)
-      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-    )
-    (3): BasicBlock(
-      (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace=True)
-      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-    )
-    (4): BasicBlock(
-      (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace=True)
-      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-    )
-    (5): BasicBlock(
-      (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace=True)
-      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-    )
-  )
-  (layer4): Sequential(
-    (0): BasicBlock(
-      (conv1): Conv2d(256, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
-      (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace=True)
-      (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (downsample): Sequential(
-        (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False)
-        (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      )
-    )
-    (1): BasicBlock(
-      (conv1): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace=True)
-      (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-    )
-    (2): BasicBlock(
-      (conv1): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace=True)
-      (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-    )
-  )
-  (avgpool): AdaptiveAvgPool2d(output_size=(1, 1))
-  (fc): Linear(in_features=512, out_features=1000, bias=True)
-)</code></pre>
-</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torchvision.models <span class="im">import</span> resnet34, ResNet34_Weights</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>torch_resnet_34 <span class="op">=</span> resnet34(weights<span class="op">=</span>ResNet34_Weights.IMAGENET1K_V1).to(<span class="st">"cuda"</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>torch_resnet_34.<span class="bu">eval</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="initializing-ivy-resnet34-with-pretrained-weights" class="level3">
 <h3 class="anchored" data-anchor-id="initializing-ivy-resnet34-with-pretrained-weights">Initializing Ivy ResNet34 with Pretrained Weights ⬇️</h3>
 <p>The model is then initialized with the Pretrained Weights when <code>pretrained=True</code> 🔗.</p>
-<div class="cell" data-outputid="abee1971-020c-4eda-b3fb-dd902fc1ecff" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load the resnet34 model from ivy_models</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ivy_models.resnet <span class="im">import</span> resnet_34</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>ivy_resnet_34 <span class="op">=</span> resnet_34(pretrained<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-Downloading: "https://download.pytorch.org/models/resnet34-333f7ec4.pth" to /root/.cache/torch/hub/checkpoints/resnet34-333f7ec4.pth
-100%|██████████| 83.3M/83.3M [00:00&lt;00:00, 129MB/s]
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.
-WARNING:root:NumPy does not support autograd, declaring a 'variable' is identical to declaring an 'array' when using numpy backend.</code></pre>
-</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ivy_models.resnet <span class="im">import</span> resnet_34</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>ivy_resnet_34 <span class="op">=</span> resnet_34(pretrained<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Compile the forward pass for efficiency.</p>
-<div class="cell" data-outputid="f31390e3-30eb-4823-98dc-b12c80135c5c" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">'torch'</span>)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>ivy_resnet_34.<span class="bu">compile</span>(args<span class="op">=</span>(img,))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>WARNING:root:To preserve the compiler and transpiler caches across multiple machines, ensure that the relative path of your projects from the .ivy folder is consistent across all machines. You can do this by adding .ivy to your home folder and placing all projects in the same place relative to the home folder on all machines.</code></pre>
-</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">'torch'</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> ivy.asarray(torch_img.permute((<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>)), dtype<span class="op">=</span><span class="st">"float32"</span>, device<span class="op">=</span><span class="st">"gpu:0"</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>ivy_resnet_34.<span class="bu">compile</span>(args<span class="op">=</span>(img,))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="use-the-model-to-classify-your-images" class="level3">
@@ -997,34 +437,34 @@ WARNING:root:NumPy does not support autograd, declaring a 'variable' is identica
 <ol type="1">
 <li>Torch ResNet34</li>
 </ol>
-<div class="cell" data-outputid="a42f9bf1-6a7b-4968-dd33-622e0c8a8933" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>torch_output <span class="op">=</span> torch.softmax(torch_resnet_34(torch_img), dim<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>torch_classes <span class="op">=</span> torch.argsort(torch_output[<span class="dv">0</span>], descending<span class="op">=</span><span class="va">True</span>)[:<span class="dv">3</span>]</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>torch_logits <span class="op">=</span> torch.take(torch_output[<span class="dv">0</span>], torch_classes)</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Indices of the top 3 classes are:"</span>, torch_classes)</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Logits of the top 3 classes are:"</span>, torch_logits)</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Categories of the top 3 classes are:"</span>, [categories[i] <span class="cf">for</span> i <span class="kw">in</span> torch_classes])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-outputid="d45813d8-a04b-4a68-979b-bc654573c69d" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>torch_output <span class="op">=</span> torch.softmax(torch_resnet_34(torch_img.cuda()), dim<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>torch_classes <span class="op">=</span> torch.argsort(torch_output[<span class="dv">0</span>], descending<span class="op">=</span><span class="va">True</span>)[:<span class="dv">3</span>]</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>torch_logits <span class="op">=</span> torch.take(torch_output[<span class="dv">0</span>], torch_classes)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Indices of the top 3 classes are:"</span>, torch_classes)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Logits of the top 3 classes are:"</span>, torch_logits)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Categories of the top 3 classes are:"</span>, [categories[i] <span class="cf">for</span> i <span class="kw">in</span> torch_classes])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Indices of the top 3 classes are: tensor([282, 281, 285])
-Logits of the top 3 classes are: tensor([0.8507, 0.1351, 0.0069], grad_fn=&lt;TakeBackward0&gt;)
+<pre><code>Indices of the top 3 classes are: tensor([282, 281, 285], device='cuda:0')
+Logits of the top 3 classes are: tensor([0.8507, 0.1351, 0.0069], device='cuda:0', grad_fn=&lt;TakeBackward0&gt;)
 Categories of the top 3 classes are: ['tiger cat', 'tabby', 'Egyptian cat']</code></pre>
 </div>
 </div>
 <ol start="2" type="1">
 <li>Ivy ResNet34</li>
 </ol>
-<div class="cell" data-outputid="9879adba-e1d6-4207-8c19-936ad1967980" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> ivy.softmax(ivy_resnet_34(ivy.asarray(img)))  <span class="co"># pass the image to the model</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>classes <span class="op">=</span> ivy.argsort(output[<span class="dv">0</span>], descending<span class="op">=</span><span class="va">True</span>)[:<span class="dv">3</span>]  <span class="co"># get the top 3 classes</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>logits <span class="op">=</span> ivy.gather(output[<span class="dv">0</span>], classes)  <span class="co"># get the logits</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Indices of the top 3 classes are:"</span>, classes)</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Logits of the top 3 classes are:"</span>, logits)</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Categories of the top 3 classes are:"</span>, [categories[i] <span class="cf">for</span> i <span class="kw">in</span> classes.to_list()])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-outputid="79db421c-01cb-4202-c384-77a197e36de9" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> ivy.softmax(ivy_resnet_34(img))  <span class="co"># pass the image to the model</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>classes <span class="op">=</span> ivy.argsort(output[<span class="dv">0</span>], descending<span class="op">=</span><span class="va">True</span>)[:<span class="dv">3</span>]  <span class="co"># get the top 3 classes</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>logits <span class="op">=</span> ivy.gather(output[<span class="dv">0</span>], classes)  <span class="co"># get the logits</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Indices of the top 3 classes are:"</span>, classes)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Logits of the top 3 classes are:"</span>, logits)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Categories of the top 3 classes are:"</span>, [categories[i] <span class="cf">for</span> i <span class="kw">in</span> classes.to_list()])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Indices of the top 3 classes are: ivy.array([282, 281, 285])
-Logits of the top 3 classes are: ivy.array([0.85072654, 0.13506071, 0.00688289])
+<pre><code>Indices of the top 3 classes are: ivy.array([282, 281, 285], dev=gpu:0)
+Logits of the top 3 classes are: ivy.array([0.85072654, 0.13506058, 0.00688287], dev=gpu:0)
 Categories of the top 3 classes are: ['tiger cat', 'tabby', 'Egyptian cat']</code></pre>
 </div>
 </div>
@@ -1034,206 +474,24 @@ Categories of the top 3 classes are: ['tiger cat', 'tabby', 'Egyptian cat']</cod
 <h2 class="anchored" data-anchor-id="model-inference-resnet50">Model Inference ResNet50</h2>
 <section id="initializing-native-torch-resnet50" class="level3">
 <h3 class="anchored" data-anchor-id="initializing-native-torch-resnet50">Initializing Native Torch ResNet50</h3>
-<div class="cell" data-outputid="6875aaaf-6e07-4035-e55d-fe3cee4394a2" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torchvision.models <span class="im">import</span> resnet50, ResNet50_Weights</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>torch_resnet_50 <span class="op">=</span> resnet50(weights<span class="op">=</span>ResNet50_Weights.IMAGENET1K_V2)</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>torch_resnet_50.<span class="bu">eval</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Downloading: "https://download.pytorch.org/models/resnet50-11ad3fa6.pth" to /root/.cache/torch/hub/checkpoints/resnet50-11ad3fa6.pth
-100%|██████████| 97.8M/97.8M [00:00&lt;00:00, 108MB/s]</code></pre>
-</div>
-<div class="cell-output cell-output-display" data-execution_count="13">
-<pre><code>ResNet(
-  (conv1): Conv2d(3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
-  (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-  (relu): ReLU(inplace=True)
-  (maxpool): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
-  (layer1): Sequential(
-    (0): Bottleneck(
-      (conv1): Conv2d(64, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
-      (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
-      (bn3): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace=True)
-      (downsample): Sequential(
-        (0): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
-        (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      )
-    )
-    (1): Bottleneck(
-      (conv1): Conv2d(256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
-      (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
-      (bn3): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace=True)
-    )
-    (2): Bottleneck(
-      (conv1): Conv2d(256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
-      (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
-      (bn3): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace=True)
-    )
-  )
-  (layer2): Sequential(
-    (0): Bottleneck(
-      (conv1): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
-      (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
-      (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace=True)
-      (downsample): Sequential(
-        (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False)
-        (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      )
-    )
-    (1): Bottleneck(
-      (conv1): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
-      (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
-      (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace=True)
-    )
-    (2): Bottleneck(
-      (conv1): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
-      (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
-      (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace=True)
-    )
-    (3): Bottleneck(
-      (conv1): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
-      (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
-      (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace=True)
-    )
-  )
-  (layer3): Sequential(
-    (0): Bottleneck(
-      (conv1): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
-      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
-      (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace=True)
-      (downsample): Sequential(
-        (0): Conv2d(512, 1024, kernel_size=(1, 1), stride=(2, 2), bias=False)
-        (1): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      )
-    )
-    (1): Bottleneck(
-      (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
-      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
-      (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace=True)
-    )
-    (2): Bottleneck(
-      (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
-      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
-      (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace=True)
-    )
-    (3): Bottleneck(
-      (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
-      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
-      (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace=True)
-    )
-    (4): Bottleneck(
-      (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
-      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
-      (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace=True)
-    )
-    (5): Bottleneck(
-      (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
-      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
-      (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace=True)
-    )
-  )
-  (layer4): Sequential(
-    (0): Bottleneck(
-      (conv1): Conv2d(1024, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
-      (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (conv3): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
-      (bn3): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace=True)
-      (downsample): Sequential(
-        (0): Conv2d(1024, 2048, kernel_size=(1, 1), stride=(2, 2), bias=False)
-        (1): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      )
-    )
-    (1): Bottleneck(
-      (conv1): Conv2d(2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
-      (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (conv3): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
-      (bn3): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace=True)
-    )
-    (2): Bottleneck(
-      (conv1): Conv2d(2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
-      (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (conv3): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
-      (bn3): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace=True)
-    )
-  )
-  (avgpool): AdaptiveAvgPool2d(output_size=(1, 1))
-  (fc): Linear(in_features=2048, out_features=1000, bias=True)
-)</code></pre>
-</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torchvision.models <span class="im">import</span> resnet50, ResNet50_Weights</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>torch_resnet_50 <span class="op">=</span> resnet50(weights<span class="op">=</span>ResNet50_Weights.IMAGENET1K_V2).to(<span class="st">"cuda"</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>torch_resnet_50.<span class="bu">eval</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="initializing-ivy-resnet50-with-pretrained-weights" class="level3">
 <h3 class="anchored" data-anchor-id="initializing-ivy-resnet50-with-pretrained-weights">Initializing Ivy ResNet50 with Pretrained Weights ⬇️</h3>
 <p>The model is then initialized with the Pretrained Weights when <code>pretrained=True</code> 🔗.</p>
-<div class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load the resnet50 model from ivy_models</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ivy_models.resnet <span class="im">import</span> resnet_50</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>ivy_resnet_50 <span class="op">=</span> resnet_50(pretrained<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ivy_models.resnet <span class="im">import</span> resnet_50</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>ivy_resnet_50 <span class="op">=</span> resnet_50(pretrained<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Compile the forward pass for efficiency.</p>
-<div class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>ivy.set_backend(<span class="st">'torch'</span>)</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>ivy_resnet_50.<span class="bu">compile</span>(args<span class="op">=</span>(img,))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>ivy_resnet_50.<span class="bu">compile</span>(args<span class="op">=</span>(img,))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="use-the-model-to-classify-your-images-1" class="level3">
@@ -1242,34 +500,34 @@ Categories of the top 3 classes are: ['tiger cat', 'tabby', 'Egyptian cat']</cod
 <ol type="1">
 <li>Torch ResNet50</li>
 </ol>
-<div class="cell" data-outputid="506e98c3-42d6-4e55-b4f6-45352dbf84af" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>torch_output <span class="op">=</span> torch.softmax(torch_resnet_50(torch_img), dim<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>torch_classes <span class="op">=</span> torch.argsort(torch_output[<span class="dv">0</span>], descending<span class="op">=</span><span class="va">True</span>)[:<span class="dv">3</span>]</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>torch_logits <span class="op">=</span> torch.take(torch_output[<span class="dv">0</span>], torch_classes)</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Indices of the top 3 classes are:"</span>, torch_classes)</span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Logits of the top 3 classes are:"</span>, torch_logits)</span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Categories of the top 3 classes are:"</span>, [categories[i] <span class="cf">for</span> i <span class="kw">in</span> torch_classes])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-outputid="d3b6cd62-1c21-4646-d2c7-6b269ddc6adc" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>torch_output <span class="op">=</span> torch.softmax(torch_resnet_50(torch_img.cuda()), dim<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>torch_classes <span class="op">=</span> torch.argsort(torch_output[<span class="dv">0</span>], descending<span class="op">=</span><span class="va">True</span>)[:<span class="dv">3</span>]</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>torch_logits <span class="op">=</span> torch.take(torch_output[<span class="dv">0</span>], torch_classes)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Indices of the top 3 classes are:"</span>, torch_classes)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Logits of the top 3 classes are:"</span>, torch_logits)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Categories of the top 3 classes are:"</span>, [categories[i] <span class="cf">for</span> i <span class="kw">in</span> torch_classes])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Indices of the top 3 classes are: tensor([282, 281, 285])
-Logits of the top 3 classes are: tensor([0.3429, 0.0408, 0.0121], grad_fn=&lt;TakeBackward0&gt;)
+<pre><code>Indices of the top 3 classes are: tensor([282, 281, 285], device='cuda:0')
+Logits of the top 3 classes are: tensor([0.3429, 0.0408, 0.0121], device='cuda:0', grad_fn=&lt;TakeBackward0&gt;)
 Categories of the top 3 classes are: ['tiger cat', 'tabby', 'Egyptian cat']</code></pre>
 </div>
 </div>
 <ol start="2" type="1">
 <li>Ivy ResNet50</li>
 </ol>
-<div class="cell" data-outputid="e309c029-252d-48ee-9b85-2b83ac38e538" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> ivy.softmax(ivy_resnet_50(ivy.asarray(img)))  <span class="co"># pass the image to the model</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>classes <span class="op">=</span> ivy.argsort(output[<span class="dv">0</span>], descending<span class="op">=</span><span class="va">True</span>)[:<span class="dv">3</span>]  <span class="co"># get the top 3 classes</span></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>logits <span class="op">=</span> ivy.gather(output[<span class="dv">0</span>], classes)  <span class="co"># get the logits</span></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Indices of the top 3 classes are:"</span>, classes)</span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Logits of the top 3 classes are:"</span>, logits)</span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Categories of the top 3 classes are:"</span>, [categories[i] <span class="cf">for</span> i <span class="kw">in</span> classes.to_list()])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-outputid="cd00721b-9865-4686-ff52-236fb5831f60" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> ivy.softmax(ivy_resnet_50(ivy.asarray(img)))  <span class="co"># pass the image to the model</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>classes <span class="op">=</span> ivy.argsort(output[<span class="dv">0</span>], descending<span class="op">=</span><span class="va">True</span>)[:<span class="dv">3</span>]  <span class="co"># get the top 3 classes</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>logits <span class="op">=</span> ivy.gather(output[<span class="dv">0</span>], classes)  <span class="co"># get the logits</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Indices of the top 3 classes are:"</span>, classes)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Logits of the top 3 classes are:"</span>, logits)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Categories of the top 3 classes are:"</span>, [categories[i] <span class="cf">for</span> i <span class="kw">in</span> classes.to_list()])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Indices of the top 3 classes are: ivy.array([282, 281, 285])
-Logits of the top 3 classes are: ivy.array([0.34288239, 0.04077011, 0.01212029])
+<pre><code>Indices of the top 3 classes are: ivy.array([282, 281, 285], dev=gpu:0)
+Logits of the top 3 classes are: ivy.array([0.34288213, 0.04077019, 0.0121203 ], dev=gpu:0)
 Categories of the top 3 classes are: ['tiger cat', 'tabby', 'Egyptian cat']</code></pre>
 </div>
 </div>
