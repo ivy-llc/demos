@@ -1,5 +1,5 @@
-- demos:
-    - name: 03_compile_code.ipynb
+- modules:
+    - name: 03_write_ivy_code.ipynb
       cells:
       - cell_number: 11
         type: non_deterministic_value
@@ -11,6 +11,3 @@
         type: non_deterministic_value
         regex: "some_regex_pattern"
         action: pass
-
-    - name:
-      cells:

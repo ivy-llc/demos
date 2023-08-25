@@ -1,0 +1,37 @@
+name: test-examples
+on:
+  push:
+    branches:
+      - ci-testing
+      - main
+      - release/* #ToDo: add a release branch
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  Ubuntu:
+    runs-on: ubuntu-latest #ToDo: ${{ needs.build.outputs.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        modules: [alexnet_demo, bert_demo, image_segmentation_with_ivy_unet, mmpretrain_to_jax, resnet_demo, torch_to_jax]
+    steps:
+      - name: Checkout Demos🛎
+        uses: actions/checkout@v2
+        with:
+          path: demos
+          persist-credentials: false
+          submodules: "recursive"
+          fetch-depth: 100
+
+      - name: Run Demo Testing
+        id: tests
+        run: |
+          cd demos
+          docker run -v `pwd`:/ivy/demos unifyai/ivy:latest demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} ${{ matrix.modules }}.ipynb "examples"
+        continue-on-error: true
+
+      - name: Check on failures
+        if: steps.tests.outcome!= 'success'
+        run: exit 1
+
