@@ -12,6 +12,7 @@ jobs:
   Ubuntu:
     runs-on: ubuntu-latest #ToDo: ${{ needs.build.outputs.os }}
     strategy:
+      fail-fast: false
       matrix:
         modules: [01_write_ivy_code, 02_unify_code, 03_compile_code, 04_transpile_code, 05_lazy_vs_eager, 06_how_to_use_decorators, 07_transpile_any_library, 08_transpile_any_model, 09_write_a_model_using_ivy]
 
