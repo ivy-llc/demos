@@ -158,6 +158,7 @@ def run_cell(shell, iopub, cell, kc):
 def test_notebook(nb):
     km = KernelManager()
     km.start_kernel(extra_arguments=["--pylab=inline"], stderr=open(os.devnull, "w"))
+    exit_code = 0
     try:
         kc = km.client()
         kc.start_channels()
@@ -214,6 +215,7 @@ def test_notebook(nb):
                 failed = True
         if failed:
             failures += 1
+            exit_code = 1
         else:
             successes += 1
         sys.stdout.write(".")
@@ -227,6 +229,7 @@ def test_notebook(nb):
     kc.stop_channels()
     km.shutdown_kernel()
     del km
+    exit(exit_code)
 
 
 if __name__ == "__main__":

@@ -12,7 +12,7 @@ jobs:
   platform:
     strategy:
       matrix:
-        os: [ubuntu-20.04, windows-latest, macos-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
     runs-on: ${{ matrix.os }}
     steps:
@@ -43,6 +43,7 @@ jobs:
         run: |
           cd demos
           docker run -v `pwd`:/ivy/demos unifyai/ivy:latest demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} ${{ matrix.modules }}.ipynb "basics"
+        continue-on-error: true
 
   results:
     needs: run-tests
