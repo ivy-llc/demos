@@ -1,12 +1,13 @@
 #!/usr/bin/env python
-"""
-simple example script for running and testing notebooks.
+"""simple example script for running and testing notebooks.
+
 Usage: `notebook_testing.py foo.ipynb [bar.ipynb [...]]`
 Each cell is submitted to the kernel, and the outputs are compared with those stored in the notebook.
 Tested with python 3.6 and jupyter 5.0
 """
 # License: MIT, but credit is nice (Min RK, ociule).
-import os, sys, time
+import os
+import sys
 import base64
 import re
 
@@ -24,19 +25,21 @@ import nbformat
 
 
 def compare_png(a64, b64):
-    """compare two b64 PNGs (incomplete)"""
+    """Compare two b64 PNGs (incomplete)."""
     try:
         import Image
     except ImportError:
         pass
-    adata = base64.decodestring(a64)
-    bdata = base64.decodestring(b64)
+    base64.decodestring(a64)
+    base64.decodestring(b64)
     return True
 
 
 def sanitize(s):
-    """sanitize a string for comparison.
-    fix universal newlines, strip trailing newlines, and normalize likely random values (memory addresses and UUIDs)
+    """Sanitize a string for comparison.
+
+    fix universal newlines, strip trailing newlines, and normalize
+    likely random values (memory addresses and UUIDs)
     """
     if not isinstance(s, str):
         return s
@@ -56,7 +59,7 @@ def sanitize(s):
 
 
 def consolidate_outputs(outputs):
-    """consolidate outputs into a summary dict (incomplete)"""
+    """Consolidate outputs into a summary dict (incomplete)."""
     data = defaultdict(list)
     data["stdout"] = ""
     data["stderr"] = ""
@@ -196,7 +199,7 @@ def test_notebook(nb):
         try:
             outs = run_cell(shell, iopub, cell, kc)
         except Exception as e:
-            import pdb
+            pass
 
             # pdb.set_trace()
             print("failed to run cell:", repr(e))
@@ -232,7 +235,7 @@ if __name__ == "__main__":
         path = "learn_the_basics/"
     else:
         path = "examples_and_demos/"
-    ipynb = path+module
+    ipynb = path + notebook
     print(f"testing {ipynb}")
     with open(ipynb) as f:
         nb = nbformat.reads(f.read(), nbformat.current_nbformat)
