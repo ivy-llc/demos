@@ -106,7 +106,7 @@ def run_cell(shell, iopub, cell, kc):
     # shell.execute(cell.source)
     kc.execute(cell.source)
     # wait for finish, maximum 20s
-    shell.get_msg(timeout=300)  # was 20
+    shell.get_msg(timeout=200)  # was 20
     outs = []
 
     while True:
@@ -227,8 +227,13 @@ def test_notebook(nb):
 
 
 if __name__ == "__main__":
-    for ipynb in ["learn_the_basics/03_compile_code.ipynb"]:  # sys.argv[1:]:
-        print("testing %s" % ipynb)
-        with open(ipynb) as f:
-            nb = nbformat.reads(f.read(), nbformat.current_nbformat)
+    notebook, module = sys.argv[1], sys.argv[2]
+    if module == "basics":
+        path = "learn_the_basics/"
+    else:
+        path = "examples_and_demos/"
+    ipynb = path+module
+    print(f"testing {ipynb}")
+    with open(ipynb) as f:
+        nb = nbformat.reads(f.read(), nbformat.current_nbformat)
         test_notebook(nb)
