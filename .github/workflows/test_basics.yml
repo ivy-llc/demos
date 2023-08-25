@@ -35,13 +35,3 @@ jobs:
         if: steps.tests.outcome!= 'success'
         run: exit 1
 
-      # Customize the job name for display
-      - name: Set Job Name
-        if: always()  # This step will run even if previous steps fail
-        run: echo "::set-output name=job_name::${{ matrix.modules | replace('_', '-') }}"
-
-      # Use the customized job name in the workflow display
-      - name: Job Finished
-        if: always()
-        run: |
-        echo "Job finished: ${{ job.outputs.job_name }}"
