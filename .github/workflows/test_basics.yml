@@ -1,27 +1,34 @@
 name: test-basics
-on: [push, pull_request, workflow_dispatch]
+on:
+  push:
+    branches:
+      - main
+      - release/* #ToDo: add a release branch
+  pull_request:
+  workflow_dispatch:
 
 jobs:
-  SetupDocker:
-    runs-on: ubuntu-20.04
+  platform:
+    strategy:
+      matrix:
+        os: [ubuntu-20.04, windows-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
     steps:
-      - name: Checkout Demos🛎
+      - name: Checkout Repository
         uses: actions/checkout@v2
-        with:
-          path: demos
-          persist-credentials: false
-          submodules: "recursive"
-          fetch-depth: 100
 
-      - name: Set Up Docker Container
-        id: setup-docker
+      - name: Build Ivy
         run: |
-          cd demos
-          docker run -d --name ivy-container unifyai/ivy:latest tail -f /dev/null
+          echo "ToDo: add docker builds for different platforms/hardware targets"
 
-  RunTests:
-    needs: SetupDocker
-    runs-on: ubuntu-20.04
+  run-tests:
+    needs: build
+    runs-on: ubuntu-latest #ToDo: ${{ needs.build.outputs.os }}
+    strategy:
+      matrix:
+        modules: [01_write_ivy_code, 02_unify_code, 03_compile_code, 04_transpile_code, 05_lazy_vs_eager, 06_how_to_use_decorators, 07_transpile_any_library, 08_transpile_any_model, 09_write_a_model_using_ivy]
+
     steps:
       - name: Checkout Demos🛎
         uses: actions/checkout@v2
@@ -32,19 +39,15 @@ jobs:
           fetch-depth: 100
 
       - name: Run Demo Testing
-        id: tests
         run: |
           cd demos
-          docker exec ivy-container /ivy/demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} ${{ matrix.test_files }} "basics"
+          docker run -v `pwd`:/ivy/demos unifyai/ivy:latest demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} ${{ matrix.modules }}.ipynb "basics"
 
-      - name: Check on Failures
-        if: steps.tests.outcome != 'success'
+  results:
+    needs: tests
+    runs-on: ubuntu-latest #ToDo: ${{ needs.build.outputs.os }}
+    steps:
+      - name: Check on failures
+        if: needs.tests.outputs.outcome!= "success"
         run: exit 1
 
-    strategy:
-      matrix:
-        include:
-          - test_files: "01_write_ivy_code.ipynb"
-          - test_files: "02_unify_code.ipynb"
-          - test_files: "03_compile_code.ipynb"
-          # Add more test files here
