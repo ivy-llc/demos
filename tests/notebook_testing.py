@@ -8,6 +8,9 @@ from testing_helpers import *
 
 
 class NotebookTest(unittest.TestCase):
+    test_file = None
+
+    @classmethod
     def setUp(self):
         self.km = KernelManager()
         self.km.start_kernel(
@@ -17,6 +20,7 @@ class NotebookTest(unittest.TestCase):
         self.kc.start_channels()
         self.kc.execute_interactive("import os;os.environ['IVY_ROOT']='.ivy'")
 
+    @classmethod
     def tearDown(self):
         self.kc.stop_channels()
         self.km.shutdown_kernel()
@@ -46,12 +50,7 @@ class NotebookTest(unittest.TestCase):
                 )
 
     def test_notebook(self):
-        parser = argparse.ArgumentParser()
-        parser.add_argument("notebook_path", help="Path to the notebook file")
-        parser.add_argument("module", help="Can either test examples or Basics")
-        nb = fetch_nb(parser.parse_args())
-
-        for cell in nb.cells:
+        for cell in self.test_file.cells:
             outs = []
             if cell.cell_type != "code":
                 continue
@@ -86,4 +85,13 @@ class IterativeTestResult(unittest.TextTestResult):
 
 
 if __name__ == "__main__":
-    unittest.main(testRunner=IterativeTestRunner())
+    parser = argparse.ArgumentParser()
+    parser.add_argument("notebook_path", help="Path to the notebook file")
+    parser.add_argument("module", help="Can either test examples or Basics")
+    args = parser.parse_args()
+
+    NotebookTest.test_file = fetch_nb(args.notebook_path, args.module)
+
+    suite = unittest.TestLoader().loadTestsFromTestCase(NotebookTest)
+    runner = IterativeTestRunner(verbosity=2)
+    result = runner.run(suite)

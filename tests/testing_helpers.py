@@ -79,15 +79,12 @@ def sanitize(s):
     return s
 
 
-def fetch_nb(args):
-    notebook = args.notebook_path
-    module = args.module
+def fetch_nb(notebook, module):
     path = "/"
     if module == "basics":
-        path = "/learn_the_basics"
+        path = "learn_the_basics/"
     elif module == "examples":
-        path = "/example_and_demos"
-
+        path = "example_and_demos/"
     file = path + notebook
     with open(file) as f:
         nb = nbformat.reads(f.read(), nbformat.current_nbformat)
