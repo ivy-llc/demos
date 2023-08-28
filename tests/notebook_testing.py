@@ -30,12 +30,15 @@ class NotebookTest(unittest.TestCase):
         for result, gt in zip(test_out, cell_out):
             res = result.as_dict()
 
-            # smoke test
+            # smoke tests
             self.assertEqual(execution_count, res["execution_count"])
+
+            self.assertEqual(res['output_type'], gt['output_type'])
 
             if hasattr(gt, "name") and getattr(gt, "name") == "stderr":
                 continue
 
+            # value test
             if value_test:
                 if hasattr(gt, "data"):
                     process_display_data(None, gt)
