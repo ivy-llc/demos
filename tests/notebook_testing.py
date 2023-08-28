@@ -6,10 +6,13 @@ import argparse
 # local
 from .testing_helpers import *
 
+
 class NotebookTest(unittest.TestCase):
     def setUp(self):
         self.km = KernelManager()
-        self.km.start_kernel(extra_arguments=["--pylab=inline"], stderr=open(os.devnull, "w"))
+        self.km.start_kernel(
+            extra_arguments=["--pylab=inline"], stderr=open(os.devnull, "w")
+        )
         self.kc = self.km.blocking_client()
         self.kc.start_channels()
         self.kc.execute_interactive("import os;os.environ['IVY_ROOT']='.ivy'")
@@ -24,7 +27,7 @@ class NotebookTest(unittest.TestCase):
             res = result.as_dict()
 
             # smoke test
-            self.assertEqual(execution_count, res['execution_count'])
+            self.assertEqual(execution_count, res["execution_count"])
 
             if hasattr(gt, "name") and getattr(gt, "name") == "stderr":
                 continue
@@ -33,8 +36,14 @@ class NotebookTest(unittest.TestCase):
                 if hasattr(gt, "data"):
                     process_display_data(None, gt)
 
-                self.assertEqual(sanitize(res["text"]), sanitize(gt["text"]),
-                                 f"Cell output {res['text']} does not match ground truth output {gt['text']} for cell number {execution_count}")
+                self.assertEqual(
+                    sanitize(res["text"]),
+                    sanitize(gt["text"]),
+                    (
+                        f"Cell output {res['text']} does not match ground truth output"
+                        f" {gt['text']} for cell number {execution_count}"
+                    ),
+                )
 
     def test_notebook(self):
         parser = argparse.ArgumentParser()
@@ -49,8 +58,12 @@ class NotebookTest(unittest.TestCase):
             if "pip install" in cell.source:
                 continue
             try:
-                self.kc.execute_interactive(cell.source,
-                output_hook=lambda msg: record_output(msg, outs, cell.execution_count))
+                self.kc.execute_interactive(
+                    cell.source,
+                    output_hook=lambda msg: record_output(
+                        msg, outs, cell.execution_count
+                    ),
+                )
             except Exception as e:
                 print("failed to run cell:", repr(e))
                 print(cell.source)
@@ -60,16 +73,17 @@ class NotebookTest(unittest.TestCase):
             with self.subTest(msg=f"Testing cell {cell.execution_count}"):
                 self._test_cell(outs, cell.outputs, cell.execution_count)
 
+
 class IterativeTestRunner(unittest.TextTestRunner):
     def _makeResult(self):
         return IterativeTestResult(self.stream, self.descriptions, self.verbosity)
+
 
 class IterativeTestResult(unittest.TextTestResult):
     def startTest(self, test):
         super().startTest(test)
         self.stream.writeln(f"Running test: {test.id()}")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main(testRunner=IterativeTestRunner())
-
-
