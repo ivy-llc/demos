@@ -4,7 +4,7 @@ import os
 import argparse
 
 # local
-from .testing_helpers import *
+from testing_helpers import *
 
 
 class NotebookTest(unittest.TestCase):
