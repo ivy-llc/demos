@@ -1,245 +1,75 @@
-#!/usr/bin/env python
-"""simple example script for running and testing notebooks.
-
-Usage: `notebook_testing.py foo.ipynb [bar.ipynb [...]]`
-Each cell is submitted to the kernel, and the outputs are compared with those stored in the notebook.
-Tested with python 3.6 and jupyter 5.0
-"""
-# License: MIT, but credit is nice (Min RK, ociule).
+from jupyter_client import KernelManager
+import unittest
 import os
-import sys
-import base64
-import re
+import argparse
 
-from collections import defaultdict
-from queue import Empty
+# local
+from .testing_helpers import *
 
-try:
-    # from IPython.kernel import KernelManager
-    from jupyter_client import KernelManager
-except ImportError:
-    print("FAILED: from IPython.kernel import KernelManager")
-    from IPython.zmq.blockingkernelmanager import BlockingKernelManager as KernelManager
+class NotebookTest(unittest.TestCase):
+    def setUp(self):
+        self.km = KernelManager()
+        self.km.start_kernel(extra_arguments=["--pylab=inline"], stderr=open(os.devnull, "w"))
+        self.kc = self.km.blocking_client()
+        self.kc.start_channels()
+        self.kc.execute_interactive("import os;os.environ['IVY_ROOT']='.ivy'")
 
-import nbformat
+    def tearDown(self):
+        self.kc.stop_channels()
+        self.km.shutdown_kernel()
+        del self.km
 
+    def _test_cell(self, test_out, cell_out, execution_count, value_test=True):
+        for result, gt in zip(test_out, cell_out):
+            res = result.as_dict()
 
-def compare_png(a64, b64):
-    """Compare two b64 PNGs (incomplete)."""
-    try:
-        import Image
-    except ImportError:
-        pass
-    base64.decodestring(a64)
-    base64.decodestring(b64)
-    return True
+            # smoke test
+            self.assertEqual(execution_count, res['execution_count'])
 
+            if hasattr(gt, "name") and getattr(gt, "name") == "stderr":
+                continue
 
-def sanitize(s):
-    """Sanitize a string for comparison.
+            if value_test:
+                if hasattr(gt, "data"):
+                    process_display_data(None, gt)
 
-    fix universal newlines, strip trailing newlines, and normalize
-    likely random values (memory addresses and UUIDs)
-    """
-    if not isinstance(s, str):
-        return s
-    # normalize newline:
-    s = s.replace("\r\n", "\n")
+                self.assertEqual(sanitize(res["text"]), sanitize(gt["text"]),
+                                 f"Cell output {res['text']} does not match ground truth output {gt['text']} for cell number {execution_count}")
 
-    # ignore trailing newlines (but not space)
-    s = s.rstrip("\n")
+    def test_notebook(self):
+        parser = argparse.ArgumentParser()
+        parser.add_argument("notebook_path", help="Path to the notebook file")
+        parser.add_argument("module", help="Can either test examples or Basics")
+        nb = fetch_nb(parser.parse_args())
 
-    # normalize hex addresses:
-    s = re.sub(r"0x[a-f0-9]+", "0xFFFFFFFF", s)
-
-    # normalize UUIDs:
-    s = re.sub(r"[a-f0-9]{8}(\-[a-f0-9]{4}){3}\-[a-f0-9]{12}", "U-U-I-D", s)
-
-    return s
-
-
-def consolidate_outputs(outputs):
-    """Consolidate outputs into a summary dict (incomplete)."""
-    data = defaultdict(list)
-    data["stdout"] = ""
-    data["stderr"] = ""
-
-    for out in outputs:
-        if out.type == "stream":
-            data[out.stream] += out.text
-        elif out.type == "pyerr":
-            data["pyerr"] = dict(ename=out.ename, evalue=out.evalue)
-        else:
-            for key in (
-                "png",
-                "svg",
-                "latex",
-                "html",
-                "javascript",
-                "text",
-                "jpeg",
-            ):
-                if key in out:
-                    data[key].append(out[key])
-    return data
-
-
-def compare_outputs(
-    test, ref, skip_compare=("png", "traceback", "latex", "prompt_number")
-):
-    missing = False
-    mismatch = False
-    for key in ref:
-        if key not in test:
-            print(f"missing key: '{key}' not in {test}")
-            missing = True
-        elif key not in skip_compare and sanitize(test[key]) != sanitize(ref[key]):
-            print(f"mismatch '{key}':")
-            print(test[key])
-            print("  !=  ")
-            print(ref[key])
-            mismatch = True
-    if missing or mismatch:
-        return False
-    return True
-
-
-def run_cell(shell, iopub, cell, kc):
-    # print cell.source
-    # shell.execute(cell.source)
-    kc.execute(cell.source)
-    # wait for finish, maximum 20s
-    shell.get_msg(timeout=200)  # was 20
-    outs = []
-
-    while True:
-        try:
-            msg = iopub.get_msg(timeout=0.2)
-        except Empty:
-            break
-        msg_type = msg["msg_type"]
-        if msg_type in ("status", "execute_input"):
-            continue
-        elif msg_type == "clear_output":
+        for cell in nb.cells:
             outs = []
-            continue
+            if cell.cell_type != "code":
+                continue
+            if "pip install" in cell.source:
+                continue
+            try:
+                self.kc.execute_interactive(cell.source,
+                output_hook=lambda msg: record_output(msg, outs, cell.execution_count))
+            except Exception as e:
+                print("failed to run cell:", repr(e))
+                print(cell.source)
+                continue
 
-        content = msg["content"]
-        # print msg_type, content
-        out = nbformat.NotebookNode(output_type=msg_type)
+            # Start a subtest for each cell
+            with self.subTest(msg=f"Testing cell {cell.execution_count}"):
+                self._test_cell(outs, cell.outputs, cell.execution_count)
 
-        if msg_type == "stream":
-            out.stream = content["name"]
-            out.text = content["text"]
-            out.data = content["text"]
-            out.name = content["name"]
-        elif msg_type in ("display_data", "pyout", "execute_result"):
-            out["metadata"] = content["metadata"]
-            for mime, data in content["data"].items():
-                attr = mime.split("/")[-1].lower()
-                # this gets most right, but fix svg+html, plain
-                attr = attr.replace("+xml", "").replace("plain", "text")
-                setattr(out, attr, data)
-            out.data = content["data"]
+class IterativeTestRunner(unittest.TextTestRunner):
+    def _makeResult(self):
+        return IterativeTestResult(self.stream, self.descriptions, self.verbosity)
 
-            if msg_type in ("execute_result", "pyout"):
-                out.execution_count = content["execution_count"]
-        elif msg_type in ("pyerr", "error"):
-            out.ename = content["ename"]
-            out.evalue = content["evalue"]
-            out.traceback = content["traceback"]
-        else:
-            print("unhandled iopub msg:", msg_type)
+class IterativeTestResult(unittest.TextTestResult):
+    def startTest(self, test):
+        super().startTest(test)
+        self.stream.writeln(f"Running test: {test.id()}")
 
-        outs.append(out)
-    return outs
+if __name__ == '__main__':
+    unittest.main(testRunner=IterativeTestRunner())
 
 
-def test_notebook(nb):
-    km = KernelManager()
-    km.start_kernel(extra_arguments=["--pylab=inline"], stderr=open(os.devnull, "w"))
-    exit_code = 0
-    try:
-        kc = km.client()
-        kc.start_channels()
-        iopub = kc.iopub_channel
-    except AttributeError:
-        print("AttributeError")
-        # IPython 0.13
-        kc = km
-        kc.start_channels()
-        iopub = kc.sub_channel
-    shell = kc.shell_channel
-
-    # run %pylab inline, because some notebooks assume this
-    # even though they shouldn't
-    # shell.execute("pass")
-    # kc.execute("pass")
-
-    # kc.execute("import ivy")
-    # kc.execute("ivy.set_backend('jax')")
-    # kc.execute("ivy.unset_backend()")
-    # TODO
-    kc.execute("import os;os.environ['IVY_ROOT']='.ivy'")
-
-    while True:
-        try:
-            iopub.get_msg(timeout=1)
-        except Empty:
-            break
-
-    successes = 0
-    failures = 0
-    errors = 0
-    # for ws in nb.worksheets:
-    for cell in nb.cells:
-        if cell.cell_type != "code":
-            continue
-        if "pip install" in cell.source:
-            continue
-        try:
-            outs = run_cell(shell, iopub, cell, kc)
-        except Exception as e:
-            pass
-
-            # pdb.set_trace()
-            print("failed to run cell:", repr(e))
-            print(cell.source)
-            errors += 1
-            continue
-
-        failed = False
-        # Reverse outputs to filter out initialization warnings
-        for out, ref in zip(outs[::-1], cell.outputs[::-1]):
-            if not compare_outputs(out, ref):
-                failed = True
-        if failed:
-            failures += 1
-            exit_code = 1
-        else:
-            successes += 1
-        sys.stdout.write(".")
-
-    print("tested notebook %s" % nb.metadata.kernelspec.name)
-    print("    %3i cells successfully replicated" % successes)
-    if failures:
-        print("    %3i cells mismatched output" % failures)
-    if errors:
-        print("    %3i cells failed to complete" % errors)
-    kc.stop_channels()
-    km.shutdown_kernel()
-    del km
-    exit(exit_code)
-
-
-if __name__ == "__main__":
-    notebook, module = sys.argv[1], sys.argv[2]
-    if module == "basics":
-        path = "learn_the_basics/"
-    else:
-        path = "examples_and_demos/"
-    ipynb = path + notebook
-    print(f"testing {ipynb}")
-    with open(ipynb) as f:
-        nb = nbformat.reads(f.read(), nbformat.current_nbformat)
-        test_notebook(nb)
