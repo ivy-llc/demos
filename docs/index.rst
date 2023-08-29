@@ -120,7 +120,6 @@ Examples and Demos
     :hidden:
     :maxdepth: 1
 
-    index.rst
     quickstart.ipynb
 
 .. toctree::
