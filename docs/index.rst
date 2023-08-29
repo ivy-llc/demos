@@ -26,7 +26,7 @@ a quick and general introduction to Ivy's features and capabilities!
 Learn the basics
 ----------------
 
-.. grid:: 3
+.. grid:: 1 1 3 3
     :gutter: 4
 
     .. grid-item-card:: Write Ivy Code
@@ -72,7 +72,7 @@ Learn the basics
 Guides
 ------
 
-.. grid:: 3
+.. grid:: 1 1 3 3
     :gutter: 4
 
     .. grid-item-card:: Transpiling a PyTorch model to build on top
@@ -88,7 +88,7 @@ Guides
 Examples and Demos
 ------------------
 
-.. grid:: 3
+.. grid:: 1 1 3 3
     :gutter: 4
 
     .. grid-item-card:: Using Ivy ResNet
