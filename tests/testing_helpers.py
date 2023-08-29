@@ -1,6 +1,8 @@
 import re
 import nbformat
 
+from .configs.test_configs import *
+
 
 class OutputMessage:
     def __init__(self):
@@ -54,7 +56,44 @@ def record_output(msg, outs, execution_count):
         processing_function(out, content)
         out.output_type = msg_type
         out.execution_count = execution_count
-        outs.append(out)
+        outs.append(out.as_dict())
+
+class Buffer:
+    def __init__(self):
+        self.buffers = []
+
+    @staticmethod
+    def _parse_configs(test_configs):
+        gt = test_configs.get('gt_res', [])
+        res = test_configs.get('res', [])
+
+        processed_results = []
+        for idx, (execution_result, ground_truth_result) in enumerate(zip(res, gt)):
+            if hasattr(ground_truth_result, 'data'):
+                process_display_data(None, ground_truth_result)
+
+            type_of_test = test_configs.get('run', 'Unknown')
+            execution_text = execution_result.get('text', 'No result')
+            ground_truth_text = ground_truth_result.get('text', 'No ground truth')
+
+            data = {
+                "index": idx+1,
+                "type_of_test": type_of_test,
+                "execution_result": execution_text,
+                "ground_truth_result": ground_truth_text,
+                "cell_number": test_configs['execution_count'],
+            }
+            processed_results.append(data)
+
+        return processed_results
+
+    def set_data(self, test_configs):
+        data = Buffer._parse_configs(test_configs)
+        self.buffers.extend(data)
+
+    def get_data(self):
+        return self.buffers
+
 
 
 def sanitize(s):
@@ -89,3 +128,6 @@ def fetch_nb(notebook, module):
     with open(file) as f:
         nb = nbformat.reads(f.read(), nbformat.current_nbformat)
         return nb
+
+def fetch_notebook_configs(file):
+    return configs["module"].get(file, {})

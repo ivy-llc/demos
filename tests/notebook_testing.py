@@ -4,14 +4,16 @@ import os
 import argparse
 
 # local
-from testing_helpers import *
+from .testing_helpers import *
 
 
 class NotebookTest(unittest.TestCase):
     test_file = None
+    module = None
 
     @classmethod
     def setUp(self):
+        self.configs = fetch_notebook_configs(self.module)
         self.km = KernelManager()
         self.km.start_kernel(
             extra_arguments=["--pylab=inline"], stderr=open(os.devnull, "w")
@@ -26,34 +28,39 @@ class NotebookTest(unittest.TestCase):
         self.km.shutdown_kernel()
         del self.km
 
+    def _benchmarking_test(self, case):
+        pass
+
     def _test_cell(self, test_out, cell_out, execution_count, value_test=True):
-        for result, gt in zip(test_out, cell_out):
-            res = result.as_dict()
+        for res, gt_res in zip(test_out, cell_out):
 
             # smoke tests
             self.assertEqual(execution_count, res["execution_count"])
 
-            self.assertEqual(res['output_type'], gt['output_type'])
+            self.assertEqual(res['output_type'], gt_res['output_type'])
 
-            if hasattr(gt, "name") and getattr(gt, "name") == "stderr":
+            if hasattr(gt_res, "name") and getattr(gt_res, "name") == "stderr":
                 continue
 
             # value test
             if value_test:
-                if hasattr(gt, "data"):
-                    process_display_data(None, gt)
+                if hasattr(gt_res, "data"):
+                    process_display_data(None, gt_res)
 
                 self.assertEqual(
                     sanitize(res["text"]),
-                    sanitize(gt["text"]),
+                    sanitize(gt_res["text"]),
                     (
                         f"Cell output {res['text']} does not match ground truth output"
-                        f" {gt['text']} for cell number {execution_count}"
+                        f" {gt_res['text']} for cell number {execution_count}"
                     ),
                 )
 
     def test_notebook(self):
-        for cell in self.test_file.cells:
+        test_configs = fetch_notebook_configs('03_compile_code.ipynb')
+        test_buffer = Buffer()
+        test_file = fetch_nb('03_compile_code.ipynb', 'basics')
+        for cell in test_file.cells:
             outs = []
             if cell.cell_type != "code":
                 continue
@@ -71,9 +78,23 @@ class NotebookTest(unittest.TestCase):
                 print(cell.source)
                 continue
 
-            # Start a subtest for each cell
+            if cell.execution_count in test_configs.get('cell_numbers'):
+                test_configs.update({"res": outs, "gt_res": cell.outputs, "execution_count": cell.execution_count})
+                test_buffer.set_data(test_configs)
+                continue
+
+
+            # standard tests
             with self.subTest(msg=f"Testing cell {cell.execution_count}"):
+                #Todo: make _test_cell more generic
                 self._test_cell(outs, cell.outputs, cell.execution_count)
+
+        # special cases
+        for cases in test_buffer.get_data():
+            with self.subTest(msg=f"Run {cases['type_of_test']} for cells {cases['execution_count']}"):
+                #Todo: this should be inside _test_cell
+                self._benchmarking_test(cases)
+
 
 
 class IterativeTestRunner(unittest.TextTestRunner):
@@ -93,13 +114,9 @@ if __name__ == "__main__":
     parser.add_argument("module", help="Can either test examples or Basics")
     args = parser.parse_args()
 
-    NotebookTest.test_file = fetch_nb(args.notebook_path, args.module)
+    unittest.main(testRunner=IterativeTestRunner)
 
-    suite = unittest.TestLoader().loadTestsFromTestCase(NotebookTest)
-    runner = IterativeTestRunner(verbosity=2)
-    result = runner.run(suite)
-
-    if result.wasSuccessful():
-        exit(0)  # Tests passed
-    else:
-        exit(1)  # Tests failed
+    # if result.wasSuccessful():
+    #     exit(0)  # Tests passed
+    # else:
+    #     exit(1)  # Tests failed
