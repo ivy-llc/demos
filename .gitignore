@@ -1,4 +1,4 @@
-/.quarto/
+.vscode
 .idea/*
 **/.ipynb_checkpoints/*
 **pem**
