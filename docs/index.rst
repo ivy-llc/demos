@@ -120,6 +120,7 @@ Examples and Demos
     :hidden:
     :maxdepth: 1
 
+    self
     quickstart.ipynb
 
 .. toctree::
