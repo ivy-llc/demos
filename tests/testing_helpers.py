@@ -1,5 +1,6 @@
 import re
 import nbformat
+from datetime import timedelta
 
 from .configs.test_configs import *
 
@@ -58,9 +59,10 @@ def record_output(msg, outs, execution_count):
         out.execution_count = execution_count
         outs.append(out.as_dict())
 
+
 class Buffer:
     def __init__(self):
-        self.buffers = []
+        self.buffers = {}
 
     @staticmethod
     def _parse_configs(test_configs):
@@ -72,16 +74,18 @@ class Buffer:
             if hasattr(ground_truth_result, 'data'):
                 process_display_data(None, ground_truth_result)
 
-            type_of_test = test_configs.get('run', 'Unknown')
             execution_text = execution_result.get('text', 'No result')
             ground_truth_text = ground_truth_result.get('text', 'No ground truth')
 
+            # ToDo: shouldn't be done here, run standard tests once
+            # smoke test
+            assert execution_result['output_type'] == ground_truth_result['output_type']
+
             data = {
-                "index": idx+1,
-                "type_of_test": type_of_test,
+                "index": idx + 1,
+                "cell_number": test_configs['execution_count'],
                 "execution_result": execution_text,
                 "ground_truth_result": ground_truth_text,
-                "cell_number": test_configs['execution_count'],
             }
             processed_results.append(data)
 
@@ -89,33 +93,54 @@ class Buffer:
 
     def set_data(self, test_configs):
         data = Buffer._parse_configs(test_configs)
-        self.buffers.extend(data)
+        type_of_test = test_configs.get('run', 'Unknown')
+        if type_of_test not in self.buffers:
+            self.buffers[type_of_test] = []
+        self.buffers[type_of_test].extend(data)
 
     def get_data(self):
-        return self.buffers
+        return self.buffers.items()
 
 
-
-def sanitize(s):
-    """Sanitize a string for comparison.
+def value_test_helper(s):
+    """
+    Sanitize a string for comparison.
 
     fix universal newlines, strip trailing newlines, and normalize
     likely random values (memory addresses and UUIDs)
     """
-    if not isinstance(s, str):
-        return s
-    # normalize newline:
-    s = s.replace("\r\n", "\n")
+    # ToDo: currently we're only sanitizing array types
 
-    # ignore trailing newlines (but not space)
-    s = s.rstrip("\n")
+    pattern = r'\[([^\]]+)\]'
+    tensor = re.search(pattern, s)
+    if tensor:
+        return eval(tensor.group())
+    return None
 
-    # normalize hex addresses:
-    s = re.sub(r"0x[a-f0-9]+", "0xFFFFFFFF", s)
 
-    # normalize UUIDs:
-    s = re.sub(r"[a-f0-9]{8}(\-[a-f0-9]{4}){3}\-[a-f0-9]{12}", "U-U-I-D", s)
-    return s
+import re
+from datetime import timedelta
+
+
+def benchmarking_helper(exec_fn, exec_comp):
+    pattern = r'([\d.]+) ([µmns]+)'
+    match_1 = re.search(pattern, exec_fn)
+    match_2 = re.search(pattern, exec_comp)
+
+    if match_1 and match_2:
+        execution_time_1, time_unit_1 = float(match_1.group(1)), match_1.group(2)
+        execution_time_2, time_unit_2 = float(match_2.group(1)), match_2.group(2)
+
+        time_unit_mapping = {'µs': 'microseconds', 'ms': 'milliseconds', 'ns': 'nanoseconds'}
+
+        if time_unit_1 in time_unit_mapping and time_unit_2 in time_unit_mapping:
+            time_delta_1 = timedelta(**{time_unit_mapping[time_unit_1]: execution_time_1})
+            time_delta_2 = timedelta(**{time_unit_mapping[time_unit_2]: execution_time_2})
+
+            speedup = abs(time_delta_1/time_delta_2)
+            return speedup
+
+    return None
 
 
 def fetch_nb(notebook, module):

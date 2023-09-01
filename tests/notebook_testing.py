@@ -1,5 +1,6 @@
 from jupyter_client import KernelManager
 import unittest
+import numpy as np
 import os
 import argparse
 
@@ -28,38 +29,47 @@ class NotebookTest(unittest.TestCase):
         self.km.shutdown_kernel()
         del self.km
 
-    def _benchmarking_test(self, case):
-        pass
+    def _benchmarking_test(self, data):
+        # Todo: current design assumes we run benchmarking only for two cells per notebook
 
-    def _test_cell(self, test_out, cell_out, execution_count, value_test=True):
+        speedup_gt = benchmarking_helper(data[0]['ground_truth_result'], data[1]['ground_truth_result'])
+        speedup_runtime = benchmarking_helper(data[0]['execution_result'], data[1]['execution_result'])
+
+        # gt timedelta should not be greater than execution time delta
+        self.assertLessEqual(speedup_gt, speedup_runtime)
+
+
+
+    def _test_cell(self, test_out, cell_out, execution_count, value_test=True, rtol=1e-05, atol=1e-08):
+        # ToDo: make it more generic
         for res, gt_res in zip(test_out, cell_out):
-
+            if hasattr(gt_res, "name") and getattr(gt_res, "name") == "stderr" or res.get('name', 'Unknown') == "stderr":
+                continue
             # smoke tests
             self.assertEqual(execution_count, res["execution_count"])
 
             self.assertEqual(res['output_type'], gt_res['output_type'])
-
-            if hasattr(gt_res, "name") and getattr(gt_res, "name") == "stderr":
-                continue
 
             # value test
             if value_test:
                 if hasattr(gt_res, "data"):
                     process_display_data(None, gt_res)
 
-                self.assertEqual(
-                    sanitize(res["text"]),
-                    sanitize(gt_res["text"]),
-                    (
-                        f"Cell output {res['text']} does not match ground truth output"
-                        f" {gt_res['text']} for cell number {execution_count}"
-                    ),
+                runtime_res = value_test_helper(res['text'])
+                ground_truth_res = value_test_helper(gt_res['text'])
+
+                assert np.allclose(
+                    np.nan_to_num(runtime_res), np.nan_to_num(ground_truth_res), rtol=rtol, atol=atol
+                ), (
+                    f" the results from notebook"
+                    f"and runtime"
+                    f"do not match\n {runtime_res}!={ground_truth_res} \n\n"
                 )
 
     def test_notebook(self):
         test_configs = fetch_notebook_configs('03_compile_code.ipynb')
         test_buffer = Buffer()
-        test_file = fetch_nb('03_compile_code.ipynb', 'basics')
+        test_file = fetch_nb('05_lazy_vs_eager.ipynb', 'basics')
         for cell in test_file.cells:
             outs = []
             if cell.cell_type != "code":
@@ -86,14 +96,14 @@ class NotebookTest(unittest.TestCase):
 
             # standard tests
             with self.subTest(msg=f"Testing cell {cell.execution_count}"):
-                #Todo: make _test_cell more generic
+                # Todo: make _test_cell more generic
                 self._test_cell(outs, cell.outputs, cell.execution_count)
 
         # special cases
-        for cases in test_buffer.get_data():
-            with self.subTest(msg=f"Run {cases['type_of_test']} for cells {cases['execution_count']}"):
-                #Todo: this should be inside _test_cell
-                self._benchmarking_test(cases)
+        for test_type, data in test_buffer.get_data():
+            with self.subTest(msg=f"Run {test_type}"):
+                # Todo: this should be inside _test_cell
+                self._benchmarking_test(data)
 
 
 
