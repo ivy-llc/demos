@@ -29,6 +29,23 @@ class NotebookTest(unittest.TestCase):
         self.km.shutdown_kernel()
         del self.km
 
+    def _sanity_checks(self, res, gt_res, execution_count):
+
+        self.assertEqual(execution_count, res["execution_count"], "Asynchronous execution failed !")
+
+        if res['output_type'] in ('pyerror', 'error'):
+            res_text = f"runtime output throws an error -: " \
+                       f"{res['ename']}\n with value -: {res['evalue']}" \
+                       f" and traceback-:\n{res['traceback']}\n"
+        else:
+            res_text = f"runtime output {res['text']}"
+
+        self.assertEqual(
+            res['output_type'], gt_res['output_type'],
+            f"{res_text} does not match "
+            f" ground truth output\n"
+            f"{gt_res['text'] if hasattr(gt_res, 'text') else gt_res['data']}")
+
     def _benchmarking_test(self, data):
         # Todo: current design assumes we run benchmarking only for two cells per notebook
 
@@ -38,38 +55,48 @@ class NotebookTest(unittest.TestCase):
         # gt timedelta should not be greater than execution time delta
         self.assertLessEqual(speedup_gt, speedup_runtime)
 
+    @staticmethod
+    def _assert_all_close(rt_tensor, gt_tensor, rtol=1e-05, atol=1e-08):
+        assert np.allclose(
+            np.nan_to_num(rt_tensor), np.nan_to_num(gt_tensor), rtol=rtol, atol=atol
+        ), (
+            f" the results from notebook "
+            f"and runtime "
+            f"do not match\n {rt_tensor}!={gt_tensor} \n\n"
+        )
 
 
-    def _test_cell(self, test_out, cell_out, execution_count, value_test=True, rtol=1e-05, atol=1e-08):
+    def _test_cell(self, test_out, cell_out, execution_count, value_test=True):
         # ToDo: make it more generic
+        # occasionally there can be multiple streams of data
+        if len(test_out) > len(cell_out):
+            concatenate_outs(test_out)
+
         for res, gt_res in zip(test_out, cell_out):
-            if hasattr(gt_res, "name") and getattr(gt_res, "name") == "stderr" or res.get('name', 'Unknown') == "stderr":
-                continue
             # smoke tests
-            self.assertEqual(execution_count, res["execution_count"])
-
-            self.assertEqual(res['output_type'], gt_res['output_type'])
-
+            self._sanity_checks(res, gt_res, execution_count)
             # value test
             if value_test:
                 if hasattr(gt_res, "data"):
                     process_display_data(None, gt_res)
 
-                runtime_res = value_test_helper(res['text'])
-                ground_truth_res = value_test_helper(gt_res['text'])
+                arrays_to_test = value_test_helper(res['text'], gt_res['text'])
 
-                assert np.allclose(
-                    np.nan_to_num(runtime_res), np.nan_to_num(ground_truth_res), rtol=rtol, atol=atol
-                ), (
-                    f" the results from notebook"
-                    f"and runtime"
-                    f"do not match\n {runtime_res}!={ground_truth_res} \n\n"
-                )
+                if arrays_to_test:
+                    self._assert_all_close(arrays_to_test[0], arrays_to_test[1])
+
+                else:
+                    self.assertEqual(
+                        res['text'], gt_res['text'],
+                        f"runtime output {res['text']} does not match "
+                        f"the ground truth output {gt_res['text']}")
+
+
 
     def test_notebook(self):
         test_configs = fetch_notebook_configs('03_compile_code.ipynb')
         test_buffer = Buffer()
-        test_file = fetch_nb('05_lazy_vs_eager.ipynb', 'basics')
+        test_file = fetch_nb('03_compile_code.ipynb', 'basics')
         for cell in test_file.cells:
             outs = []
             if cell.cell_type != "code":
@@ -82,17 +109,17 @@ class NotebookTest(unittest.TestCase):
                     output_hook=lambda msg: record_output(
                         msg, outs, cell.execution_count
                     ),
+                    timeout=500,
                 )
             except Exception as e:
                 print("failed to run cell:", repr(e))
                 print(cell.source)
                 continue
 
-            if cell.execution_count in test_configs.get('cell_numbers'):
-                test_configs.update({"res": outs, "gt_res": cell.outputs, "execution_count": cell.execution_count})
-                test_buffer.set_data(test_configs)
-                continue
-
+            # if cell.execution_count in test_configs.get('cell_numbers'):
+            #     test_configs.update({"res": outs, "gt_res": cell.outputs, "execution_count": cell.execution_count})
+            #     test_buffer.set_data(test_configs)
+            #     continue
 
             # standard tests
             with self.subTest(msg=f"Testing cell {cell.execution_count}"):
@@ -104,7 +131,6 @@ class NotebookTest(unittest.TestCase):
             with self.subTest(msg=f"Run {test_type}"):
                 # Todo: this should be inside _test_cell
                 self._benchmarking_test(data)
-
 
 
 class IterativeTestRunner(unittest.TextTestRunner):

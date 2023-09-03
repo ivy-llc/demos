@@ -1,15 +1,23 @@
 import re
 import nbformat
+import ast
 from datetime import timedelta
 
 from .configs.test_configs import *
 
 
 class OutputMessage:
+    _set_data = True
+
     def __init__(self):
         self.output_type = None
         self.text = None
         self.execution_count = None
+
+        # error attributes
+        self.traceback = None
+        self.evalue = None
+        self.ename = None
 
     def set_error_attributes(self, attrs):
         self.ename = attrs["ename"]
@@ -17,10 +25,18 @@ class OutputMessage:
         self.traceback = attrs["traceback"]
 
     def as_dict(self):
-        return vars(self)
+        return {key: value for key, value in vars(self).items() if value is not None}
+
+    @property
+    def set_data(self):
+        return self._set_data
 
 
 def process_stream_content(out, content):
+    # assuming there are no warning messages in the notebook
+    if content['name'] == "stderr":
+        out._set_data = False
+        return
     setattr(out, "name", content.get("name"))
     out.text = content["text"]
 
@@ -50,14 +66,14 @@ def record_output(msg, outs, execution_count):
         "pyerr": process_error,
         "error": process_error,
     }
-
     out = OutputMessage()
     processing_function = processing_functions.get(msg_type)
     if processing_function:
         processing_function(out, content)
-        out.output_type = msg_type
-        out.execution_count = execution_count
-        outs.append(out.as_dict())
+        if out.set_data:
+            out.output_type = msg_type
+            out.execution_count = execution_count
+            outs.append(out.as_dict())
 
 
 class Buffer:
@@ -102,24 +118,79 @@ class Buffer:
         return self.buffers.items()
 
 
-def value_test_helper(s):
+def _check_for_eval(tensor):
+    """
+    Sanity check for value test. Replaces
+    one or more whitespace/tab characters
+    with a comma if it doesn't exist in a
+    tensor output.
+    Args:
+        tensor:
+
+    Returns:
+
+    """
+    try:
+        tensor = eval(tensor)
+    except SyntaxError as e:
+        tensor = eval(re.sub(r'\s+', ', ', tensor))
+    return tensor
+
+
+def check_for_tensors(res, gt_res):
+    rt_tensors = []
+    gt_tensors = []
+    pattern_for_tensors = r'\[([^\]]+)\]'
+
+    # ToDo: shouldn't be doing it here
+    # smoke test
+    assert len(res) == len(gt_res)
+
+    for a, b in zip(res, gt_res):
+        # Extract tensors directly from strings
+        rt_tensor = re.search(pattern_for_tensors, a)
+        gt_tensor = re.search(pattern_for_tensors, b)
+
+        if rt_tensor:
+            # EdgeCase: 04_transpile_code(cell 4) outputs a list w no commas
+            rt_tensors.append(_check_for_eval(rt_tensor.group()))
+        if gt_tensor:
+            # EdgeCase: 04_transpile_code(cell 4) outputs a list w no commas
+            gt_tensors.append(_check_for_eval(gt_tensor.group()))
+
+    return rt_tensors, gt_tensors
+
+
+def value_test_helper(res, gt_res):
     """
     Sanitize a string for comparison.
 
     fix universal newlines, strip trailing newlines, and normalize
     likely random values (memory addresses and UUIDs)
     """
-    # ToDo: currently we're only sanitizing array types
+    # Define a regular expression pattern to match various formats
+    pattern = r'(ivy\.array\([^)]*\)|<tf\.Tensor:.*?>|Array\([^)]*\)|tensor\([^)]*\))'
 
-    pattern = r'\[([^\]]+)\]'
-    tensor = re.search(pattern, s)
-    if tensor:
-        return eval(tensor.group())
-    return None
+    # Split the input string based on newlines, but not inside matched patterns
+    rt_val = re.split(pattern, res)
+    gt_val = re.split(pattern, gt_res)
+
+    rt_val, gt_val = check_for_tensors(rt_val, gt_val)
+
+    return (rt_val, gt_val) if rt_val and gt_val else None
 
 
-import re
-from datetime import timedelta
+def concatenate_outs(rt_outs):
+    """
+    Handle multiple streams of data
+    Args:
+        rt_outs:
+
+    Returns:
+
+    """
+    for element in rt_outs[1:]:
+        rt_outs[0]['text'] += element['text']
 
 
 def benchmarking_helper(exec_fn, exec_comp):
@@ -137,7 +208,7 @@ def benchmarking_helper(exec_fn, exec_comp):
             time_delta_1 = timedelta(**{time_unit_mapping[time_unit_1]: execution_time_1})
             time_delta_2 = timedelta(**{time_unit_mapping[time_unit_2]: execution_time_2})
 
-            speedup = abs(time_delta_1/time_delta_2)
+            speedup = abs(time_delta_1 / time_delta_2)
             return speedup
 
     return None
@@ -153,6 +224,7 @@ def fetch_nb(notebook, module):
     with open(file) as f:
         nb = nbformat.reads(f.read(), nbformat.current_nbformat)
         return nb
+
 
 def fetch_notebook_configs(file):
     return configs["module"].get(file, {})
