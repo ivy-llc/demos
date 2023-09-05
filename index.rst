@@ -24,16 +24,18 @@ a quick and general introduction to Ivy's features and capabilities!
     <https://unify.ai/docs/ivy/overview/get_started.html>`_!
 
 .. include:: learn_the_basics.rst
+    :end-before: .. toctree::
 
 .. include:: guides.rst
+    :end-before: .. toctree::
 
 .. include:: examples_and_demos.rst
+    :end-before: .. toctree::
 
 .. toctree::
     :hidden:
     :maxdepth: 1
 
-    Ivy docs <https://unify.ai/docs/ivy/>
     self
     quickstart.ipynb
     learn_the_basics.rst
