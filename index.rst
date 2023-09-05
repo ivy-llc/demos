@@ -36,7 +36,6 @@ a quick and general introduction to Ivy's features and capabilities!
     :hidden:
     :maxdepth: 1
 
-    self
     quickstart.ipynb
     learn_the_basics.rst
     guides.rst
