@@ -132,7 +132,7 @@ def _check_for_eval(tensor):
     """
     try:
         tensor = eval(tensor)
-    except SyntaxError as e:
+    except SyntaxError:
         tensor = eval(re.sub(r'\s+', ', ', tensor))
     return tensor
 
