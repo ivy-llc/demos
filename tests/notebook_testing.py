@@ -65,9 +65,8 @@ class NotebookTest(unittest.TestCase):
             f"do not match\n {rt_tensor}!={gt_tensor} \n\n"
         )
 
-
+    # ToDo: make it more generic
     def _test_cell(self, test_out, cell_out, execution_count, value_test=True):
-        # ToDo: make it more generic
         # occasionally there can be multiple streams of data
         if len(test_out) > len(cell_out):
             concatenate_outs(test_out)
@@ -91,12 +90,10 @@ class NotebookTest(unittest.TestCase):
                         f"runtime output {res['text']} does not match "
                         f"the ground truth output {gt_res['text']}")
 
-
-
     def test_notebook(self):
-        test_configs = fetch_notebook_configs('03_compile_code.ipynb')
+        test_configs = None #fetch_notebook_configs('07_transpile_any_library.ipynb')
         test_buffer = Buffer()
-        test_file = fetch_nb('03_compile_code.ipynb', 'basics')
+        test_file = fetch_nb('08_transpile_any_model.ipynb', 'basics')
         for cell in test_file.cells:
             outs = []
             if cell.cell_type != "code":
@@ -116,10 +113,14 @@ class NotebookTest(unittest.TestCase):
                 print(cell.source)
                 continue
 
-            # if cell.execution_count in test_configs.get('cell_numbers'):
-            #     test_configs.update({"res": outs, "gt_res": cell.outputs, "execution_count": cell.execution_count})
-            #     test_buffer.set_data(test_configs)
-            #     continue
+            if test_configs and cell.execution_count in test_configs.get('cell_numbers'):
+                if test_configs.get('run') == "Skip test":
+                    pass
+                else:
+                    test_configs.update({"res": outs, "gt_res": cell.outputs, "execution_count": cell.execution_count})
+                    test_buffer.set_data(test_configs)
+                print(test_configs.get("action"))
+                continue
 
             # standard tests
             with self.subTest(msg=f"Testing cell {cell.execution_count}"):

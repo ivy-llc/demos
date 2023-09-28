@@ -140,11 +140,11 @@ def _check_for_eval(tensor):
 def check_for_tensors(res, gt_res):
     rt_tensors = []
     gt_tensors = []
-    pattern_for_tensors = r'\[([^\]]+)\]'
+    # ToDo: need a more generic regex to parse nested arrays/tensors
+    pattern_for_tensors = r'\[([^\]]+)\]+'
 
     # ToDo: shouldn't be doing it here
-    # smoke test
-    assert len(res) == len(gt_res)
+    assert len(res) == len(gt_res)     # smoke test
 
     for a, b in zip(res, gt_res):
         # Extract tensors directly from strings
