@@ -38,7 +38,7 @@ class NotebookTest(unittest.TestCase):
         if res["output_type"] in ("pyerror", "error"):
             res_text = (
                 "runtime output throws an error -: "
-                f"{res['ename']}\n with value -: {res['evalue']}"
+                f"{res['ename']}\n with value -: {res['evalue']} and it "
             )
         else:
             res_text = f"runtime output {res['text']}"
