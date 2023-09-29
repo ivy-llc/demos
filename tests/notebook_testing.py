@@ -5,7 +5,7 @@ import os
 import argparse
 
 # local
-from .testing_helpers import *
+from testing_helpers import *
 
 
 class NotebookTest(unittest.TestCase):
@@ -131,7 +131,7 @@ class NotebookTest(unittest.TestCase):
             if test_configs and cell.execution_count in test_configs.get(
                 "cell_numbers"
             ):
-                if test_configs.get("run") == "Skip test":
+                if test_configs.get("run") == "skip_test":
                     pass
                 else:
                     test_configs.update(
