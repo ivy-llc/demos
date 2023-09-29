@@ -175,6 +175,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     NotebookTest.notebook = args.notebook_path
+    NotebookTest.module = args.module
 
     suite = unittest.TestLoader().loadTestsFromTestCase(NotebookTest)
     runner = IterativeTestRunner(verbosity=2)
