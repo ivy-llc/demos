@@ -1,7 +1,6 @@
 #!/bin/bash
 
-cd ivy
-python3 -m pip install .
+python3 -m pip install ivy
 
 cd ..
 cd demos
