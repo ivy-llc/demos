@@ -39,7 +39,6 @@ class NotebookTest(unittest.TestCase):
             res_text = (
                 "runtime output throws an error -: "
                 f"{res['ename']}\n with value -: {res['evalue']}"
-                f" and traceback-:\n{res['traceback']}\n"
             )
         else:
             res_text = f"runtime output {res['text']}"
