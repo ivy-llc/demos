@@ -3,7 +3,7 @@ import nbformat
 import ast
 from datetime import timedelta
 
-from .configs.test_configs import *
+from configs.test_configs import *
 
 
 class OutputMessage:
