@@ -9,48 +9,60 @@ from .testing_helpers import *
 
 
 class NotebookTest(unittest.TestCase):
-    test_file = None
+    notebook = None
     module = None
 
     @classmethod
-    def setUp(self):
-        self.configs = fetch_notebook_configs(self.module)
-        self.km = KernelManager()
-        self.km.start_kernel(
+    def setUp(cls):
+        cls.test_file = fetch_nb(NotebookTest.notebook, NotebookTest.module)
+        cls.configs = fetch_notebook_configs(cls.module)
+        cls.km = KernelManager()
+        cls.km.start_kernel(
             extra_arguments=["--pylab=inline"], stderr=open(os.devnull, "w")
         )
-        self.kc = self.km.blocking_client()
-        self.kc.start_channels()
-        self.kc.execute_interactive("import os;os.environ['IVY_ROOT']='.ivy'")
+        cls.kc = cls.km.blocking_client()
+        cls.kc.start_channels()
+        cls.kc.execute_interactive("import os;os.environ['IVY_ROOT']='.ivy'")
 
     @classmethod
-    def tearDown(self):
-        self.kc.stop_channels()
-        self.km.shutdown_kernel()
-        del self.km
+    def tearDown(cls):
+        cls.kc.stop_channels()
+        cls.km.shutdown_kernel()
+        del cls.km
 
     def _sanity_checks(self, res, gt_res, execution_count):
+        self.assertEqual(
+            execution_count, res["execution_count"], "Asynchronous execution failed !"
+        )
 
-        self.assertEqual(execution_count, res["execution_count"], "Asynchronous execution failed !")
-
-        if res['output_type'] in ('pyerror', 'error'):
-            res_text = f"runtime output throws an error -: " \
-                       f"{res['ename']}\n with value -: {res['evalue']}" \
-                       f" and traceback-:\n{res['traceback']}\n"
+        if res["output_type"] in ("pyerror", "error"):
+            res_text = (
+                "runtime output throws an error -: "
+                f"{res['ename']}\n with value -: {res['evalue']}"
+                f" and traceback-:\n{res['traceback']}\n"
+            )
         else:
             res_text = f"runtime output {res['text']}"
 
         self.assertEqual(
-            res['output_type'], gt_res['output_type'],
-            f"{res_text} does not match "
-            f" ground truth output\n"
-            f"{gt_res['text'] if hasattr(gt_res, 'text') else gt_res['data']}")
+            res["output_type"],
+            gt_res["output_type"],
+            (
+                f"{res_text} does not match "
+                " ground truth output\n"
+                f"{gt_res['text'] if hasattr(gt_res, 'text') else gt_res['data']}"
+            ),
+        )
 
     def _benchmarking_test(self, data):
         # Todo: current design assumes we run benchmarking only for two cells per notebook
 
-        speedup_gt = benchmarking_helper(data[0]['ground_truth_result'], data[1]['ground_truth_result'])
-        speedup_runtime = benchmarking_helper(data[0]['execution_result'], data[1]['execution_result'])
+        speedup_gt = benchmarking_helper(
+            data[0]["ground_truth_result"], data[1]["ground_truth_result"]
+        )
+        speedup_runtime = benchmarking_helper(
+            data[0]["execution_result"], data[1]["execution_result"]
+        )
 
         # gt timedelta should not be greater than execution time delta
         self.assertLessEqual(speedup_gt, speedup_runtime)
@@ -60,8 +72,8 @@ class NotebookTest(unittest.TestCase):
         assert np.allclose(
             np.nan_to_num(rt_tensor), np.nan_to_num(gt_tensor), rtol=rtol, atol=atol
         ), (
-            f" the results from notebook "
-            f"and runtime "
+            " the results from notebook "
+            "and runtime "
             f"do not match\n {rt_tensor}!={gt_tensor} \n\n"
         )
 
@@ -79,22 +91,25 @@ class NotebookTest(unittest.TestCase):
                 if hasattr(gt_res, "data"):
                     process_display_data(None, gt_res)
 
-                arrays_to_test = value_test_helper(res['text'], gt_res['text'])
+                arrays_to_test = value_test_helper(res["text"], gt_res["text"])
 
                 if arrays_to_test:
                     self._assert_all_close(arrays_to_test[0], arrays_to_test[1])
 
                 else:
                     self.assertEqual(
-                        res['text'], gt_res['text'],
-                        f"runtime output {res['text']} does not match "
-                        f"the ground truth output {gt_res['text']}")
+                        res["text"],
+                        gt_res["text"],
+                        (
+                            f"runtime output {res['text']} does not match "
+                            f"the ground truth output {gt_res['text']}"
+                        ),
+                    )
 
     def test_notebook(self):
-        test_configs = None #fetch_notebook_configs('07_transpile_any_library.ipynb')
+        test_configs = self.configs
         test_buffer = Buffer()
-        test_file = fetch_nb('08_transpile_any_model.ipynb', 'basics')
-        for cell in test_file.cells:
+        for cell in self.test_file.cells:
             outs = []
             if cell.cell_type != "code":
                 continue
@@ -113,11 +128,19 @@ class NotebookTest(unittest.TestCase):
                 print(cell.source)
                 continue
 
-            if test_configs and cell.execution_count in test_configs.get('cell_numbers'):
-                if test_configs.get('run') == "Skip test":
+            if test_configs and cell.execution_count in test_configs.get(
+                "cell_numbers"
+            ):
+                if test_configs.get("run") == "Skip test":
                     pass
                 else:
-                    test_configs.update({"res": outs, "gt_res": cell.outputs, "execution_count": cell.execution_count})
+                    test_configs.update(
+                        {
+                            "res": outs,
+                            "gt_res": cell.outputs,
+                            "execution_count": cell.execution_count,
+                        }
+                    )
                     test_buffer.set_data(test_configs)
                 print(test_configs.get("action"))
                 continue
@@ -151,9 +174,13 @@ if __name__ == "__main__":
     parser.add_argument("module", help="Can either test examples or Basics")
     args = parser.parse_args()
 
-    unittest.main(testRunner=IterativeTestRunner)
+    NotebookTest.notebook = args.notebook_path
 
-    # if result.wasSuccessful():
-    #     exit(0)  # Tests passed
-    # else:
-    #     exit(1)  # Tests failed
+    suite = unittest.TestLoader().loadTestsFromTestCase(NotebookTest)
+    runner = IterativeTestRunner(verbosity=2)
+    result = runner.run(suite)
+
+    if result.wasSuccessful():
+        exit(0)  # Tests passed
+    else:
+        exit(1)  # Tests failed
