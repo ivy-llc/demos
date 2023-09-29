@@ -2,7 +2,6 @@
 
 python3 -m pip install ivy
 
-cd ..
 cd demos
 
 mkdir .ivy
