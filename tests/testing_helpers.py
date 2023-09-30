@@ -219,7 +219,7 @@ def fetch_nb(notebook, module):
     if module == "basics":
         path = "learn_the_basics/"
     elif module == "examples":
-        path = "example_and_demos/"
+        path = "examples_and_demos/"
     file = path + notebook
     with open(file) as f:
         nb = nbformat.reads(f.read(), nbformat.current_nbformat)
