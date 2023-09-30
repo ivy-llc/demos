@@ -23,7 +23,7 @@ jobs:
           path: demos
           persist-credentials: false
           submodules: "recursive"
-          fetch-depth: 100
+          fetch-depth: 1
 
       - name: Run Demo Testing
         id: tests
