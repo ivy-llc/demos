@@ -10,6 +10,7 @@ youtube_map = {
     "demos/learn_the_basics/08_transpile_any_model": "u3Rig2KuaEo",
     "demos/guides/01_transpiling_a_torch_model": "wTragLBdqRw",
     "demos/guides/03_transpiling_a_tf_model": "0JgfFVA5LeI",
+    "demos/examples_and_demos/resnet_demo": "TSehVqY_bm0",
 }
 
 nbsphinx_execute = 'never'
