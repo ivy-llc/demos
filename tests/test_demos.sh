@@ -1,7 +1,9 @@
 #!/bin/bash
 
-python3 -m pip install ivy
+cd ivy
+python3 -m pip install .
 
+cd ..
 cd demos
 
 mkdir .ivy
