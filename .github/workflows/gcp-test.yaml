@@ -42,7 +42,7 @@ jobs:
 
       - name: Run Demo Testing
         run: |
-          echo "testing things out !"
+          echo "testing things out!"
 
   deactivate-vm:
     needs: run-test
