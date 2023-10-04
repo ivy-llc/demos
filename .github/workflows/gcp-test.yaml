@@ -27,13 +27,7 @@ jobs:
 
        - name: 'SSH into the instance'
          run: |
-          gcloud auth activate-service-account --key-file <(echo ${{ secrets.GCP_AUTH }})
-          gcloud config set project gpu-insatnce
-          gcloud config set compute/zone us-central1-a
-          gcloud compute ssh demos-tests --command "ls"
-
-
-
+          gcloud compute ssh demos-tests --quiet --zone us-central1-a --command "cd actions-runner; ./run.sh >/dev/null 2>&1"
 
   run-test:
     needs: activate-vm
