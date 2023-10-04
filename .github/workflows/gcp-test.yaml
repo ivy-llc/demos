@@ -27,7 +27,7 @@ jobs:
        - name: Start GPU VM
          run: |
            ls
-           python3 vm_auth.py ${{ secrets.GCP_AUTH }} ${{ secrets.SSH_KEY }}
+#           python3 vm_auth.py ${{ secrets.GCP_AUTH }} ${{ secrets.SSH_KEY }}
 
   run-test:
     needs: activate-vm
