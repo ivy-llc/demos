@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  actions: read-all|write-all
+  actions: write
 
 jobs:
   activate-vm:
