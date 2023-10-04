@@ -29,8 +29,8 @@ jobs:
            cd demos/.github/auth
            mkdir -p ~/.ssh
            touch ~/.ssh/id_rsa
-           echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
-           chmod 600 ~/.ssh/id_rsa
+           echo "${{ secrets.SSH_KEY }}" > $HOME/.ssh/id_rsa
+           chmod 600 $HOME/.ssh/id_rsa
            python3 db_auth.py ${{ secrets.DB_ENDPOINT }} ${{ secrets.DB_OBJ_ID }}
            python3 vm_auth.py ${{ secrets.SSH_USERNAME }} 
 
