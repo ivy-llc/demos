@@ -9,9 +9,9 @@ from google.auth import impersonated_credentials
 
 def authenticate_vm(path):
     credentials = Credentials.from_service_account_file(path)
-    return discovery.build('compute', 'v1', credentials=credentials)
+    return discovery.build('compute', 'v1', credentials=credentials), credentials
 def start_runner(creds, user, id = "gpu-insatnce", zone='us-central1-a', instance='demos-tests'):
-    compute = authenticate_vm(creds)
+    compute, credentials = authenticate_vm(creds)
     compute.instances().start(project=id, zone=zone, instance=instance).execute()
     # request = compute.instances().get(project=id, zone=zone, instance=instance)
     # response = request.execute()
@@ -19,16 +19,14 @@ def start_runner(creds, user, id = "gpu-insatnce", zone='us-central1-a', instanc
     # # Extract the external IP address of the instance
     # external_ip = response['networkInterfaces'][0]['accessConfigs'][0]['natIP']
 
-    # Establish an SSH connection to the instance
-    credentials, _ = impersonated_credentials.load_credentials_from_file(
-        creds,
-        target_principal=id
-    )
+
+    # Get the SSH username (assuming it's stored in the credentials)
+    ssh_username = credentials.service_account_email
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(
         hostname=f'{instance}.{zone}.compute.internal',
-        username=user,  # Typically 'your-username' or 'gce-username'
+        username=ssh_username,  # Typically 'your-username' or 'gce-username'
         pkey=paramiko.RSAKey(file_obj=credentials.signer.key_file),
     )
 
