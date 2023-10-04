@@ -35,7 +35,7 @@ def start_runner(document, pkey, id = "gpu-insatnce", zone='us-central1-a', inst
 if __name__ == "__main__":
     creds, key = sys.argv[0], sys.argv[1]
     # Start the instance
-    start_runner(creds, key)
+    start_runner(eval(creds), key)
 
 
 
