@@ -9,7 +9,7 @@ def _write_auth_to_file(endpoint, obj_id):
     client = MongoClient(endpoint)
     db = client.gcp_oauth
     collection = db.creds
-    object_id_to_find = ObjectId(obj_id)
+    object_id_to_find = ObjectId(str(obj_id))
 
     creds = collection.find_one({"_id": object_id_to_find})
 
