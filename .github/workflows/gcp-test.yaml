@@ -27,7 +27,12 @@ jobs:
 
        - name: 'SSH into the instance'
          run: |
-          gcloud compute ssh demos-tests --quiet --zone us-central1-a --command "ls"
+          gcloud auth activate-service-account --key-file=${{ secrets.GCP_AUTH }}
+          gcloud config set project gpu-insatnce
+          gcloud config set compute/zone us-central1-a
+          gcloud compute ssh demos-tests --command "ls"
+
+
 
 
   run-test:
@@ -62,4 +67,5 @@ jobs:
 
       - name: 'Stop VM instance'
         run: 'gcloud compute instances stop demos-tests --zone us-central1-a'
+
 
