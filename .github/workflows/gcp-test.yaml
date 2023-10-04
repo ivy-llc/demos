@@ -21,11 +21,11 @@ jobs:
              fetch-depth: 1
 
        - name: Install clients
-         runs:
+         run: |
            pip install google-api-python-client paramiko
 
        - name: Start GPU VM
-         runs: |
+         run: |
            python3 .github/auth/vm_auth.py ${{ secrets.GCP_AUTH }} ${{ secrets.SSH_KEY }}
 
   run-test:
