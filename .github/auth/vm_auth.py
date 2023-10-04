@@ -1,6 +1,7 @@
 import sys
 import json
 import paramiko
+import io
 
 from google.auth import compute_engine
 from googleapiclient import discovery
@@ -27,7 +28,7 @@ def start_runner(creds, key, id = "gpu-insatnce", zone='us-central1-a', instance
     ssh.connect(
         hostname=f'{instance}.{zone}.compute.internal',
         username=ssh_username,  # Typically 'your-username' or 'gce-username'
-        pkey = paramiko.RSAKey(file_obj=paramiko.StringIO(key)),
+        pkey = paramiko.RSAKey(file_obj=io.StringIO(key)),
     )
 
 
