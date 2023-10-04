@@ -1,15 +1,16 @@
 import sys
 import json
 import paramiko
+
 from google.auth import compute_engine
 from googleapiclient import discovery
 from google.oauth2.service_account import Credentials
 
-def authenticate_vm(creds):
-    credentials = Credentials.from_service_account_info(creds)
+def authenticate_vm(path):
+    credentials = Credentials.from_service_file(path)
     return discovery.build('compute', 'v1', credentials=credentials)
-def start_runner(document, pkey, id = "gpu-insatnce", zone='us-central1-a', instance='demos-tests'):
-    compute = authenticate_vm(document)
+def start_runner(creds, pkey, id = "gpu-insatnce", zone='us-central1-a', instance='demos-tests'):
+    compute = authenticate_vm(creds)
     compute.instances().start(project=id, zone=zone, instance=instance).execute()
     request = compute.instances().get(project=id, zone=zone, instance=instance)
     response = request.execute()
@@ -34,16 +35,9 @@ def start_runner(document, pkey, id = "gpu-insatnce", zone='us-central1-a', inst
     return output
 
 if __name__ == "__main__":
-    key, creds = sys.argv[1], sys.argv[2]
-    # Parse the JSON string for credentials
-    try:
-        credentials = json.loads(creds)
-    except json.JSONDecodeError:
-        print("Error parsing GCP_AUTH_JSON_STRING. Ensure it is a valid JSON string.")
-        sys.exit(1)
-
+    key = sys.argv[1]
     # Start the instance
-    start_runner(credentials, key)
+    start_runner('/gcp_auth.json', pkey=key)
 
 
 
