@@ -14,7 +14,7 @@ def authenticate_vm(path):
     return discovery.build('compute', 'v1', credentials=credentials)
 def start_runner(creds, key, ssh_username, id = "gpu-insatnce", zone='us-central1-a', instance='demos-tests'):
     compute = authenticate_vm(creds)
-    request = compute.instances().start(project=id, zone=zone, instance=instance)\
+    request = compute.instances().start(project=id, zone=zone, instance=instance)
     request.execute()
     time.sleep(60)
 
