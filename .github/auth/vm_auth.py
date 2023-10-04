@@ -20,7 +20,6 @@ def start_runner(creds, key, id = "gpu-insatnce", zone='us-central1-a', instance
     # # Extract the external IP address of the instance
     # external_ip = response['networkInterfaces'][0]['accessConfigs'][0]['natIP']
 
-
     # Get the SSH username (assuming it's stored in the credentials)
     ssh_username = credentials.service_account_email
     ssh = paramiko.SSHClient()
