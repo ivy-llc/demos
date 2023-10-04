@@ -23,4 +23,4 @@ jobs:
            version: '>= 363.0.0'
 
        - name: 'Use gcloud CLI'
-         run: 'gcloud compute instances start test-instance'
+         run: 'gcloud compute instances start test-instance --zone us-central1-a'
