@@ -28,7 +28,6 @@ def start_runner(creds, key, ssh_username, id = "gpu-insatnce", zone='us-central
         pkey=paramiko.RSAKey(file_obj=io.StringIO(key)),
     )
 
-
     # Execute the command on the instance
     stdin, stdout, stderr = ssh.exec_command('cd actions-runner; nohup ./run.sh')
 
