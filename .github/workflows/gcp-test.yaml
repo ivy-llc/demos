@@ -22,7 +22,7 @@ jobs:
 
        - name: Install clients
          run: |
-           pip3 install pymongo google-api-python-client paramiko
+           pip3 install pymongo google-api-python-client paramiko==2.7.1
 
        - name: Start GPU VM
          run: |
