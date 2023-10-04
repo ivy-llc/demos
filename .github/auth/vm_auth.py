@@ -3,6 +3,7 @@ import json
 import paramiko
 import time
 import io
+import os
 
 from google.auth import compute_engine
 from googleapiclient import discovery
@@ -42,7 +43,8 @@ def start_runner(creds, path, ssh_username, id = "gpu-insatnce", zone='us-centra
 if __name__ == "__main__":
     username = sys.argv[1]
     # Start the instance
-    start_runner('gcp_auth.json', '~/.ssh/id_rsa', str(username))
+    ssh_key_path = os.path.expanduser('~/.ssh/id_rsa')
+    start_runner('gcp_auth.json', ssh_key_path, str(username))
 
 
 
