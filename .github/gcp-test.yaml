@@ -1,0 +1,24 @@
+name: gcp-auth-script
+on:
+  push:
+    branches:
+      - ci-testing
+      - main
+      - release/* #ToDo: add a release branch
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test-auth:
+     runs-on: ubuntu-latest
+     steps:
+       - id: 'auth'
+         uses: 'google-github-actions/setup-gcloud@v1.0.0'
+         with:
+           credentials_json: '${{ secrets.GCP_AUTH }}'
+
+       - name: 'Set up Cloud SDK'
+         uses: 'google-github-actions/setup-gcloud@v1'
+
+       - name: 'Use gcloud CLI'
+         run: 'gcloud compute instances start test-instance'
