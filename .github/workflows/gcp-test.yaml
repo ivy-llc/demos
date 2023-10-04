@@ -26,8 +26,7 @@ jobs:
          run: 'gcloud compute instances start demos-tests --zone us-central1-a'
 
        - name: 'SSH into the instance'
-         run: |
-           gcloud compute ssh demos-tests --zone us-central1-a --command "cd actions-runner ; ./run.sh"
+         run: 'gcloud compute ssh demos-tests --zone us-central1-a --command "cd actions-runner ; ./run.sh'
 
   run-test:
     needs: activate-vm
