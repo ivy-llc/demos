@@ -23,10 +23,10 @@ jobs:
            version: '>= 363.0.0'
 
        - name: 'Start VM instance'
-         run: 'gcloud compute instances start demos-ci-dev --zone us-central1-a'
+         run: 'gcloud compute instances start demos-tests --zone us-central1-a'
 
        - name: 'SSH into the instance'
-         run: 'gcloud compute ssh demos-ci-dev --command cd actions-runner && ./run.sh'
+         run: 'gcloud compute ssh demos-tests --command cd actions-runner && ./run.sh'
 
   run-test:
     needs: activate-vm
@@ -59,5 +59,5 @@ jobs:
           version: '>= 363.0.0'
 
       - name: 'Stop VM instance'
-        run: 'gcloud compute instances stop demos-ci-dev --zone us-central1-a'
+        run: 'gcloud compute instances stop demos-tests --zone us-central1-a'
 
