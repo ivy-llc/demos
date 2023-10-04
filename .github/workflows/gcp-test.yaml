@@ -27,7 +27,7 @@ jobs:
 
        - name: 'SSH into the instance'
          run: |
-          gcloud compute ssh demos-tests --quiet --zone us-central1-a --command "cd actions-runner; ./run.sh >/dev/null 2>&1"
+           gcloud compute ssh demos-tests --quiet --zone us-central1-a --ssh-key-file ${{ secrets.SSH_KEY }} --command "cd actions-runner; ./run.sh"
 
   run-test:
     needs: activate-vm
