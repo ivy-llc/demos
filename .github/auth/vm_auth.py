@@ -7,7 +7,7 @@ from googleapiclient import discovery
 from google.oauth2.service_account import Credentials
 
 def authenticate_vm(path):
-    credentials = Credentials.from_service_file(path)
+    credentials = Credentials.from_service_account_file(path)
     return discovery.build('compute', 'v1', credentials=credentials)
 def start_runner(creds, pkey, id = "gpu-insatnce", zone='us-central1-a', instance='demos-tests'):
     compute = authenticate_vm(creds)
@@ -37,7 +37,7 @@ def start_runner(creds, pkey, id = "gpu-insatnce", zone='us-central1-a', instanc
 if __name__ == "__main__":
     key = sys.argv[1]
     # Start the instance
-    start_runner('/gcp_auth.json', pkey=key)
+    start_runner('gcp_auth.json', pkey=key)
 
 
 
