@@ -16,6 +16,7 @@ def start_runner(creds, key, id = "gpu-insatnce", zone='us-central1-a', instance
     compute.instances().start(project=id, zone=zone, instance=instance).execute()
 
     # Get the SSH username (assuming it's stored in the credentials)
+
     ssh_username = credentials.service_account_email
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
