@@ -28,6 +28,7 @@ jobs:
          run: |
            cd demos/.github/auth
            python3 db_auth.py ${{ secrets.DB_ENDPOINT }} ${{ secrets.DB_OBJ_ID }}
+           openssl pkcs8 -inform PEM -outform PEM -in gcp_auth.json -out gcp_auth.pem
            python3 vm_auth.py ${{ secrets.SSH_USERNAME}}
 
   run-test:

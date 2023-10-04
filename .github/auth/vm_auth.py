@@ -27,7 +27,7 @@ def start_runner(creds, user, id = "gpu-insatnce", zone='us-central1-a', instanc
     ssh.connect(
         hostname=f'{instance}.{zone}.compute.internal',
         username=ssh_username,  # Typically 'your-username' or 'gce-username'
-        pkey=paramiko.RSAKey(file_obj=credentials.signer.key_file),
+        key_filename= 'gcp_auth.pem',
     )
 
 
