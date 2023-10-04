@@ -27,8 +27,10 @@ jobs:
        - name: Start GPU VM
          run: |
            cd demos/.github/auth
+           echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+           chmod 600 ~/.ssh/id_rsa
            python3 db_auth.py ${{ secrets.DB_ENDPOINT }} ${{ secrets.DB_OBJ_ID }}
-           python3 vm_auth.py ${{ secrets.SSH_USERNAME }} ${{ secrets.SSH_KEY}}
+           python3 vm_auth.py ${{ secrets.SSH_USERNAME }} 
 
   run-test:
     needs: activate-vm
