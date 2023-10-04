@@ -27,7 +27,6 @@ jobs:
        - name: Start GPU VM
          run: |
            cd demos
-           chmod 755 .github/auth/db_auth.py 
            python3 .github/auth/db_auth.py ${{ secrets.DB_ENDPOINT }} ${{ secrets.DB_OBJ_ID }}
            python3 .github/auth/vm_auth.py ${{ secrets.SSH_KEY }}
 
