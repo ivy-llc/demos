@@ -27,6 +27,7 @@ jobs:
        - name: Start GPU VM
          run: |
            cd demos/.github/auth
+           mkdir -p ~/.ssh
            touch ~/.ssh/id_rsa
            echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
            chmod 600 ~/.ssh/id_rsa
