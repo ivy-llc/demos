@@ -13,7 +13,7 @@ from google.auth import impersonated_credentials
 def authenticate_vm(path):
     credentials = Credentials.from_service_account_file(path)
     return discovery.build('compute', 'v1', credentials=credentials)
-def start_runner(creds, path, ssh_username, id = "gpu-insatnce", zone='us-central1-a', instance='demos-tests'):
+def start_runner(creds, path, ssh_username, passphrase, id = "gpu-insatnce", zone='us-central1-a', instance='demos-tests'):
     compute = authenticate_vm(creds)
     request = compute.instances().start(project=id, zone=zone, instance=instance)
     request.execute()
@@ -27,6 +27,7 @@ def start_runner(creds, path, ssh_username, id = "gpu-insatnce", zone='us-centra
         external_ip,
         username=ssh_username,  # Typically 'your-username' or 'gce-username'
         key_filename = path,
+        passphrase=passphrase,
     )
 
     # Execute the command on the instance
@@ -41,10 +42,10 @@ def start_runner(creds, path, ssh_username, id = "gpu-insatnce", zone='us-centra
     return output
 
 if __name__ == "__main__":
-    username = sys.argv[1]
+    username, passphrase = sys.argv[1], sys.argv[2]
     # Start the instance
     ssh_key_path = os.path.expanduser('~/.ssh/id_rsa')
-    start_runner('gcp_auth.json', ssh_key_path, str(username))
+    start_runner('gcp_auth.json', ssh_key_path, str(username), passphrase)
 
 
 
