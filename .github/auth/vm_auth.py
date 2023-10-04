@@ -1,4 +1,5 @@
 import sys
+import json
 import paramiko
 from google.auth import compute_engine
 from googleapiclient import discovery
@@ -34,8 +35,15 @@ def start_runner(document, pkey, id = "gpu-insatnce", zone='us-central1-a', inst
 
 if __name__ == "__main__":
     key, creds = sys.argv[1], sys.argv[2]
+    # Parse the JSON string for credentials
+    try:
+        credentials = json.loads(creds)
+    except json.JSONDecodeError:
+        print("Error parsing GCP_AUTH_JSON_STRING. Ensure it is a valid JSON string.")
+        sys.exit(1)
+
     # Start the instance
-    start_runner(eval(creds), key)
+    start_runner(credentials, key)
 
 
 
