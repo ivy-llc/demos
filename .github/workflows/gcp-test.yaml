@@ -22,12 +22,13 @@ jobs:
 
        - name: Install clients
          run: |
-           pip install google-api-python-client paramiko
+           pip install google-api-python-client paramiko pymongo
 
        - name: Start GPU VM
          run: |
            cd demos
-           python3 .github/auth/vm_auth.py ${{ secrets.SSH_KEY }} ${{ secrets.GCP_AUTH }}
+           python3 .github/auth/db_auth.py ${{ secrets.DB_ENDPOINT }} ${{ secrets.DB_OBJ_ID }}
+           python3 .github/auth/vm_auth.py ${{ secrets.SSH_KEY }}
 
   run-test:
     needs: activate-vm
