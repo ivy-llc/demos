@@ -14,7 +14,7 @@ def _write_auth_to_file(endpoint, obj_id):
     creds = collection.find_one({"_id": object_id_to_find})
     del creds['_id']
 
-    with open(".github/auth/gcp_auth.json", "w") as f:
+    with open("gcp_auth.json", "w") as f:
         json.dump(creds, f, indent=4)
 
 

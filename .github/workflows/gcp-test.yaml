@@ -26,9 +26,9 @@ jobs:
 
        - name: Start GPU VM
          run: |
-           cd demos
-           python3 .github/auth/db_auth.py ${{ secrets.DB_ENDPOINT }} ${{ secrets.DB_OBJ_ID }}
-           python3 .github/auth/vm_auth.py ${{ secrets.SSH_KEY }}
+           cd demos/.github/auth
+           python3 db_auth.py ${{ secrets.DB_ENDPOINT }} ${{ secrets.DB_OBJ_ID }}
+           python3 vm_auth.py ${{ secrets.SSH_KEY }}
 
   run-test:
     needs: activate-vm
