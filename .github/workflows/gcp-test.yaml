@@ -12,22 +12,21 @@ jobs:
   activate-vm:
      runs-on: ubuntu-latest
      steps:
-       - id: 'auth'
-         uses: 'google-github-actions/auth@v0.4.0'
+       - name: Checkout Demos🛎
+         uses: actions/checkout@v2
          with:
-           credentials_json: '${{ secrets.GCP_AUTH }}'
+             path: demos
+             persist-credentials: false
+             submodules: "recursive"
+             fetch-depth: 1
 
-       - name: 'Set up Cloud SDK'
-         uses: 'google-github-actions/setup-gcloud@v1'
-         with:
-           version: '>= 363.0.0'
+       - name: Install clients
+         runs:
+           pip install google-api-python-client paramiko
 
-       - name: 'Start VM instance'
-         run: 'gcloud compute instances start demos-tests --zone us-central1-a'
-
-       - name: 'SSH into the instance'
-         run: |
-           gcloud compute ssh demos-tests --quiet --zone us-central1-a --ssh-key-file ${{ secrets.SSH_KEY }} --command "cd actions-runner; ./run.sh"
+       - name: Start GPU VM
+         runs: |
+           python3 .github/auth/vm_auth.py ${{ secrets.GCP_AUTH }} ${{ secrets.SSH_KEY }}
 
   run-test:
     needs: activate-vm
