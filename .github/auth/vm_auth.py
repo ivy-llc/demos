@@ -13,11 +13,11 @@ def authenticate_vm(path):
 def start_runner(creds, user, id = "gpu-insatnce", zone='us-central1-a', instance='demos-tests'):
     compute = authenticate_vm(creds)
     compute.instances().start(project=id, zone=zone, instance=instance).execute()
-    request = compute.instances().get(project=id, zone=zone, instance=instance)
-    response = request.execute()
-
-    # Extract the external IP address of the instance
-    external_ip = response['networkInterfaces'][0]['accessConfigs'][0]['natIP']
+    # request = compute.instances().get(project=id, zone=zone, instance=instance)
+    # response = request.execute()
+    #
+    # # Extract the external IP address of the instance
+    # external_ip = response['networkInterfaces'][0]['accessConfigs'][0]['natIP']
 
     # Establish an SSH connection to the instance
     credentials, _ = impersonated_credentials.load_credentials_from_file(
