@@ -21,7 +21,7 @@ def start_runner(creds, pkey, id = "gpu-insatnce", zone='us-central1-a', instanc
     # Establish an SSH connection to the instance
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    ssh.connect(external_ip, pkey = key)
+    ssh.connect(external_ip, pkey=key)
 
     # Execute the command on the instance
     stdin, stdout, stderr = ssh.exec_command('cd actions-runner; nohup ./run.sh')
