@@ -41,7 +41,7 @@ def start_runner(creds, key, ssh_username, id = "gpu-insatnce", zone='us-central
     return output
 
 if __name__ == "__main__":
-    key, username = sys.argv[1]
+    key, username = sys.argv[1], sys.argv[2]
     # Start the instance
     start_runner('gcp_auth.json', key, username)
 
