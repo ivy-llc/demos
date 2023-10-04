@@ -27,7 +27,7 @@ jobs:
 
        - name: 'SSH into the instance'
          run: |
-          gcloud compute ssh demos-tests --zone us-central1-a --command "ls" --quiet
+          gcloud compute ssh demos-tests --project gpu-insatnce --quiet --zone us-central1-a --command "ls"
 
   run-test:
     needs: activate-vm
