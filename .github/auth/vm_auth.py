@@ -14,11 +14,6 @@ def authenticate_vm(path):
 def start_runner(creds, key, id = "gpu-insatnce", zone='us-central1-a', instance='demos-tests'):
     compute, credentials = authenticate_vm(creds)
     compute.instances().start(project=id, zone=zone, instance=instance).execute()
-    # request = compute.instances().get(project=id, zone=zone, instance=instance)
-    # response = request.execute()
-    #
-    # # Extract the external IP address of the instance
-    # external_ip = response['networkInterfaces'][0]['accessConfigs'][0]['natIP']
 
     # Get the SSH username (assuming it's stored in the credentials)
     ssh_username = credentials.service_account_email
