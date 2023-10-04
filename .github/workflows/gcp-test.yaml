@@ -2,7 +2,7 @@ name: gcp-auth-script
 on:
   push:
     branches:
-      - test
+      - ci-testing
       - main
       - release/* #ToDo: add a release branch
   pull_request:
