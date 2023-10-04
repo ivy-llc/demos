@@ -8,7 +8,8 @@ on:
   pull_request:
   workflow_dispatch:
 
-permissions: read-all|write-all
+permissions:
+  actions: read-all|write-all
 
 jobs:
   activate-vm:
