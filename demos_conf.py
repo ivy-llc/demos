@@ -11,6 +11,7 @@ youtube_map = {
     "demos/guides/01_transpiling_a_torch_model": "wTragLBdqRw",
     "demos/guides/03_transpiling_a_tf_model": "0JgfFVA5LeI",
     "demos/examples_and_demos/resnet_demo": "TSehVqY_bm0",
+    "demos/examples_and_demos/alexnet_demo": "AYJNYyFbPLU",
 }
 
 nbsphinx_execute = 'never'
