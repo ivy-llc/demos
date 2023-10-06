@@ -49,11 +49,12 @@ jobs:
       - name: Run Demo Testing
         run: |
           cd demos
-          docker run -v `pwd`:/ivy/demos unifyai/multicuda:base_and_requirements tests/test_demos.sh ${{ secrets.USER_API_KEY }} alexnet_demo.ipynb "examples"
+          docker run -v `pwd`:/ivy/demos unifyai/multicuda:base_and_requirements demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} alexnet_demo.ipynb "examples"
 
   deactivate-vm:
     needs: run-test
     runs-on: ubuntu-latest
+    if: always() # Run this job always, regardless of the status of run-test
     steps:
         - name: Checkout Demos🛎
           uses: actions/checkout@v2

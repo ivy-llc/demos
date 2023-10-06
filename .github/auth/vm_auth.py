@@ -17,14 +17,16 @@ def _start_ssh_session(response, creds, username, passphrase):
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-    ssh.connect(
-        external_ip,
-        username=username,
-        key_filename=creds,
-        passphrase=passphrase,
-    )
-
-    print("Successfully started an SSH session into the VM !")
+    try:
+        ssh.connect(
+            external_ip,
+            username=username,
+            key_filename=creds,
+            passphrase=passphrase,
+        )
+        print("SSH session successful !")
+    except Exception as e:
+        print(e)
 
     # Open an SSH session
     transport = ssh.get_transport()
@@ -70,7 +72,7 @@ def start_runner(
     if waited_time >= max_wait_time:
         raise Exception(f"Instance {instance} did not start within the expected time.")
 
-    print("Successfully started the VM !")
+    print("Startup Successful (VM ON)")
 
     # Once the instance is running, start the SSH session
     _start_ssh_session(response, ssh_creds, ssh_user, key_passphrase)
@@ -78,10 +80,11 @@ def start_runner(
 
 def stop_runner(creds):
     compute = authenticate_vm(creds)
-    request = compute.instances().stop(
+    compute.instances().stop(
         project="gpu-insatnce", zone="us-central1-a", instance="demos-tests"
-    )
-    request.execute()
+    ).execute()
+
+    print("Cleanup Successful (VM OFF)")
 
 
 if __name__ == "__main__":
@@ -95,5 +98,4 @@ if __name__ == "__main__":
     else:
         # Start the instance
         ssh_key_path = os.path.expanduser(ssh_credentials)
-        print(ssh_key_path)
         start_runner(gcp_credentials, ssh_key_path, ssh_user, key_passphrase)
