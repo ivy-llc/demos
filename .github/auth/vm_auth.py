@@ -24,6 +24,8 @@ def _start_ssh_session(response, creds, username, passphrase):
         passphrase=passphrase,
     )
 
+    print("Successfully started an SSH session into the VM !")
+
     # Open an SSH session
     transport = ssh.get_transport()
     channel = transport.open_session()
@@ -67,6 +69,8 @@ def start_runner(
 
     if waited_time >= max_wait_time:
         raise Exception(f"Instance {instance} did not start within the expected time.")
+
+    print("Successfully started the VM !")
 
     # Once the instance is running, start the SSH session
     _start_ssh_session(response, ssh_creds, ssh_user, key_passphrase)
