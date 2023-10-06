@@ -112,8 +112,9 @@ class NotebookTest(unittest.TestCase):
             outs = []
             if cell.cell_type != "code":
                 continue
-            if "pip install" in cell.source:
-                continue
+            # Todo: Workaround maybe keeping these in a separate dockerfile and using that for testing
+            # if "pip install" in cell.source:
+            #     continue
             try:
                 self.kc.execute_interactive(
                     cell.source,
@@ -128,7 +129,7 @@ class NotebookTest(unittest.TestCase):
                 continue
 
             if test_configs and cell.execution_count in test_configs.get(
-                "cell_numbers"
+                    "cell_numbers"
             ):
                 if test_configs.get("run") == "skip_test":
                     pass

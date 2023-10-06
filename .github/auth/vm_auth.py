@@ -11,6 +11,7 @@ def authenticate_vm(path):
     credentials = Credentials.from_service_account_file(path)
     return discovery.build('compute', 'v1', credentials=credentials)
 
+
 def _start_ssh_session(compute, creds, username, passphrase):
     response = compute.instances().get(project="gpu-insatnce", zone='us-central1-a', instance='demos-tests').execute()
     external_ip = response['networkInterfaces'][0]['accessConfigs'][0]['natIP']
@@ -25,20 +26,22 @@ def _start_ssh_session(compute, creds, username, passphrase):
         passphrase=passphrase,
     )
 
-    # Execute the command on the instance
-    stdin, stdout, stderr = ssh.exec_command('cd actions-runner; nohup ./run.sh')
+    # Open an SSH session
+    transport = ssh.get_transport()
+    channel = transport.open_session()
 
-    # Read the output of the command
-    output = stdout.read().decode()
+    # Execute the command on the instance in the background
+    command = 'cd actions-runner; nohup ./run.sh &'
+    channel.exec_command(command)
 
-    # Close the SSH connection
+    # Close the SSH channel and session immediately
+    channel.close()
     ssh.close()
 
-    return output
+
 
 def start_runner(creds, ssh_creds, ssh_user, key_passphrase, id="gpu-insatnce", zone='us-central1-a',
                  instance='demos-tests'):
-
     compute = authenticate_vm(creds)
     request = compute.instances().start(project=id, zone=zone, instance=instance)
     request.execute()

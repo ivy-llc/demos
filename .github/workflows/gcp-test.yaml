@@ -48,14 +48,13 @@ jobs:
 
       - name: Run Demo Testing
         run: |
-          echo "testing things out!"
+          cd demos
+          docker run -v `pwd`:/ivy/demos unifyai/ivy:multicuda:base_and_requirements tests/test_demos.sh ${{ secrets.USER_API_KEY }} alexnet_demo.ipynb "examples"
 
   deactivate-vm:
     needs: run-test
     runs-on: ubuntu-latest
     steps:
-      - runs-on: ubuntu-latest
-        steps:
         - name: Checkout Demos🛎
           uses: actions/checkout@v2
           with:
@@ -70,7 +69,6 @@ jobs:
 
         - name: Stop GPU VM
           run: |
-            
             cd demos/.github/auth
             python3 db_auth.py ${{ secrets.DB_ENDPOINT }} ${{ secrets.DB_OBJ_ID }}
             python3 vm_auth.py ${{ secrets.SSH_USERNAME }} ${{ secrets.SSH_PASSPHRASE }} "false"
