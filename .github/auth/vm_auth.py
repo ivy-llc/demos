@@ -48,13 +48,11 @@ def start_runner(
     instance="demos-tests",
 ):
     compute = authenticate_vm(creds)
-    request = compute.instances().start(project=id, zone=zone, instance=instance)
-    request.execute()
+    compute.instances().start(project=id, zone=zone, instance=instance).execute()
 
     max_wait_time = 600
     wait_interval = 10
     waited_time = 0
-    response = None
 
     while waited_time < max_wait_time:
         response = (
@@ -63,6 +61,7 @@ def start_runner(
         status = response.get("status")
 
         if status == "RUNNING":
+            print("Yaaaay")
             break
 
         time.sleep(wait_interval)
