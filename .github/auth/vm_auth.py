@@ -92,5 +92,5 @@ if __name__ == "__main__":
         stop_runner(gcp_credentials)
     else:
         # Start the instance
-        ssh_key_path = os.path.expanduser()
-        start_runner(gcp_credentials, ssh_credentials, ssh_user, key_passphrase)
+        ssh_key_path = os.path.expanduser(ssh_credentials)
+        start_runner(gcp_credentials, ssh_key_path, ssh_user, key_passphrase)
