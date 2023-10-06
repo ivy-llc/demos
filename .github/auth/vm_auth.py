@@ -14,6 +14,7 @@ def authenticate_vm(path):
 
 def _start_ssh_session(response, creds, username, passphrase):
     external_ip = response["networkInterfaces"][0]["accessConfigs"][0]["natIP"]
+    print(external_ip)
 
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -30,7 +31,7 @@ def _start_ssh_session(response, creds, username, passphrase):
     channel = transport.open_session()
 
     # Execute the command on the instance in the background
-    command = "cd actions-runner; nohup ./run.sh &"
+    command = "cd actions-runner; nohup ./run.sh"
     channel.exec_command(command)
 
     # Close the SSH channel and session immediately
