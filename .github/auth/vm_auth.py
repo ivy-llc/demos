@@ -32,7 +32,7 @@ def _start_ssh_session(response, creds, username, passphrase):
     command = "cd actions-runner; nohup ./run.sh"
     channel.exec_command(command)
 
-    # Close the SSH channel and session immediately
+    # Close the SSH session immediately and keep the channel open
     ssh.close()
 
 
