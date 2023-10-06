@@ -17,16 +17,27 @@ def _start_ssh_session(response, creds, username, passphrase):
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-    try:
-        ssh.connect(
-            external_ip,
-            username=username,
-            key_filename=creds,
-            passphrase=passphrase,
-        )
-        print("SSH session successful !")
-    except Exception as e:
-        print(e)
+    max_retries = 3
+    retry_delay = 10  # seconds
+
+    for _ in range(max_retries):
+        # ssh connection fails non-deterministically
+        try:
+            ssh.connect(
+                external_ip,
+                username=username,
+                key_filename=creds,
+                passphrase=passphrase,
+            )
+            print("SSH session successful !")
+        except paramiko.ssh_exception.NoValidConnectionsError as e:
+            print(f"SSH Exception(NoValidConnectionsError): {e}")
+            time.sleep(retry_delay)
+        except paramiko.ssh_exception.SSHException as e:
+            print(f"SSH Exception(General): {e}")
+        except paramiko.ssh_exception.AuthenticationException as e:
+            print(f"Authentication failed: {e}")
+            return
 
     # Open an SSH session
     transport = ssh.get_transport()
