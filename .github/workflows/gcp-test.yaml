@@ -32,7 +32,7 @@ jobs:
            echo "${{ secrets.SSH_KEY }}" > $HOME/.ssh/id_rsa
            chmod 600 $HOME/.ssh/id_rsa
            python3 db_auth.py ${{ secrets.DB_ENDPOINT }} ${{ secrets.DB_OBJ_ID }}
-           python3 vm_auth.py ${{ secrets.SSH_USERNAME }} ${{ secrets.SSH_PASSPHRASE }}
+           python3 vm_auth.py ${{ secrets.SSH_USERNAME }} ${{ secrets.SSH_PASSPHRASE }} "true"
 
   run-test:
     needs: activate-vm
@@ -54,17 +54,25 @@ jobs:
     needs: run-test
     runs-on: ubuntu-latest
     steps:
-      - id: 'auth'
-        uses: 'google-github-actions/auth@v0.4.0'
-        with:
-          credentials_json: '${{ secrets.GCP_AUTH }}'
+      - runs-on: ubuntu-latest
+        steps:
+        - name: Checkout Demos🛎
+          uses: actions/checkout@v2
+          with:
+            path: demos
+            persist-credentials: false
+            submodules: "recursive"
+            fetch-depth: 1
 
-      - name: 'Set up Cloud SDK'
-        uses: 'google-github-actions/setup-gcloud@v1'
-        with:
-          version: '>= 363.0.0'
+        - name: Install clients
+          run: |
+            pip3 install pymongo google-api-python-client paramiko==2.7.1
 
-      - name: 'Stop VM instance'
-        run: 'gcloud compute instances stop demos-tests --zone us-central1-a'
+        - name: Stop GPU VM
+          run: |
+            
+            cd demos/.github/auth
+            python3 db_auth.py ${{ secrets.DB_ENDPOINT }} ${{ secrets.DB_OBJ_ID }}
+            python3 vm_auth.py ${{ secrets.SSH_USERNAME }} ${{ secrets.SSH_PASSPHRASE }} "false"
 
 

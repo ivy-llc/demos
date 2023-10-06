@@ -1,32 +1,27 @@
 import sys
-import json
 import paramiko
 import time
-import io
 import os
 
-from google.auth import compute_engine
 from googleapiclient import discovery
 from google.oauth2.service_account import Credentials
-from google.auth import impersonated_credentials
+
 
 def authenticate_vm(path):
     credentials = Credentials.from_service_account_file(path)
     return discovery.build('compute', 'v1', credentials=credentials)
-def start_runner(creds, path, ssh_username, passphrase, id = "gpu-insatnce", zone='us-central1-a', instance='demos-tests'):
-    compute = authenticate_vm(creds)
-    request = compute.instances().start(project=id, zone=zone, instance=instance)
-    request.execute()
-    time.sleep(60)
 
-    response = compute.instances().get(project=id, zone=zone, instance=instance).execute()
+def _start_ssh_session(compute, creds, username, passphrase):
+    response = compute.instances().get(project="gpu-insatnce", zone='us-central1-a', instance='demos-tests').execute()
     external_ip = response['networkInterfaces'][0]['accessConfigs'][0]['natIP']
+
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+
     ssh.connect(
         external_ip,
-        username=ssh_username,  # Typically 'your-username' or 'gce-username'
-        key_filename = path,
+        username=username,
+        key_filename=creds,
         passphrase=passphrase,
     )
 
@@ -41,11 +36,32 @@ def start_runner(creds, path, ssh_username, passphrase, id = "gpu-insatnce", zon
 
     return output
 
+def start_runner(creds, ssh_creds, ssh_user, key_passphrase, id="gpu-insatnce", zone='us-central1-a',
+                 instance='demos-tests'):
+
+    compute = authenticate_vm(creds)
+    request = compute.instances().start(project=id, zone=zone, instance=instance)
+    request.execute()
+    time.sleep(60)
+
+    _start_ssh_session(compute, ssh_creds, ssh_user, key_passphrase)
+
+
+def stop_runner(creds):
+    compute = authenticate_vm(creds)
+    request = compute.instances().start(project="gpu-insatnce", zone='us-central1-a', instance='demos-tests')
+    request.execute()
+
+
 if __name__ == "__main__":
-    username, passphrase = sys.argv[1], sys.argv[2]
-    # Start the instance
-    ssh_key_path = os.path.expanduser('~/.ssh/id_rsa')
-    start_runner('gcp_auth.json', ssh_key_path, str(username), passphrase)
+    ssh_user, key_passphrase, stop_vm = sys.argv[1], sys.argv[2], sys.argv[3]
+    gcp_credentials = 'gcp_auth.json'
+    ssh_credentials = '~/.ssh/id_rsa'
 
-
-
+    if stop_vm == "true":
+        # Stop the instance
+        stop_runner(gcp_credentials)
+    else:
+        # Start the instance
+        ssh_key_path = os.path.expanduser()
+        start_runner(gcp_credentials, ssh_credentials, ssh_user, key_passphrase)
