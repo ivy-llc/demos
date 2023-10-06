@@ -32,7 +32,7 @@ jobs:
            echo "${{ secrets.SSH_KEY }}" > $HOME/.ssh/id_rsa
            chmod 600 $HOME/.ssh/id_rsa
            python3 db_auth.py ${{ secrets.DB_ENDPOINT }} ${{ secrets.DB_OBJ_ID }}
-           python3 vm_auth.py ${{ secrets.SSH_USERNAME }} ${{ secrets.SSH_PASSPHRASE }} "true"
+           python3 vm_auth.py ${{ secrets.SSH_USERNAME }} ${{ secrets.SSH_PASSPHRASE }} "false"
 
   run-test:
     needs: activate-vm
@@ -71,6 +71,6 @@ jobs:
           run: |
             cd demos/.github/auth
             python3 db_auth.py ${{ secrets.DB_ENDPOINT }} ${{ secrets.DB_OBJ_ID }}
-            python3 vm_auth.py ${{ secrets.SSH_USERNAME }} ${{ secrets.SSH_PASSPHRASE }} "false"
+            python3 vm_auth.py ${{ secrets.SSH_USERNAME }} ${{ secrets.SSH_PASSPHRASE }} "true"
 
 
