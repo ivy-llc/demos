@@ -12,6 +12,7 @@ youtube_map = {
     "demos/guides/03_transpiling_a_tf_model": "0JgfFVA5LeI",
     "demos/examples_and_demos/resnet_demo": "TSehVqY_bm0",
     "demos/examples_and_demos/alexnet_demo": "AYJNYyFbPLU",
+    "demos/examples_and_demos/image_segmentation_with_ivy_unet": "ziqU1I8jYuU",
 }
 
 nbsphinx_execute = 'never'
