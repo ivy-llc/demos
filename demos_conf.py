@@ -13,6 +13,7 @@ youtube_map = {
     "demos/examples_and_demos/resnet_demo": "TSehVqY_bm0",
     "demos/examples_and_demos/alexnet_demo": "AYJNYyFbPLU",
     "demos/examples_and_demos/image_segmentation_with_ivy_unet": "ziqU1I8jYuU",
+    "demos/examples_and_demos/torch_to_jax": "MOJTuiHp7qk",
 }
 
 nbsphinx_execute = 'never'
