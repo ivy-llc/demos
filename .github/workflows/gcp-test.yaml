@@ -38,6 +38,10 @@ jobs:
     needs: activate-vm
     runs-on: self-hosted
     steps:
+      - name: Clean repository
+        run:
+          sudo rm -fr $GITHUB_WORKSPACE && mkdir $GITHUB_WORKSPACE
+
       - name: Checkout Demos🛎
         uses: actions/checkout@v2
         with:
