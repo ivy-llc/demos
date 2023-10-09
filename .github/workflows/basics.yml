@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - ci-testing
       - release/* #ToDo: add a release branch
   pull_request:
   workflow_dispatch:
