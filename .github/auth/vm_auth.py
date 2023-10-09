@@ -82,6 +82,8 @@ def start_runner(
         waited_time += wait_interval
 
     if waited_time >= max_wait_time:
+        # try starting once again
+        compute.instances().start(project=id, zone=zone, instance=instance).execute()
         raise Exception(f"Instance {instance} did not start within the expected time.")
 
     print("Startup Successful (VM ON)")
