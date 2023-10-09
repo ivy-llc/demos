@@ -30,6 +30,7 @@ def _start_ssh_session(response, creds, username, passphrase):
                 passphrase=passphrase,
             )
             print("SSH session successful !")
+            break
         except paramiko.ssh_exception.NoValidConnectionsError as e:
             print(f"SSH Exception(NoValidConnectionsError): {e}")
             time.sleep(retry_delay)
