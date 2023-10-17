@@ -29,6 +29,11 @@ Examples and Demos
 
         In this demo, we show how an AlexNet model written in…
 
+    .. grid-item-card:: Accelerating XGBoost with JAX
+        :link: examples_and_demos/xgboost_demo.ipynb
+
+        Accelerate your XGBoost by converting them to JAX.
+
 .. toctree::
     :hidden:
     :maxdepth: -1
@@ -39,3 +44,4 @@ Examples and Demos
     examples_and_demos/mmpretrain_to_jax.ipynb
     examples_and_demos/image_segmentation_with_ivy_unet.ipynb
     examples_and_demos/alexnet_demo.ipynb
+    examples_and_demos/xgboost_demo.ipynb
