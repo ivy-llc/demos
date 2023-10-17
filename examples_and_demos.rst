@@ -44,3 +44,4 @@ Examples and Demos
     examples_and_demos/mmpretrain_to_jax.ipynb
     examples_and_demos/image_segmentation_with_ivy_unet.ipynb
     examples_and_demos/alexnet_demo.ipynb
+    examples_and_demos/xgboost_demo.ipynb
