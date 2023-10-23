@@ -1,3 +1,0 @@
-FROM unifyai/ivy:latest
-
-RUN pip3 install jupyter
