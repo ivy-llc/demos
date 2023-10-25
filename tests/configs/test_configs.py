@@ -2,7 +2,7 @@ from typing import *
 
 configs = {
     "module": {
-        "03_compile_code.ipynb":
+        "03_trace_code.ipynb":
             {
                 "cell_numbers": (11, 12),
                 "run": "benchmarking_test",
