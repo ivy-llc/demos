@@ -13,7 +13,7 @@ jobs:
     name: learn-the-basics
     uses: ./.github/workflows/_basic-test.yml
 
-  activate-vm:
+  start-vm:
      needs: run-test-basic-demos
      runs-on: ubuntu-latest
      if: always() # Run this job always, regardless of the status of run-test-basics
@@ -26,7 +26,7 @@ jobs:
              submodules: "recursive"
              fetch-depth: 1
 
-       - name: Install clients
+       - name: Install clients for GCP/Mongo
          run: |
            pip3 install pymongo google-api-python-client paramiko==2.7.1
 
@@ -45,7 +45,7 @@ jobs:
     name: examples-and-demos
     uses: ./.github/workflows/_demo-test.yml
 
-  deactivate-vm:
+  stop-vm:
     needs: run-test-example-demos
     runs-on: ubuntu-latest
     if: always() # Run this job always, regardless of the status of run-test
@@ -58,7 +58,7 @@ jobs:
             submodules: "recursive"
             fetch-depth: 1
 
-        - name: Install clients
+        - name: Install clients for GCP/Mongo
           run: |
             pip3 install pymongo google-api-python-client paramiko==2.7.1
 

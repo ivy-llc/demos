@@ -18,7 +18,7 @@ jobs:
           submodules: "recursive"
           fetch-depth: 1
 
-      - name: Run Demo Testing
+      - name: Run Integration testing for Basic Demos
         id: tests
         run: |
           cd demos
