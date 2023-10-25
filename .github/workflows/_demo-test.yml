@@ -21,7 +21,7 @@ jobs:
             submodules: "recursive"
             fetch-depth: 1
 
-        - name: Run Demo Testing
+        - name: Run Demo Testing !
           run: |
             cd demos
             echo "Paused testing for ${{ matrix.modules }}.ipynb this notebook temporarily, debug the script(kc.client.execute_interactive) !"
