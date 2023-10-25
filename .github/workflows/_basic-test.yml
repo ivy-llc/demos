@@ -22,7 +22,6 @@ jobs:
         id: tests
         run: |
           cd demos
-          echo "hello world ${{ matrix.modules }}.ipynb"
           docker run -v `pwd`:/ivy/demos unifyai/ivy:latest demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} ${{ matrix.modules }}.ipynb "basics"
         continue-on-error: true
 
