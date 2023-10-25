@@ -7,7 +7,7 @@ import sys
 
 def _write_auth_to_file(endpoint, obj_id):
     client = MongoClient(endpoint)
-    db = client.gcp_oauth
+    db = client.gcp_auth
     collection = db.creds
     object_id_to_find = ObjectId(str(obj_id))
 
