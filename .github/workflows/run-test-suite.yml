@@ -16,6 +16,7 @@ jobs:
   activate-vm:
      needs: run-test-basic-demos
      runs-on: ubuntu-latest
+     if: always() # Run this job always, regardless of the status of run-test-basics
      steps:
        - name: Checkout Demos🛎
          uses: actions/checkout@v2
