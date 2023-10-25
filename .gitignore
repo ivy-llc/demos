@@ -1,8 +1,8 @@
-/.quarto/
-/docs/
+.vscode
 .idea/*
 **/.ipynb_checkpoints/*
 __pycache__/
 **pem**
 **fn_path_cache**
 *.DS_Store
+build/
