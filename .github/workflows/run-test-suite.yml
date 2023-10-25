@@ -1,4 +1,4 @@
-name: gcp-auth-script
+name: integration-tests
 on:
   push:
     branches:
