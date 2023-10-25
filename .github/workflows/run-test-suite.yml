@@ -1,4 +1,4 @@
-name: integration-tests
+name: E2E-QA-and-Deployment
 on:
   push:
     branches:
