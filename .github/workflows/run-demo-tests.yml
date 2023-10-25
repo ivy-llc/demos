@@ -11,7 +11,7 @@ on:
 jobs:
   run-test-basic-demos:
     name: learn-the-basics
-    uses: .github/workflows/_basic_test.yml
+    uses: ./.github/workflows/_basic-test.yml
 
   activate-vm:
      needs: run-test-basics
@@ -42,7 +42,7 @@ jobs:
   run-test-example-demos:
     needs: activate-vm
     name: examples-and-demos
-    uses: .github/workflows/_demo_test.yml
+    uses: ./.github/workflows/_demo-test.yml
 
   deactivate-vm:
     needs: run-test
