@@ -9,7 +9,12 @@ on:
   workflow_dispatch:
 
 jobs:
+  run-test-basic-demos:
+    name: learn-the-basics
+    uses: .github/workflows/_basic_test.yml
+
   activate-vm:
+     needs: run-test-basics
      runs-on: ubuntu-latest
      steps:
        - name: Checkout Demos🛎
@@ -34,26 +39,10 @@ jobs:
            python3 db_auth.py ${{ secrets.DB_ENDPOINT }} ${{ secrets.DB_OBJ_ID }}
            python3 vm_auth.py ${{ secrets.SSH_USERNAME }} ${{ secrets.SSH_PASSPHRASE }} "false"
 
-  run-test:
+  run-test-example-demos:
     needs: activate-vm
-    runs-on: self-hosted
-    steps:
-      - name: Clean repository
-        run:
-          sudo rm -fr $GITHUB_WORKSPACE && mkdir $GITHUB_WORKSPACE
-
-      - name: Checkout Demos🛎
-        uses: actions/checkout@v2
-        with:
-          path: demos
-          persist-credentials: false
-          submodules: "recursive"
-          fetch-depth: 1
-
-      - name: Run Demo Testing
-        run: |
-          cd demos
-          docker run -v `pwd`:/ivy/demos unifyai/multicuda:base_and_requirements demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} bert_demo.ipynb "examples"
+    name: examples-and-demos
+    uses: .github/workflows/_demo_test.yml
 
   deactivate-vm:
     needs: run-test

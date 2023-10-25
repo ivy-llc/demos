@@ -1,0 +1,32 @@
+name: test-examples
+on: [workflow_call, workflow_dispatch]
+
+jobs:
+  Ubuntu:
+    runs-on: self-hosted #ToDo: ${{ needs.build.outputs.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        modules: [alexnet_demo, bert_demo, image_segmentation_with_ivy_unet, mmpretrain_to_jax, resnet_demo, torch_to_jax]
+    steps:
+        - name: Clean repository
+          run:
+            sudo rm -fr $GITHUB_WORKSPACE && mkdir $GITHUB_WORKSPACE
+
+        - name: Checkout Demos🛎
+          uses: actions/checkout@v2
+          with:
+            path: demos
+            persist-credentials: false
+            submodules: "recursive"
+            fetch-depth: 1
+
+        - name: Run Demo Testing
+          run: |
+            cd demos
+            docker run -v `pwd`:/ivy/demos unifyai/multicuda:base_and_requirements demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} ${{ matrix.modules }}.ipynb "examples"
+
+        - name: Check on failures
+          if: steps.tests.outcome!= 'success'
+          run: exit 1
+
