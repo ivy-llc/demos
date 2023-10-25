@@ -2,7 +2,7 @@ name: test-basics
 on: [workflow_call, workflow_dispatch]
 
 jobs:
-  Ubuntu:
+  cpu:
     runs-on: ubuntu-latest #ToDo: ${{ needs.build.outputs.os }}
     strategy:
       fail-fast: false

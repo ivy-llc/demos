@@ -2,7 +2,7 @@ name: test-examples
 on: [workflow_call, workflow_dispatch]
 
 jobs:
-  GCP:
+  gpu:
     runs-on: self-hosted #ToDo: ${{ needs.build.outputs.os }}
     strategy:
       fail-fast: false

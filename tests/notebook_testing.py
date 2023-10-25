@@ -170,8 +170,8 @@ class IterativeTestResult(unittest.TextTestResult):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("-notebook_path", help="Path to the notebook file")
-    parser.add_argument("-module", help="Can either test examples or Basics")
+    parser.add_argument("notebook_path", help="Path to the notebook file")
+    parser.add_argument("module", help="Can either test examples or Basics")
     args = parser.parse_args()
 
     NotebookTest.notebook = args.notebook_path
