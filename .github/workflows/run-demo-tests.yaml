@@ -53,7 +53,7 @@ jobs:
       - name: Run Demo Testing
         run: |
           cd demos
-          docker run -v `pwd`:/ivy/demos unifyai/multicuda:base_and_requirements demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} resnet_demo.ipynb "examples"
+          docker run -v `pwd`:/ivy/demos unifyai/multicuda:base_and_requirements demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} bert_demo.ipynb "examples"
 
   deactivate-vm:
     needs: run-test
