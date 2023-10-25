@@ -216,6 +216,7 @@ def benchmarking_helper(exec_fn, exec_comp):
 
 def fetch_nb(notebook, module):
     path = "/"
+    print(notebook, module)
     if module == "basics":
         path = "learn_the_basics/"
     elif module == "examples":
