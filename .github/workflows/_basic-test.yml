@@ -7,7 +7,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        modules: [01_write_ivy_code, 02_unify_code, 03_compile_code, 04_transpile_code, 05_lazy_vs_eager, 06_how_to_use_decorators, 07_transpile_any_library, 08_transpile_any_model, 09_write_a_model_using_ivy]
+        mods: [01_write_ivy_code, 02_unify_code, 03_compile_code, 04_transpile_code, 05_lazy_vs_eager,
+                  06_how_to_use_decorators, 07_transpile_any_library, 08_transpile_any_model,
+                  09_write_a_model_using_ivy]
 
     steps:
       - name: Checkout Demos🛎
@@ -22,7 +24,7 @@ jobs:
         id: tests
         run: |
           cd demos
-          docker run -v `pwd`:/ivy/demos unifyai/ivy:latest demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} ${{ matrix.modules }}.ipynb "basics"
+          docker run -v `pwd`:/ivy/demos unifyai/ivy:latest demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} ${{ matrix.mods }}.ipynb "basics"
         continue-on-error: true
 
       - name: Check on failures
