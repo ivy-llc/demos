@@ -14,7 +14,7 @@ jobs:
     uses: ./.github/workflows/_basic-test.yml
 
   activate-vm:
-     needs: run-test-basics
+     needs: run-test-basic-demos
      runs-on: ubuntu-latest
      steps:
        - name: Checkout Demos🛎
@@ -45,7 +45,7 @@ jobs:
     uses: ./.github/workflows/_demo-test.yml
 
   deactivate-vm:
-    needs: run-test
+    needs: run-test-example-demos
     runs-on: ubuntu-latest
     if: always() # Run this job always, regardless of the status of run-test
     steps:
