@@ -1,0 +1,37 @@
+{
+    "learn_the_basics": {
+        "01_write_ivy_code.ipynb": {
+            "value": [16, 19, 21]
+        },
+        "02_unify_code.ipynb": {
+            "array_values": [12]
+        },
+        "03_trace_code.ipynb": {
+            "array_values": [10, 14],
+            "benchmark": [16, 17]
+        },
+        "04_transpile_code.ipynb": {
+            "array_values": [10]
+        },
+        "05_lazy_vs_eager.ipynb": {
+            "array_values": [14, 16, 19, 21, 24, 26]
+        },
+        "06_how_to_use_decorators.ipynb": {
+            "array_values": [12, 15, 19, 22, 26, 29]
+        },
+        "08_transpile_any_model.ipynb": {
+            "value": [13],
+            "array_values": [15]
+        }
+    },
+    "guides": {
+        "01_transpiling_a_torch_model.ipynb": {
+            "value": [13, 17]
+        }
+    },
+    "examples_and_demos": {
+        "alexnet_demo.ipynb": {
+            "install": [3]
+        }
+    }
+}
