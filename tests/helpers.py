@@ -47,6 +47,8 @@ def fetch_notebook_and_configs(path):
     if "install" in config:
         for setup_cell_number in config["install"]:
             for setup_line in notebook.cells[setup_cell_number - 1].source.split("\n"):
+                if "exit()" in setup_line:
+                    continue
                 setup_command = setup_line.strip("!")
                 print(f"RUN {setup_command}")
                 os.system(setup_command)
