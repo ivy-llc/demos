@@ -26,7 +26,7 @@ jobs:
           run: |
             cd demos
             echo "Paused testing for ${{ matrix.modules }}.ipynb this notebook temporarily, debug the script(kc.client.execute_interactive) !"
-#           docker run -v `pwd`:/ivy/demos unifyai/multicuda:base_and_requirements demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} ${{ matrix.modules }}.ipynb "examples"
+#           docker run -v `pwd`:/ivy/demos unifyai/ivy:latest-gpu demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} examples_and_demos/${{ matrix.modules }}.ipynb
           continue-on-error: true
 
         - name: Check on failures
