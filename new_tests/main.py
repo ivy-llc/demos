@@ -135,7 +135,8 @@ if __name__ == "__main__":
     parser.add_argument("path", help="Path to the notebook file")
     args = parser.parse_args()
 
-    NotebookTest.path = args.path
+    root_path = os.sep.join(__file__.split(os.sep)[:-2])
+    NotebookTest.path = os.path.join(root_path, args.path)
     print(f"path : {NotebookTest.path}")
 
     suite = unittest.TestLoader().loadTestsFromTestCase(NotebookTest)
