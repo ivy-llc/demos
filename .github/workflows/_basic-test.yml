@@ -24,7 +24,7 @@ jobs:
         id: tests
         run: |
           cd demos
-          docker run -v `pwd`:/ivy/demos unifyai/ivy:latest demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} ${{ matrix.mods }}.ipynb "basics"
+          docker run -v `pwd`:/ivy/demos unifyai/ivy:latest demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} ${{ matrix.mods }}.ipynb
         continue-on-error: true
 
       - name: Check on failures
