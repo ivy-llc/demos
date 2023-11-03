@@ -20,15 +20,6 @@ jobs:
           persist-credentials: false
           submodules: "recursive"
           fetch-depth: 1
-      
-      - name: Checkout Ivy🛎
-        uses: actions/checkout@v4
-        with:
-          repository: unifyai/ivy
-          path: ivy
-          persist-credentials: false
-          submodules: "recursive"
-          fetch-depth: 1
 
       - name: Run Integration testing for Basic Demos
         id: tests
