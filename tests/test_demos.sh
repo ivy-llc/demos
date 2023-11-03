@@ -15,7 +15,8 @@ echo -n "$1" > .ivy/key.pem
 python3 -m pip install -r requirements.txt >/dev/null 2>&1
 
 # run test
-echo "PATH"
+echo "PATH1"
 echo "$1"
+echo "PATH2"
 echo "$2"
 python3 new_tests/main.py "$2"
