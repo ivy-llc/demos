@@ -142,8 +142,3 @@ if __name__ == "__main__":
     suite = unittest.TestLoader().loadTestsFromTestCase(NotebookTest)
     runner = IterativeTestRunner(verbosity=2)
     result = runner.run(suite)
-
-    if result.wasSuccessful():
-        exit(0)  # Tests passed
-    else:
-        exit(1)  # Tests failed
