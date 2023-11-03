@@ -7,11 +7,20 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mods: [01_write_ivy_code, 02_unify_code, 03_compile_code, 04_transpile_code, 05_lazy_vs_eager,
+        mods: [01_write_ivy_code, 02_unify_code, 03_trace_code, 04_transpile_code, 05_lazy_vs_eager,
                   06_how_to_use_decorators, 07_transpile_any_library, 08_transpile_any_model,
                   09_write_a_model_using_ivy]
 
     steps:
+      - name: Checkout Ivy🛎
+        uses: actions/checkout@v4
+        with:
+          repository: unifyai/ivy
+          path: ivy
+          persist-credentials: false
+          submodules: "recursive"
+          fetch-depth: 1
+
       - name: Checkout Demos🛎
         uses: actions/checkout@v4
         with:
@@ -24,11 +33,13 @@ jobs:
       - name: Run Integration testing for Basic Demos
         id: tests
         run: |
-          cd demos
+          cd ivy
+          pip3 install -e .
+          cd ../demos
           mkdir .ivy
           touch .ivy/key.pem
           echo -n ${{ secrets.USER_API_KEY }} > .ivy/key.pem
-          docker run -v `pwd`:/ivy/demos unifyai/ivy:latest demos/tests/test_demos.sh learn_the_basics/${{ matrix.mods }}.ipynb
+          bash tests/test_demos.sh learn_the_basics/${{ matrix.mods }}.ipynb
         continue-on-error: true
 
       - name: Check on failures
