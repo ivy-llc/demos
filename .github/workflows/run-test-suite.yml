@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - ci-testing
-  pull_request:
 
 permissions:
   actions: read
