@@ -2,7 +2,7 @@
 
 cd ivy
 python3 -m pip install .
-conda install -c "nvidia/label/cuda-11.8.0" cuda-nvcc
+# conda install -c "nvidia/label/cuda-11.8.0" cuda-nvcc
 
 cd ..
 cd demos
