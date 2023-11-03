@@ -16,4 +16,4 @@ pip install -r requirements.txt >/dev/null 2>&1
 # run test
 echo "PATH"
 echo "$2"
-python3 new_tests/main.py "$2"
+python3 tests/main.py "$2"

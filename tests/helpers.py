@@ -39,7 +39,7 @@ def fetch_notebook_and_configs(path):
     module, name = path_tree[-2:]
     root_path = os.sep.join(path_tree[:-2])
     module_config = json.load(
-        open(os.path.join(root_path, "new_tests", "config.json"))
+        open(os.path.join(root_path, "tests", "config.json"))
     )[module]
     config = dict()
     if name in module_config:
