@@ -7,16 +7,10 @@ conda install -c "nvidia/label/cuda-11.8.0" cuda-nvcc
 cd ..
 cd demos
 
-mkdir .ivy
-touch .ivy/key.pem
-echo -n "$1" > .ivy/key.pem
-
 # install dependencies
 python3 -m pip install -r requirements.txt >/dev/null 2>&1
 
 # run test
-echo "SECRET"
-echo "$1"
 echo "PATH"
-echo "$2"
-python3 new_tests/main.py "$2"
+echo "$1"
+python3 new_tests/main.py "$1"
