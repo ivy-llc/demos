@@ -46,7 +46,9 @@ def _start_ssh_session(response, creds, username, passphrase):
 
     # Execute the command on the instance in the background
     command = "cd actions-runner; nohup ./run.sh"
-    channel.exec_command(command)
+    _, stdout, _ = channel.exec_command(command)
+    output = stdout.read()
+    print(f"ssh output {output}")
 
     # Close the SSH session immediately and keep the channel open
     ssh.close()
