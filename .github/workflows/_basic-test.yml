@@ -29,5 +29,5 @@ jobs:
         continue-on-error: true
 
       - name: Check on failures
-        if: steps.tests.outcome!= 'success'
+        if: steps.tests.outcome != 'success'
         run: exit 1

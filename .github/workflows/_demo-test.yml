@@ -27,9 +27,9 @@ jobs:
           run: |
             cd demos
             docker run --gpus all -v "$(pwd)":/ivy/demos unifyai/ivy:latest-gpu demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} examples_and_demos/${{ matrix.modules }}.ipynb
-          continue-on-error: false
+          continue-on-error: true
 
         - name: Check on failures
-          if: steps.tests.outcome!= 'success'
+          if: steps.tests.outcome != 'success'
           run: exit 1
 

@@ -8,7 +8,7 @@ mkdir .ivy
 touch .ivy/key.pem
 echo -n "$1" > .ivy/key.pem
 
-conda install -c "nvidia/label/cuda-11.8.0" cuda-nvcc
+# conda install -c "nvidia/label/cuda-11.8.0" cuda-nvcc
 
 # install dependencies
 pip install -r requirements.txt >/dev/null 2>&1
