@@ -62,7 +62,7 @@ class NotebookTest(unittest.TestCase):
                     if output["output_type"] in ("pyerror", "error"):
                         raise RuntimeError(
                             "runtime output throws an error -: "
-                            f"{output['ename']} with value -: {output['evalue']} and it "
+                            f"{output['ename']} with value -: {output['evalue']}"
                         )
             except Exception as e:
                 self.fail(f"Failed to run cell {cell_number + 1}: {repr(e)}")
@@ -76,9 +76,9 @@ class NotebookTest(unittest.TestCase):
                 next_test_output, next_cell_output = "", ""
 
                 if (
-                    self.config[cell_number + 1] == "benchmark"
+                    self.config[cell_number + 1].startswith("benchmark")
                     and cell_number + 2 in self.config
-                    and self.config[cell_number + 2] == "benchmark"
+                    and self.config[cell_number + 2].startswith("benchmark")
                 ):
                     next_cell_content = self.file.cells[cell_number + 1]
                     next_outputs = []
@@ -132,10 +132,8 @@ class IterativeTestResult(unittest.TextTestResult):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    # parser.add_argument("notebook_path", help="Path to the notebook file")
-    # parser.add_argument("module", help="Can either test examples or Basics")
+    parser.add_argument("path", help="Path to the notebook file")
     args = parser.parse_args()
-    args.path = "learn_the_basics/07_transpile_any_library.ipynb"
 
     NotebookTest.path = args.path
 

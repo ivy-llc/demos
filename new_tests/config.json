@@ -31,7 +31,29 @@
     },
     "examples_and_demos": {
         "alexnet_demo.ipynb": {
+            "install": [3],
+            "array_values": [15, 18],
+            "array_values_i1": [23, 28, 32, 37, 39]
+        },
+        "bert_demo.ipynb": {
+            "value": [11, 20, 25, 30, 34, 39]
+        },
+        "image_segmentation_with_ivy_unet.ipynb": {
             "install": [3]
+        },
+        "mmpretrain_to_jax.ipynb": {
+            "benchmark": [21, 22]
+        },
+        "resnet_demo.ipynb": {
+            "install": [4],
+            "array_values": [27, 29, 41, 43]
+        },
+        "torch_to_jax.ipynb": {
+            "benchmark_x3": [18, 19]
+        },
+        "xgboost_demo.ipynb": {
+            "value": [11, 21, 40, 57, 59],
+            "benchmark": [15, 16, 18, 19, 25, 26, 27, 28, 33, 34, 35, 36, 42, 43, 44, 45]
         }
     }
 }

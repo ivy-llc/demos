@@ -33,13 +33,14 @@ class OutputMessage:
 
 
 def fetch_notebook_and_configs(path):
-    prefix = "docs/demos/"
-    prefix = ""
-    path = "examples_and_demos/alexnet_demo.ipynb"
-    with open(f"{prefix}{path}") as f:
+    with open(path) as f:
         notebook = nbformat.reads(f.read(), nbformat.current_nbformat)
-    module, name = path.split(os.sep)[-2:]
-    module_config = json.load(open(f"{prefix}new_tests/config.json"))[module]
+    path_tree = path.split(os.sep)
+    module, name = path_tree[-2:]
+    root_path = os.sep.join(path_tree[:-2])
+    module_config = json.load(
+        open(os.path.join(root_path, "new_tests", "config.json"))
+    )[module]
     config = dict()
     if name in module_config:
         config = module_config[name]
@@ -140,7 +141,7 @@ def assert_all_close(
     ), (
         " the results from notebook "
         "and runtime "
-        f"do not match\n {original_cell_output}!={original_cell_output} \n\n"
+        f"do not match\n {original_cell_output}!={original_test_output} \n\n"
     )
 
 
@@ -190,6 +191,17 @@ def value_test(
         cell_execution_count, test_execution_count, "Asynchronous execution failed!"
     )
 
+    benchmark_threshold = None
+    if re.search(r"i\d$", config):
+        test_output = "\n".join(test_output.split("\n")[1:])
+        cell_output = "\n".join(cell_output.split("\n")[1:])
+        config = config[:-3]
+        print(f"final config {config}")
+    elif re.search(r"x\d$", config):
+        benchmark_threshold = int(config[-1])
+        config = config[:-3]
+        print(f"final config {config}")
+
     if config == "value":
         test_obj.assertEqual(cell_output, test_output, f"Values don't match")
 
@@ -222,4 +234,9 @@ def value_test(
     elif config == "benchmark":
         speedup_cell = benchmarking_helper(cell_output, next_cell_output)
         speedup_test = benchmarking_helper(test_output, next_test_output)
-        test_obj.assertLessEqual(speedup_cell, speedup_test)
+        print(f"speedup_cell {speedup_cell}")
+        print(f"speedup_test {speedup_test}")
+        if benchmark_threshold:
+            test_obj.assertLessEqual(benchmark_threshold, speedup_test)
+        else:
+            test_obj.assertLessEqual(speedup_cell, speedup_test)
