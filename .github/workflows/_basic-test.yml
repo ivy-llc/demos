@@ -12,15 +12,6 @@ jobs:
                   09_write_a_model_using_ivy]
 
     steps:
-      - name: Checkout Ivy🛎
-        uses: actions/checkout@v4
-        with:
-          repository: unifyai/ivy
-          path: ivy
-          persist-credentials: false
-          submodules: "recursive"
-          fetch-depth: 1
-
       - name: Checkout Demos🛎
         uses: actions/checkout@v4
         with:
@@ -33,13 +24,8 @@ jobs:
       - name: Run Integration testing for Basic Demos
         id: tests
         run: |
-          cd ivy
-          pip3 install -e .
-          cd ../demos
-          mkdir .ivy
-          touch .ivy/key.pem
-          echo -n ${{ secrets.USER_API_KEY }} > .ivy/key.pem
-          bash tests/test_demos.sh learn_the_basics/${{ matrix.mods }}.ipynb
+          cd demos
+          docker run -v `pwd`:/ivy/demos unifyai/ivy:latest bash tests/test_demos.sh ${{ secrets.USER_API_KEY }} learn_the_basics/${{ matrix.mods }}.ipynb
         continue-on-error: true
 
       - name: Check on failures
