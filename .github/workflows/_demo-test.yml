@@ -14,13 +14,32 @@ jobs:
           run:
             sudo rm -fr $GITHUB_WORKSPACE && mkdir $GITHUB_WORKSPACE
 
-        - name: Checkout Demos🛎
-          uses: actions/checkout@v2
-          with:
-            path: demos
-            persist-credentials: false
-            submodules: "recursive"
-            fetch-depth: 1
+      - name: Checkout Demos🛎
+        uses: actions/checkout@v4
+        with:
+          repository: unifyai/demos
+          path: demos
+          persist-credentials: false
+          submodules: "recursive"
+          fetch-depth: 1
+      
+      - name: Checkout Ivy🛎
+        uses: actions/checkout@v4
+        with:
+          repository: unifyai/ivy
+          path: ivy
+          persist-credentials: false
+          submodules: "recursive"
+          fetch-depth: 1
+
+      - name: Install ivy and fetch binaries
+        run: |
+          cd ivy
+          pip3 install -e .
+          mkdir .ivy
+          touch .ivy/key.pem
+          echo -n ${{ secrets.USER_API_KEY }} > .ivy/key.pem
+          cd ..
 
         - name: Run Integration Tests for Enterprise Demos
           run: |
