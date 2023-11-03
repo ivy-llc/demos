@@ -45,10 +45,8 @@ def _start_ssh_session(response, creds, username, passphrase):
     channel = transport.open_session()
 
     # Execute the command on the instance in the background
-    command = "cd actions-runner; nohup ./run.sh"
-    _, stdout, _ = channel.exec_command(command)
-    output = stdout.read()
-    print(f"ssh output {output}")
+    command = "cd actions-runner; nohup ./run.sh;"
+    channel.exec_command(command)
 
     # Close the SSH session immediately and keep the channel open
     ssh.close()
