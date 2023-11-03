@@ -1,10 +1,9 @@
 name: E2E-QA-and-Deployment
 on:
-  push:
-    branches:
-      - ci-testing
-  pull_request:
   workflow_dispatch:
+
+permissions:
+  actions: read
 
 jobs:
   start-vm:
