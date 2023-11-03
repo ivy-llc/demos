@@ -67,5 +67,4 @@ jobs:
   run-test-basic-demos:
     name: learn-the-basics
     uses: ./.github/workflows/_basic-test.yml
-
-
+    secrets: inherit
