@@ -136,6 +136,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     NotebookTest.path = args.path
+    print(f"path : {NotebookTest.path}")
 
     suite = unittest.TestLoader().loadTestsFromTestCase(NotebookTest)
     runner = IterativeTestRunner(verbosity=2)
