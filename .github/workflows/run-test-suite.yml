@@ -40,6 +40,7 @@ jobs:
     needs: start-vm
     name: examples-and-demos
     uses: ./.github/workflows/_demo-test.yml
+    secrets: inherit
 
   stop-vm:
     needs: run-test-example-demos
