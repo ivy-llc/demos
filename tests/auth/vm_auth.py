@@ -29,6 +29,8 @@ def _start_ssh_session(response, creds, username, passphrase):
                 username=username,
                 key_filename=creds,
                 passphrase=passphrase,
+                timeout=10,
+                channel_timeout=10,
             )
             print("SSH session successful !")
             break
