@@ -29,8 +29,8 @@ jobs:
            touch ~/.ssh/id_rsa
            echo -n "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
            chmod +x ~/.ssh/id_rsa
-           python3 db_auth.py "${{ secrets.DB_ENDPOINT }}" "${{ secrets.DB_OBJ_ID }}"
-           python3 vm_auth.py "${{ secrets.SSH_USERNAME }}" "${{ secrets.SSH_PASSPHRASE }}" "false"
+           python3 db_auth.py ${{ secrets.DB_ENDPOINT }} ${{ secrets.DB_OBJ_ID }}
+           python3 vm_auth.py ${{ secrets.SSH_USERNAME }} ${{ secrets.SSH_PASSPHRASE }} "false"
 
   run-test-example-demos:
     needs: start-vm
