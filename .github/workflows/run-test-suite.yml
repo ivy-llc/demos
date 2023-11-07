@@ -5,6 +5,9 @@ on:
 permissions:
   actions: read
 
+concurrency:
+  group: ${{ github.workflow }}
+
 jobs:
   start-vm:
      runs-on: ubuntu-latest
