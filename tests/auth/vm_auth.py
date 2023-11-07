@@ -115,9 +115,7 @@ if __name__ == "__main__":
     else:
         # Start the instance
         ssh_key_path = os.path.expanduser(ssh_credentials)
-        with open(ssh_key_path, "r+") as f:
+        with open(ssh_key_path) as f:
             ssh_key = f.read()
-            ssh_key = re.sub("\W_", "", ssh_key)
-            f.seek(0)
-            f.write(ssh_key)
+            print(len(ssh_user), len(key_passphrase), len(ssh_key))
         start_runner(gcp_credentials, ssh_key_path, ssh_user, key_passphrase)
