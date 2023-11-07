@@ -106,6 +106,8 @@ def stop_runner(creds):
 
 if __name__ == "__main__":
     ssh_user, key_passphrase, stop_vm = sys.argv[1], sys.argv[2], sys.argv[3]
+    gcp_credentials = "gcp_auth.json"
+    ssh_credentials = "~/.ssh/id_rsa"
     
     if stop_vm == "true":
         # Stop the instance
