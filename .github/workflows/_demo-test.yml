@@ -10,9 +10,17 @@ jobs:
         modules: [alexnet_demo, bert_demo, image_segmentation_with_ivy_unet, mmpretrain_to_jax, resnet_demo, torch_to_jax]
 
     steps:
+        - name: Check on failures
+          if: steps.tests.outcome != 'success'
+          run: exit 1
+
         - name: Clean repository
           run:
             sudo rm -fr $GITHUB_WORKSPACE && mkdir $GITHUB_WORKSPACE
+
+        - name: Check on failures
+          if: steps.tests.outcome != 'success'
+          run: exit 1
 
         - name: Checkout Demos🛎
           uses: actions/checkout@v4
