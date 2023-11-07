@@ -105,9 +105,12 @@ def stop_runner(creds):
 
 
 if __name__ == "__main__":
-    ssh_user, key_passphrase, stop_vm = sys.argv[1], sys.argv[2], sys.argv[3]
-    gcp_credentials = "gcp_auth.json"
-    ssh_credentials = "~/.ssh/id_rsa"
+    # ssh_user, key_passphrase, stop_vm = sys.argv[1], sys.argv[2], sys.argv[3]
+    ssh_user = "ved"
+    key_passphrase = "YvWdNK16gPCAHq2DMtHf"
+    stop_vm = "true"
+    gcp_credentials = "/workspaces/ivy/docs/demos/tests/auth/gcp_auth.json"
+    ssh_credentials = "/workspaces/ivy/docs/demos/tests/auth/id_rsa"
 
     if stop_vm == "true":
         # Stop the instance
@@ -115,7 +118,4 @@ if __name__ == "__main__":
     else:
         # Start the instance
         ssh_key_path = os.path.expanduser(ssh_credentials)
-        with open(ssh_key_path) as f:
-            ssh_key = f.read()
-            print(len(ssh_user), len(key_passphrase), len(ssh_key))
         start_runner(gcp_credentials, ssh_key_path, ssh_user, key_passphrase)
