@@ -8,14 +8,15 @@ on:
 permissions:
   actions: read
 
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
 jobs:
   start-vm:
      runs-on: ubuntu-latest
      if: always() # Run this job always, regardless of the status of run-test-basics
      steps:
-       - uses: actions/checkout@v2
-       - uses: ahmadnassri/action-workflow-queue@v1
-
        - name: Checkout Demos🛎
          uses: actions/checkout@v2
          with:
