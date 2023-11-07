@@ -27,7 +27,7 @@ jobs:
            cd demos/tests/auth
            mkdir -p ~/.ssh
            touch ~/.ssh/id_rsa
-           echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+           echo -n "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
            chmod 600 ~/.ssh/id_rsa
            python3 db_auth.py ${{ secrets.DB_ENDPOINT }} ${{ secrets.DB_OBJ_ID }}
            python3 vm_auth.py ${{ secrets.SSH_USERNAME }} ${{ secrets.SSH_PASSPHRASE }} "false"
