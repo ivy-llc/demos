@@ -23,9 +23,6 @@ def _start_ssh_session(response, creds, username, passphrase):
     for _ in range(max_retries):
         # ssh connection fails non-deterministically
         try:
-            print(f"key_filename {creds}")
-            with open(creds) as f:
-                print(f.read())
             ssh.connect(
                 external_ip,
                 username=username,
