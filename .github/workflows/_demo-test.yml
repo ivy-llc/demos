@@ -22,6 +22,10 @@ jobs:
             persist-credentials: false
             submodules: "recursive"
             fetch-depth: 1
+        
+        - name: Check on failures
+          if: steps.tests.outcome != 'success'
+          run: exit 1
 
         - name: Run Integration Tests for Enterprise Demos
           run: |
