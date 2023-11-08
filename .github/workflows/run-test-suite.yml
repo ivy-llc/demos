@@ -2,12 +2,15 @@ name: E2E-QA-and-Deployment
 on:
   workflow_dispatch:
   push:
-    branches:
-      - ci-testing
-  pull_request:
+    branches: 
+      - 'main'
 
 permissions:
   actions: read
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
 
 jobs:
   start-vm:
@@ -24,15 +27,15 @@ jobs:
 
        - name: Install clients for GCP/Mongo
          run: |
-           pip3 install pymongo google-api-python-client paramiko==2.7.1
+           pip3 install pymongo google-api-python-client paramiko
 
        - name: Start GPU VM
          run: |
            cd demos/tests/auth
            mkdir -p ~/.ssh
            touch ~/.ssh/id_rsa
-           echo "${{ secrets.SSH_KEY }}" > $HOME/.ssh/id_rsa
-           chmod 600 $HOME/.ssh/id_rsa
+           echo -n "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+           chmod +x ~/.ssh/id_rsa
            python3 db_auth.py ${{ secrets.DB_ENDPOINT }} ${{ secrets.DB_OBJ_ID }}
            python3 vm_auth.py ${{ secrets.SSH_USERNAME }} ${{ secrets.SSH_PASSPHRASE }} "false"
 

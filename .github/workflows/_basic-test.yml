@@ -1,0 +1,28 @@
+name: test-basics
+on: [workflow_call, workflow_dispatch]
+
+jobs:
+  cpu:
+    runs-on: ubuntu-latest #ToDo: ${{ needs.build.outputs.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        mods: [01_write_ivy_code, 02_unify_code, 03_trace_code, 04_transpile_code, 05_lazy_vs_eager,
+                  06_how_to_use_decorators, 07_transpile_any_library, 08_transpile_any_model,
+                  09_write_a_model_using_ivy]
+
+    steps:
+      - name: Checkout Demos🛎
+        uses: actions/checkout@v4
+        with:
+          repository: unifyai/demos
+          path: demos
+          persist-credentials: false
+          submodules: "recursive"
+          fetch-depth: 1
+
+      - name: Run Integration testing for Basic Demos
+        id: tests
+        run: |
+          cd demos
+          docker run -v "$(pwd)":/ivy/demos unifyai/ivy:latest demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} learn_the_basics/${{ matrix.mods }}.ipynb

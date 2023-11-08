@@ -1,0 +1,29 @@
+name: test-examples
+on: [workflow_call, workflow_dispatch]
+
+jobs:
+  gpu:
+    runs-on: self-hosted #ToDo: ${{ needs.build.outputs.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        modules: [alexnet_demo, bert_demo, image_segmentation_with_ivy_unet, mmpretrain_to_jax, resnet_demo, torch_to_jax]
+
+    steps:
+        - name: Clean repository
+          run:
+            sudo rm -fr $GITHUB_WORKSPACE && mkdir $GITHUB_WORKSPACE
+
+        - name: Checkout Demos🛎
+          uses: actions/checkout@v4
+          with:
+            repository: unifyai/demos
+            path: demos
+            persist-credentials: false
+            submodules: "recursive"
+            fetch-depth: 1
+
+        - name: Run Integration Tests for Enterprise Demos
+          run: |
+            cd demos
+            docker run --gpus all -v "$(pwd)":/ivy/demos unifyai/ivy:latest-gpu demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} examples_and_demos/${{ matrix.modules }}.ipynb
