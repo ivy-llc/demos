@@ -100,6 +100,7 @@ def stop_runner(creds):
     compute.instances().stop(
         project="gpu-insatnce", zone="us-central1-a", instance="demos-tests"
     ).execute()
+    time.sleep(25)
 
     print("Cleanup Successful (VM OFF)")
 
