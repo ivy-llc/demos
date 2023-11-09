@@ -50,7 +50,7 @@ jobs:
   #   uses: ./.github/workflows/_demo-test.yml
   #   secrets: inherit
   #   with:
-  #     nightly-binaries: ${{ github.event.inputs.nightly_binaries }}
+  #     nightly_binaries: ${{ github.event.inputs.nightly_binaries }}
 
   # stop-vm:
   #   needs: run-test-example-demos
@@ -80,4 +80,4 @@ jobs:
     uses: ./.github/workflows/_basic-test.yml
     secrets: inherit
     with:
-      nightly-binaries: ${{ github.event.inputs.nightly_binaries }}
+      nightly_binaries: ${{ github.event.inputs.nightly_binaries }}
