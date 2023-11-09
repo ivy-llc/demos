@@ -6,7 +6,6 @@ on:
         type: string
         default: "false"
         required: false
-  workflow_dispatch:
 
 jobs:
   cpu:
