@@ -5,7 +5,7 @@ then
 export VERSION=nightly
 fi
 
-cd ivy
+cd ivy-new
 pip install -e .
 
 cd ../demos
