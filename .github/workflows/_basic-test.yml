@@ -32,6 +32,5 @@ jobs:
       - name: Run Integration testing for Basic Demos
         id: tests
         run: |
-          echo "NIGHTLY BINARIES ${{ inputs.nightly_binaries }}"
           cd demos
           docker run -v "$(pwd)":/ivy/demos unifyai/ivy:latest demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} learn_the_basics/${{ matrix.mods }}.ipynb ${{ inputs.nightly_binaries }}
