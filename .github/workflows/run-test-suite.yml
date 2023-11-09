@@ -79,3 +79,5 @@ jobs:
     name: learn-the-basics
     uses: ./.github/workflows/_basic-test.yml
     secrets: inherit
+    with:
+      nightly-binaries: ${{ github.event.inputs.nightly_binaries }}
