@@ -2,7 +2,7 @@
 
 if [ $3 == "true" ];
 then
-export VERSION=nightly123
+export VERSION=nightly
 fi
 
 cd ivy
