@@ -2,7 +2,7 @@
 
 echo "NIGHTLY : $3"
 
-if [ $3 == "true" ]:
+if [ $3 == "true" ];
 then
 echo "NIGHTLY"
 export VERSION=nightly
