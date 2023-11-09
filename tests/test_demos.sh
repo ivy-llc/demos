@@ -5,7 +5,7 @@ echo "NIGHTLY : $3"
 if [ $3 == "true" ]:
 then
 echo "NIGHTLY"
-export VERSION="$3"
+export VERSION=nightly
 echo $VERSION
 fi
 
