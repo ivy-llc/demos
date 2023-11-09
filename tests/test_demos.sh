@@ -1,5 +1,14 @@
 #!/bin/bash
 
+echo "NIGHTLY : $3"
+
+if [ $3 == "true" ]:
+then
+echo "NIGHTLY"
+export VERSION="$3"
+echo $VERSION
+fi
+
 cd ivy
 pip install -e .
 
@@ -14,6 +23,5 @@ echo -n "$1" > .ivy/key.pem
 pip install -r requirements.txt >/dev/null 2>&1
 
 # run test
-echo "PATH"
-echo "$2"
+echo "PATH : $2"
 python3 tests/main.py "$2"

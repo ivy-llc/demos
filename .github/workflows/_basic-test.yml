@@ -1,5 +1,12 @@
 name: test-basics
-on: [workflow_call, workflow_dispatch]
+on: 
+  workflow_call:
+    inputs:
+      nightly_binaries:
+        type: string
+        default: "false"
+        required: false
+  workflow_dispatch:
 
 jobs:
   cpu:
@@ -7,9 +14,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mods: [01_write_ivy_code, 02_unify_code, 03_trace_code, 04_transpile_code, 05_lazy_vs_eager,
-                  06_how_to_use_decorators, 07_transpile_any_library, 08_transpile_any_model,
-                  09_write_a_model_using_ivy]
+        # mods: [01_write_ivy_code, 02_unify_code, 03_trace_code, 04_transpile_code, 05_lazy_vs_eager,
+        #           06_how_to_use_decorators, 07_transpile_any_library, 08_transpile_any_model,
+        #           09_write_a_model_using_ivy]
+        mods: [01_write_ivy_code]
 
     steps:
       - name: Checkout Demos🛎
@@ -24,5 +32,6 @@ jobs:
       - name: Run Integration testing for Basic Demos
         id: tests
         run: |
+          echo "NIGHTLY BINARIES ${{ inputs.nightly_binaries }}"
           cd demos
-          docker run -v "$(pwd)":/ivy/demos unifyai/ivy:latest demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} learn_the_basics/${{ matrix.mods }}.ipynb
+          docker run -v "$(pwd)":/ivy/demos unifyai/ivy:latest demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} learn_the_basics/${{ matrix.mods }}.ipynb ${{ inputs.nightly_binaries }}

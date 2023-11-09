@@ -1,5 +1,12 @@
 name: test-examples
-on: [workflow_call, workflow_dispatch]
+on: 
+  workflow_call:
+    inputs:
+      nightly_binaries:
+        type: string
+        default: "false"
+        required: false
+  workflow_dispatch:
 
 jobs:
   gpu:
@@ -25,5 +32,6 @@ jobs:
 
         - name: Run Integration Tests for Enterprise Demos
           run: |
+            echo "NIGHTLY BINARIES ${{ inputs.nightly_binaries }}"
             cd demos
-            docker run --gpus all -v "$(pwd)":/ivy/demos unifyai/ivy:latest-gpu demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} examples_and_demos/${{ matrix.modules }}.ipynb
+            docker run --gpus all -v "$(pwd)":/ivy/demos unifyai/ivy:latest-gpu demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} examples_and_demos/${{ matrix.modules }}.ipynb $${{ inputs.nightly_binaries }}
