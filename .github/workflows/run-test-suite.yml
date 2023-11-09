@@ -18,62 +18,62 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # start-vm:
-  #    runs-on: ubuntu-latest
-  #    if: always() # Run this job always, regardless of the status of run-test-basics
-  #    steps:
-  #      - name: Checkout Demos🛎
-  #        uses: actions/checkout@v2
-  #        with:
-  #            path: demos
-  #            persist-credentials: false
-  #            submodules: "recursive"
-  #            fetch-depth: 1
+  start-vm:
+     runs-on: ubuntu-latest
+     if: always() # Run this job always, regardless of the status of run-test-basics
+     steps:
+       - name: Checkout Demos🛎
+         uses: actions/checkout@v2
+         with:
+             path: demos
+             persist-credentials: false
+             submodules: "recursive"
+             fetch-depth: 1
 
-  #      - name: Install clients for GCP/Mongo
-  #        run: |
-  #          pip3 install pymongo google-api-python-client paramiko
+       - name: Install clients for GCP/Mongo
+         run: |
+           pip3 install pymongo google-api-python-client paramiko
 
-  #      - name: Start GPU VM
-  #        run: |
-  #          cd demos/tests/auth
-  #          mkdir -p ~/.ssh
-  #          touch ~/.ssh/id_rsa
-  #          echo -n "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
-  #          chmod +x ~/.ssh/id_rsa
-  #          python3 db_auth.py ${{ secrets.DB_ENDPOINT }} ${{ secrets.DB_OBJ_ID }}
-  #          python3 vm_auth.py ${{ secrets.SSH_USERNAME }} ${{ secrets.SSH_PASSPHRASE }} "false"
+       - name: Start GPU VM
+         run: |
+           cd demos/tests/auth
+           mkdir -p ~/.ssh
+           touch ~/.ssh/id_rsa
+           echo -n "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+           chmod +x ~/.ssh/id_rsa
+           python3 db_auth.py ${{ secrets.DB_ENDPOINT }} ${{ secrets.DB_OBJ_ID }}
+           python3 vm_auth.py ${{ secrets.SSH_USERNAME }} ${{ secrets.SSH_PASSPHRASE }} "false"
 
-  # run-test-example-demos:
-  #   needs: start-vm
-  #   name: examples-and-demos
-  #   uses: ./.github/workflows/_demo-test.yml
-  #   secrets: inherit
-  #   with:
-  #     nightly_binaries: ${{ github.event.inputs.nightly_binaries }}
+  run-test-example-demos:
+    needs: start-vm
+    name: examples-and-demos
+    uses: ./.github/workflows/_demo-test.yml
+    secrets: inherit
+    with:
+      nightly_binaries: ${{ github.event.inputs.nightly_binaries }}
 
-  # stop-vm:
-  #   needs: run-test-example-demos
-  #   runs-on: ubuntu-latest
-  #   if: always() # Run this job always, regardless of the status of run-test
-  #   steps:
-  #       - name: Checkout Demos🛎
-  #         uses: actions/checkout@v2
-  #         with:
-  #           path: demos
-  #           persist-credentials: false
-  #           submodules: "recursive"
-  #           fetch-depth: 1
+  stop-vm:
+    needs: run-test-example-demos
+    runs-on: ubuntu-latest
+    if: always() # Run this job always, regardless of the status of run-test
+    steps:
+        - name: Checkout Demos🛎
+          uses: actions/checkout@v2
+          with:
+            path: demos
+            persist-credentials: false
+            submodules: "recursive"
+            fetch-depth: 1
 
-  #       - name: Install clients for GCP/Mongo
-  #         run: |
-  #           pip3 install pymongo google-api-python-client paramiko==2.7.1
+        - name: Install clients for GCP/Mongo
+          run: |
+            pip3 install pymongo google-api-python-client paramiko==2.7.1
 
-  #       - name: Stop GPU VM
-  #         run: |
-  #           cd demos/tests/auth
-  #           python3 db_auth.py ${{ secrets.DB_ENDPOINT }} ${{ secrets.DB_OBJ_ID }}
-  #           python3 vm_auth.py ${{ secrets.SSH_USERNAME }} ${{ secrets.SSH_PASSPHRASE }} "true"
+        - name: Stop GPU VM
+          run: |
+            cd demos/tests/auth
+            python3 db_auth.py ${{ secrets.DB_ENDPOINT }} ${{ secrets.DB_OBJ_ID }}
+            python3 vm_auth.py ${{ secrets.SSH_USERNAME }} ${{ secrets.SSH_PASSPHRASE }} "true"
 
   run-test-basic-demos:
     name: learn-the-basics
