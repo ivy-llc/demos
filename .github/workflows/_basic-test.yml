@@ -42,4 +42,4 @@ jobs:
         id: tests
         run: |
           cd demos
-          docker run -v "$(pwd)":/ivy/demos -v "$(pwd)":/ivy/ivy unifyai/ivy:latest demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} learn_the_basics/${{ matrix.mods }}.ipynb ${{ inputs.nightly_binaries }}
+          docker run -v "$(pwd)":/ivy/demos -v ../ivy:/ivy/ivy unifyai/ivy:latest demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} learn_the_basics/${{ matrix.mods }}.ipynb ${{ inputs.nightly_binaries }}
