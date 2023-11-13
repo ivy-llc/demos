@@ -4,7 +4,8 @@ on:
     inputs:
       nightly_binaries:
         description: 'Testing with nightly binaries :'
-        default: "false"
+        type: boolean
+        default: false
         required: false
   push:
     branches: 
