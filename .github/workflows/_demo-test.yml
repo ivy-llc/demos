@@ -1,5 +1,11 @@
 name: test-examples
-on: [workflow_call, workflow_dispatch]
+on: 
+  workflow_call:
+    inputs:
+      nightly_binaries:
+        type: boolean
+        default: false
+        required: false
 
 jobs:
   gpu:
@@ -23,7 +29,16 @@ jobs:
             submodules: "recursive"
             fetch-depth: 1
 
+        - name: Checkout Ivy🛎
+          uses: actions/checkout@v4
+          with:
+            repository: unifyai/ivy
+            ref: ${{ inputs.nightly_binaries && 'nightly' || 'main' }}
+            path: ivy
+            persist-credentials: false
+            submodules: "recursive"
+            fetch-depth: 1
+  
         - name: Run Integration Tests for Enterprise Demos
           run: |
-            cd demos
-            docker run --gpus all -v "$(pwd)":/ivy/demos unifyai/ivy:latest-gpu demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} examples_and_demos/${{ matrix.modules }}.ipynb
+            docker run --gpus all -v "$(pwd)"/demos:/ivy/demos -v "$(pwd)"/ivy:/ivy/ivy unifyai/ivy:latest-gpu demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} examples_and_demos/${{ matrix.modules }}.ipynb ${{ inputs.nightly_binaries }}

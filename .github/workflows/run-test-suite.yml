@@ -1,6 +1,12 @@
 name: E2E-QA-and-Deployment
 on:
   workflow_dispatch:
+    inputs:
+      nightly_binaries:
+        description: 'Testing with nightly binaries :'
+        type: boolean
+        default: false
+        required: false
   push:
     branches: 
       - 'main'
@@ -44,6 +50,8 @@ jobs:
     name: examples-and-demos
     uses: ./.github/workflows/_demo-test.yml
     secrets: inherit
+    with:
+      nightly_binaries: ${{ fromJson(github.event.inputs.nightly_binaries) }}
 
   stop-vm:
     needs: run-test-example-demos
@@ -72,3 +80,5 @@ jobs:
     name: learn-the-basics
     uses: ./.github/workflows/_basic-test.yml
     secrets: inherit
+    with:
+      nightly_binaries: ${{ fromJson(github.event.inputs.nightly_binaries) }}
