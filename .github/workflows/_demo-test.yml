@@ -33,6 +33,7 @@ jobs:
           uses: actions/checkout@v4
           with:
             repository: unifyai/ivy
+            ref: ${{ inputs.nightly_binaries && 'nightly' || 'main' }}
             path: ivy
             persist-credentials: false
             submodules: "recursive"
