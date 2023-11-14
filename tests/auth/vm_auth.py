@@ -95,10 +95,10 @@ def start_runner(
     _start_ssh_session(response, ssh_creds, ssh_user, key_passphrase)
 
 
-def stop_runner(creds):
+def stop_runner(creds, instance="demos-tests"):
     compute = authenticate_vm(creds)
     compute.instances().stop(
-        project="gpu-insatnce", zone="us-central1-a", instance="demos-tests"
+        project="gpu-insatnce", zone="us-central1-a", instance=instance
     ).execute()
     time.sleep(25)
 
@@ -106,14 +106,14 @@ def stop_runner(creds):
 
 
 if __name__ == "__main__":
-    ssh_user, key_passphrase, stop_vm = sys.argv[1], sys.argv[2], sys.argv[3]
+    ssh_user, key_passphrase, stop_vm, instance = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
     gcp_credentials = "gcp_auth.json"
     ssh_credentials = "~/.ssh/id_rsa"
     
     if stop_vm == "true":
         # Stop the instance
-        stop_runner(gcp_credentials)
+        stop_runner(gcp_credentials, instance=instance)
     else:
         # Start the instance
         ssh_key_path = os.path.expanduser(ssh_credentials)
-        start_runner(gcp_credentials, ssh_key_path, ssh_user, key_passphrase)
+        start_runner(gcp_credentials, ssh_key_path, ssh_user, key_passphrase, instance=instance)
