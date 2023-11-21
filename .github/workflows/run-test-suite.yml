@@ -53,7 +53,7 @@ jobs:
     uses: ./.github/workflows/_demo-test.yml
     secrets: inherit
     with:
-      nightly_binaries: ${{ fromJson(github.event.inputs.nightly_binaries) }}
+      nightly_binaries: ${{ github.event_name == 'workflow_dispatch' && fromJson(github.event.inputs.nightly_binaries) || false}}
 
   stop-vm:
     needs: run-test-example-demos
@@ -83,4 +83,4 @@ jobs:
     uses: ./.github/workflows/_basic-test.yml
     secrets: inherit
     with:
-      nightly_binaries: ${{ fromJson(github.event.inputs.nightly_binaries) }}
+      nightly_binaries: ${{ github.event_name == 'workflow_dispatch' && fromJson(github.event.inputs.nightly_binaries) || false}}
