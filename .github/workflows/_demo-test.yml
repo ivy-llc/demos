@@ -41,4 +41,4 @@ jobs:
   
         - name: Run Integration Tests for Enterprise Demos
           run: |
-            docker run --gpus all -v "$(pwd)"/demos:/ivy/demos -v "$(pwd)"/ivy:/ivy/ivy unifyai/ivy:latest-gpu demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} examples_and_demos/${{ matrix.modules }}.ipynb ${{ inputs.nightly_binaries }}
+            docker run --rm --gpus all -v "$(pwd)"/demos:/ivy/demos -v "$(pwd)"/ivy:/ivy/ivy unifyai/ivy:latest-gpu demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} examples_and_demos/${{ matrix.modules }}.ipynb ${{ inputs.nightly_binaries }}
