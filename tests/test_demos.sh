@@ -5,7 +5,7 @@ export VERSION=nightly
 fi
 
 cd ivy
-pip install -e .
+sudo pip install -e .
 
 cd ../demos
 mkdir .ivy
