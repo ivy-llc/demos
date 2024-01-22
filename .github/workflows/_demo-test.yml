@@ -13,7 +13,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        modules: [alexnet_demo, bert_demo, image_segmentation_with_ivy_unet, mmpretrain_to_jax, resnet_demo, torch_to_jax]
+        modules: [
+          alexnet_demo,
+          bert_demo,
+          image_segmentation_with_ivy_unet,
+          mmpretrain_to_jax,
+          resnet_demo,
+          torch_to_jax,
+          lstm_demo,
+        ]
 
     steps:
         - name: Clean repository
