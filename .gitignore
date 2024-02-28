@@ -6,3 +6,4 @@ __pycache__/
 **fn_path_cache**
 *.DS_Store
 build/
+venv
