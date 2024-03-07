@@ -1,18 +1,47 @@
 # Contributor Demos - README
 
-Welcome to the Contributor Demos section of our `unifyai/demos` repository! This initiative is designed to foster collaboration and innovation within our community, allowing individuals and teams to contribute to a variety of exciting machine learning projects using ivy. Below, you will find detailed instructions on how to participate in these projects, ranging from plant disease recognition to sarcasm detection, and everything in between.
+Welcome to the Contributor Demos section of our `unifyai/demos` repository! This folder contains the exciting ML demos that our community created using `ivy`. Below, you will find detailed instructions on how to getting involved in these projects, ranging from plant disease recognition to sarcasm detection, and everything in between.
 
 ## Getting Started
 
 ### Step 1: Fill Out the Contributor Form
 
-Before diving into the code, we ask all interested participants to fill out a short form. This form captures essential information such as your name, email, and whether you plan to contribute individually or as part of a group. Please complete the form at this link: [Contributor Form](https://forms.gle/kTuRAmLh2SzKmm146).
+Before diving into the code, we ask all interested contributors to fill out a short form. This form captures essential information such as your name, email, whether you plan to contribute individually or as part of a group, and the project are you willing to work on. Please complete the form at this link: [Contributor Form](https://forms.gle/kTuRAmLh2SzKmm146). Informations of all the projects are provided in the [Github Projects](https://github.com/orgs/unifyai/projects/18). Each project comes with a unique set of challenges and learning opportunities.
 
-### Step 2: Select a Project and Start Working
+### Step 2: Setting up Ivy
 
-Once you've submitted the form, you're ready to start! Choose from one of the ten projects listed in our [Github Projects](https://github.com/orgs/unifyai/projects/18). Each project comes with a unique set of challenges and learning opportunities. If you decide to work as a group, ensure all members are aligned on the project choice.
+Once you've filled out the form, you're ready to start contributing to the project of your choice. To get started, follow these steps:
+1. Fork the [unifyai/demos](https://github.com/unifyai/demos) repository to your GitHub account.
+2. Clone the forked repository to your local machine using the following command:
+   ```bash
+   git clone <your-forked-repo-url>
+   ```
+3. Navigate to the `demos` directory:
+   ```bash
+    cd demos
+    ```
+4. Create a new branch for your work:
+    ```bash
+    git checkout -b <branch-name>
+    ```
+5. Create a virtual environment and install ivy:
+    ```bash
+    python3 -m venv venv
+    source venv/bin/activate
+    pip install ivy
+    ```
+6. Generating API key:
+    - Navigate to [UnifyAI Console](https://console.unify.ai)
+    - Sign up/Log in to your account and create a new key for `Ivy Transpiler`
+7. Create a new directory `.ivy` in the root of the project and create a file `key.pem` inside the `.ivy` directory.
+8. Paste the API key in the `key.pem` file and save it.
+If you have any issues with the setup, please feel free to ask for help on our [discord server](https://discord.gg/sg2QRAvY).
 
-### Step 3: Submitting Your Pull Request (PR)
+### Step 3: Solving an Issue
+
+Start working on the issue you've chosen. Create a jupyter notebook under the directory of the project you're working on. You can also have the trained model in the same directory.
+
+### Step 4: Submitting Your Pull Request (PR)
 
 After developing your solution, it's time to submit a Pull Request (PR) to the `unifyai/demos` repository. Make sure to link the specific issue you're addressing by including `closes <#issue no>.` in your PR description. This notation will help us track which PRs aim to solve which issues.
 
@@ -31,7 +60,7 @@ To streamline the review process and facilitate badge awarding, we require a uni
 ### Important Notes
 
 - **Single PR Acceptance:** For each issue, only one PR will be merged. We encourage collaboration and communication within the community to combine efforts and submit the best possible solution.
-- **Rising Contributors:** Contributors of the merged PR will be immediately promoted to [Rising Contributors](https://unify.ai/docs/ivy/overview/contributing/volunteer_program.html#rising-contributor). This status comes with recognition within our community and opportunities for further involvement in project development.
+- **Rising Contributors:** We're happy to welcome the contributors of the merged PR as Rising contributors [Rising Contributors](https://unify.ai/docs/ivy/overview/contributing/volunteer_program.html#rising-contributor) in our community. This status comes with recognition within our community and opportunities for further involvement in project development.
 
 ## Contribution Guidelines
 
