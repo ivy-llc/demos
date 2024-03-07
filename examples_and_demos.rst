@@ -33,6 +33,11 @@ Examples and Demos
         :link: examples_and_demos/xgboost_demo.ipynb
 
         Accelerate your XGBoost by converting them to JAX.
+    
+    .. grid-item-card:: Convert PyTorch Models to PaddlePaddle
+        :link: examples_and_demos/dinov2_to_paddle.ipynb
+
+        In this demo, we convert the DINOv2 model to PaddlePaddle
 
 .. toctree::
     :hidden:
@@ -45,3 +50,4 @@ Examples and Demos
     examples_and_demos/image_segmentation_with_ivy_unet.ipynb
     examples_and_demos/alexnet_demo.ipynb
     examples_and_demos/xgboost_demo.ipynb
+    examples_and_demos/dinov2_to_paddle.ipynb
