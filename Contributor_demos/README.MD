@@ -50,6 +50,9 @@ Start working on the issue you've chosen. Create a jupyter notebook under the di
 
 After developing your solution, it's time to submit a Pull Request (PR) to the `unifyai/demos` repository. Make sure to link the specific issue you're addressing by including `closes <#issue no>.` in your PR description. This notation will help us track which PRs aim to solve which issues.
 
+[Watch the Tutorial](https://drive.google.com/file/d/1pu4D3Qsf3o3VpqDfGzLF7hADDswxDfEF/view?usp=share_link)
+
+
 #### PR Description Guidelines
 
 To streamline the review process and facilitate badge awarding, we require a uniform format for PR descriptions. Please include the GitHub IDs of all team members involved in the project at the end of your PR description, following this template:
@@ -75,5 +78,3 @@ If you have any questions or need clarification on the process, please feel free
 ## Let's Build Together!
 
 Your contributions play a vital role in the success of this initiative. By participating, you're not only enhancing your skills but also contributing to a project that could have a real-world impact. We're excited to see your innovative solutions and to welcome you as a valuable member of our growing community.
-
-## Video
