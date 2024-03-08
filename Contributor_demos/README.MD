@@ -2,6 +2,11 @@
 
 Welcome to the Contributor Demos section of our `unifyai/demos` repository! This folder contains the exciting ML demos that our community created using `ivy`. Below, you will find detailed instructions on how to getting involved in these projects, ranging from plant disease recognition to sarcasm detection, and everything in between.
 
+## Important Notes
+
+- **Single PR Acceptance:** For each issue, only one PR will be merged. We encourage collaboration and communication within the community to combine efforts and submit the best possible solution.
+- **Rising Contributors:** We're happy to welcome the contributors of the merged PR as Rising contributors [Rising Contributors](https://unify.ai/docs/ivy/overview/contributing/volunteer_program.html#rising-contributor) in our community. This status comes with recognition within our community and opportunities for further involvement in project development.
+
 ## Getting Started
 
 ### Step 1: Fill Out the Contributor Form
@@ -24,7 +29,7 @@ Once you've filled out the form, you're ready to start contributing to the proje
     ```bash
     git checkout -b <branch-name>
     ```
-5. Create a virtual environment and install ivy:
+5. Create a virtual environment and install ivy(Alternatively, you can set up ivy in your local machine using the [official documentation](https://unify.ai/docs/ivy/overview/contributing/setting_up.html)):
     ```bash
     python3 -m venv venv
     source venv/bin/activate
@@ -57,11 +62,6 @@ To streamline the review process and facilitate badge awarding, we require a uni
 - GitHubID4 (if applicable)
 ```
 
-### Important Notes
-
-- **Single PR Acceptance:** For each issue, only one PR will be merged. We encourage collaboration and communication within the community to combine efforts and submit the best possible solution.
-- **Rising Contributors:** We're happy to welcome the contributors of the merged PR as Rising contributors [Rising Contributors](https://unify.ai/docs/ivy/overview/contributing/volunteer_program.html#rising-contributor) in our community. This status comes with recognition within our community and opportunities for further involvement in project development.
-
 ## Contribution Guidelines
 
 - Ensure your code is well-documented and follows best practices for readability and maintainability.
@@ -75,3 +75,5 @@ If you have any questions or need clarification on the process, please feel free
 ## Let's Build Together!
 
 Your contributions play a vital role in the success of this initiative. By participating, you're not only enhancing your skills but also contributing to a project that could have a real-world impact. We're excited to see your innovative solutions and to welcome you as a valuable member of our growing community.
+
+## Video
