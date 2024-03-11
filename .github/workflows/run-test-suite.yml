@@ -84,3 +84,43 @@ jobs:
     secrets: inherit
     with:
       nightly_binaries: ${{ github.event_name == 'workflow_dispatch' && fromJson(github.event.inputs.nightly_binaries) || false}}
+  
+  run-docs-tests:
+    name: run-readme-tests
+    runs-on: ubuntu-latest
+    env: 
+      VERSION: ${{ fromJson(github.event.inputs.nightly_binaries) && 'nightly' || 'main' }}
+    steps:
+        - name: Checkout Demos🛎
+          uses: actions/checkout@v4
+          with:
+            path: unifyai/demos
+            persist-credentials: false
+            submodules: "recursive"
+            fetch-depth: 1
+
+        - name: Checkout Ivy🛎
+          uses: actions/checkout@v4
+          with:
+            repository: unifyai/ivy
+            ref: ${{ env.VERSION }}
+            path: ivy
+            persist-credentials: false
+            submodules: "recursive"
+            fetch-depth: 1
+        
+        - name: Install ivy and fetch binaries
+          run: |
+            cd ivy
+            export VERSION=${{ env.VERSION }}
+            sudo pip3 install -e .
+            mkdir .ivy
+            touch .ivy/key.pem
+            echo -n ${{ secrets.USER_API_KEY }} > .ivy/key.pem
+            cd ..
+        
+        - name: Run README tests
+          run: |
+            cd demos
+            docker run --name test_container -v "$(pwd)"/demos:/ivy/demos -v "$(pwd)"/ivy:/ivy/ivy -itd unifyai/ivy:latest python3 -m pip install -r demos/tests/requirements.txt
+            docker exec test_container python3 -m pytest demos/tests/test_README.py

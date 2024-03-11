@@ -1,0 +1,6 @@
+segmentation-models
+rax
+Cython # needs to be installed for madmom installation to work
+git+https://github.com/CPJKU/madmom.git
+timm
+kornia
