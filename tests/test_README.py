@@ -17,8 +17,8 @@ def test_transpiling_any_code_from_one_framework_to_another():
         b = jax.numpy.mean(x)
         return x * a + b
 
-    jax_x = jax.numpy.array([1., 2., 3.])
-    torch_x = torch.tensor([1., 2., 3.])
+    jax_x = jax.numpy.array([1.0, 2.0, 3.0])
+    torch_x = torch.tensor([1.0, 2.0, 3.0])
     torch_fn = ivy.transpile(jax_fn, source="jax", to="torch", args=(jax_x,))
     torch_fn(torch_x)
 
@@ -28,16 +28,17 @@ def test_running_your_code_with_any_backend():
     x = jax.numpy.array([1, 2, 3])
     y = jax.numpy.array([3, 2, 1])
     ivy.add(x, y)
-    
-    ivy.set_backend('torch')
+
+    ivy.set_backend("torch")
     x = torch.tensor([1, 2, 3])
     y = torch.tensor([3, 2, 1])
     ivy.add(x, y)
-    
+
     ivy.unset_backend()
 
 
 # using pytorch
+
 
 def test_using_pytorch_any_model_from_tensorflow():
     # Get a pretrained keras model
@@ -47,7 +48,9 @@ def test_using_pytorch_any_model_from_tensorflow():
 
     # Transpile it into a torch.nn.Module with the corresponding parameters
     noise = tf.random.normal(shape=(1, 224, 224, 3))
-    torch_eff_encoder = ivy.transpile(eff_encoder, source="tensorflow", to="torch", args=(noise,))
+    torch_eff_encoder = ivy.transpile(
+        eff_encoder, source="tensorflow", to="torch", args=(noise,)
+    )
 
     # Build a classifier using the transpiled encoder
     class Classifier(torch.nn.Module):
@@ -68,7 +71,7 @@ def test_using_pytorch_any_model_from_tensorflow():
 def test_using_pytorch_any_model_from_jax():
     # Get a pretrained haiku model
     # https://github.com/unifyai/demos/blob/15c235f/scripts/deepmind_perceiver_io.py
-    
+
     from deepmind_perceiver_io import key, perceiver_backbone
 
     # Transpile it into a torch.nn.Module with the corresponding parameters
@@ -76,7 +79,11 @@ def test_using_pytorch_any_model_from_jax():
     params = perceiver_backbone.init(rng=key, images=dummy_input)
     ivy.set_backend("jax")
     backbone = ivy.transpile(
-        perceiver_backbone, source="jax", to="torch", params_v=params, kwargs={"images": dummy_input}
+        perceiver_backbone,
+        source="jax",
+        to="torch",
+        params_v=params,
+        kwargs={"images": dummy_input},
     )
 
     # Build a classifier using the transpiled backbone
@@ -100,6 +107,7 @@ def test_using_pytorch_any_model_from_jax():
 
 def test_using_pytorch_any_library_from_tensorflow():
     import os
+
     os.environ["SM_FRAMEWORK"] = "tf.keras"
     import segmentation_models as sm
 
@@ -187,6 +195,7 @@ def test_using_pytorch_any_function_from_numpy():
 
 
 # using tensorflow
+
 
 def test_using_tensorflow_any_model_from_pytorch():
     import timm
@@ -378,7 +387,7 @@ def test_using_jax_any_model_from_pytorch():
 
 def test_using_jax_any_model_from_tensorflow():
     jax.config.update("jax_enable_x64", True)
-    
+
     # Get a pretrained keras model
     eff_encoder = tf.keras.applications.efficientnet_v2.EfficientNetV2B0(
         include_top=False, weights="imagenet", input_shape=(224, 224, 3)
@@ -386,7 +395,9 @@ def test_using_jax_any_model_from_tensorflow():
 
     # Transpile it into a hk.Module with the corresponding parameters
     noise = tf.random.normal(shape=(1, 224, 224, 3))
-    hk_eff_encoder = ivy.transpile(eff_encoder, source="tensorflow", to="jax", args=(noise,))
+    hk_eff_encoder = ivy.transpile(
+        eff_encoder, source="tensorflow", to="jax", args=(noise,)
+    )
 
     # Build a classifier using the transpiled encoder
     class Classifier(hk.Module):
@@ -415,6 +426,7 @@ def test_using_jax_any_model_from_tensorflow():
 
 def test_using_jax_any_library_from_pytorch():
     import kornia
+
     jax.config.update("jax_enable_x64", True)
 
     # transpile kornia from torch to jax
@@ -434,6 +446,7 @@ def test_using_jax_any_library_from_pytorch():
 
 def test_using_jax_any_library_from_tensorflow():
     import os
+
     os.environ["SM_FRAMEWORK"] = "tf.keras"
     import segmentation_models as sm
 
@@ -494,7 +507,7 @@ def test_using_jax_any_function_from_tensorflow():
 
 
 def test_using_jax_any_function_from_numpy():
-    jax.config.update('jax_enable_x64', True)
+    jax.config.update("jax_enable_x64", True)
 
     def loss(predictions, targets):
         return np.sqrt(np.mean((predictions - targets) ** 2))
@@ -530,6 +543,7 @@ def test_using_numpy_any_library_from_pytorch():
 
 def test_using_numpy_any_library_from_tensorflow():
     import os
+
     os.environ["SM_FRAMEWORK"] = "tf.keras"
     import segmentation_models as sm
 
@@ -624,11 +638,25 @@ def test_using_ivy():
 
         def _build(self, *args, **kwargs):
             self.extractor = ivy.Sequential(
-                ivy.Conv2D(self.input_channels, 6, [5, 5], 1, "SAME", data_format=self.data_format),
+                ivy.Conv2D(
+                    self.input_channels,
+                    6,
+                    [5, 5],
+                    1,
+                    "SAME",
+                    data_format=self.data_format,
+                ),
                 ivy.GELU(),
                 ivy.Conv2D(6, 16, [5, 5], 1, "SAME", data_format=self.data_format),
                 ivy.GELU(),
-                ivy.Conv2D(16, self.output_channels, [5, 5], 1, "SAME", data_format=self.data_format),
+                ivy.Conv2D(
+                    16,
+                    self.output_channels,
+                    [5, 5],
+                    1,
+                    "SAME",
+                    data_format=self.data_format,
+                ),
                 ivy.GELU(),
             )
 
@@ -646,33 +674,32 @@ def test_using_ivy():
             logits = self.classifier(x)
             probs = ivy.softmax(logits)
             return logits, probs
-    
-    
+
     ivy.set_backend("torch")
     model = IvyNet()
     x = torch.randn(1, 3, 32, 32)
     model(x)
     ivy.previous_backend()
-    
+
     ivy.set_backend("tensorflow")
     model = IvyNet()
     x = tf.random.uniform(shape=(1, 3, 32, 32))
     model(x)
     ivy.previous_backend()
-    
+
     ivy.set_backend("jax")
     key = jax.random.PRNGKey(0)
     model = IvyNet()
     x = jax.random.uniform(key, shape=(1, 3, 32, 32))
     model(x)
     ivy.previous_backend()
-    
+
     ivy.set_backend("numpy")
     model = IvyNet()
     x = np.random.uniform(size=(1, 3, 32, 32))
     model(x)
     ivy.previous_backend()
-    
+
     ivy.set_backend("torch")
     model = IvyNet()
 
@@ -685,18 +712,15 @@ def test_using_ivy():
                 idx : min(idx + batch_size, dataset_size)
             ]
 
-
     # helper function to get the number of current predictions
     def num_correct(preds, labels):
         return (preds.argmax() == labels).sum().to_numpy().item()
-
 
     # define a loss function
     def loss_fn(params):
         v, model, x, y = params
         _, probs = model(x, v=v)
         return ivy.cross_entropy(y, probs), probs
-
 
     # train the model on gpu if it's available
     device = "gpu:0" if ivy.gpu_is_available() else "cpu"
@@ -717,7 +741,6 @@ def test_using_ivy():
 
     images = ivy.random_uniform(shape=(16, 1, 28, 28))
     classes = ivy.randint(0, num_classes - 1, shape=(16,))
-
 
     # training loop
     def train(images, classes, epochs, model, device, num_classes=10, batch_size=32):
@@ -749,7 +772,9 @@ def test_using_ivy():
 
                 model.v = optimizer.step(model.v, grads["0"])
 
-                batch_loss = ivy.to_numpy(loss_probs[0]).mean().item()  # batch mean loss
+                batch_loss = (
+                    ivy.to_numpy(loss_probs[0]).mean().item()
+                )  # batch mean loss
                 epoch_loss += batch_loss * xbatch.shape[0]
                 train_correct += num_correct(loss_probs[1], ybatch)
 
@@ -768,7 +793,6 @@ def test_using_ivy():
                 f"\nAverage training loss: {epoch_loss:.6f}, Train Correct: {train_correct}",
                 end="\n",
             )
-
 
     # assuming the dataset(images and classes) are already prepared in a folder
     train(
@@ -789,14 +813,14 @@ def test_diving_deeper():
     def test_fn(x):
         return jax.numpy.sum(x)
 
-    x1 = ivy.array([1., 2.])
-    
+    x1 = ivy.array([1.0, 2.0])
+
     # Arguments are available -> transpilation happens eagerly
     eager_graph = ivy.transpile(test_fn, source="jax", to="torch", args=(x1,))
 
     # eager_graph is now torch code and runs efficiently
     eager_graph(x1)
-    
+
     # Arguments are not available -> transpilation happens lazily
     lazy_graph = ivy.transpile(test_fn, source="jax", to="torch")
 
@@ -809,11 +833,11 @@ def test_diving_deeper():
 
 def test_ivy_as_a_framework_functional():
     def mse_loss(y, target):
-        return ivy.mean((y - target)**2)
+        return ivy.mean((y - target) ** 2)
 
-    jax_mse   = mse_loss(jnp.ones((5,)), jnp.ones((5,)))
-    tf_mse    = mse_loss(tf.ones((5,)), tf.ones((5,)))
-    np_mse    = mse_loss(np.ones((5,)), np.ones((5,)))
+    jax_mse = mse_loss(jnp.ones((5,)), jnp.ones((5,)))
+    tf_mse = mse_loss(tf.ones((5,)), tf.ones((5,)))
+    np_mse = mse_loss(np.ones((5,)), np.ones((5,)))
     torch_mse = mse_loss(torch.ones((5,)), torch.ones((5,)))
 
 
@@ -833,8 +857,8 @@ def test_ivy_as_a_framework_stateful():
             x = ivy.functional.relu(x)
             x = self.linear1(x)
             return x
-    
-    ivy.set_backend('torch')  # set backend to PyTorch (or any other backend!)
+
+    ivy.set_backend("torch")  # set backend to PyTorch (or any other backend!)
 
     model = Regressor(input_dim=1, output_dim=1)
     optimizer = ivy.Adam(0.3)
@@ -842,8 +866,7 @@ def test_ivy_as_a_framework_stateful():
     n_training_examples = 2000
     noise = ivy.random.random_normal(shape=(n_training_examples, 1), mean=0, std=0.1)
     x = ivy.linspace(-6, 3, n_training_examples).reshape((n_training_examples, 1))
-    y = 0.2 * x ** 2 + 0.5 * x + 0.1 + noise
-
+    y = 0.2 * x**2 + 0.5 * x + 0.1 + noise
 
     def loss_fn(v, x, target):
         pred = model(x, v=v)
@@ -854,12 +877,14 @@ def test_ivy_as_a_framework_stateful():
         model(x)
 
         # compute loss and gradients
-        loss, grads = ivy.execute_with_gradients(lambda params: loss_fn(*params), (model.v, x, y))
+        loss, grads = ivy.execute_with_gradients(
+            lambda params: loss_fn(*params), (model.v, x, y)
+        )
 
         # update parameters
         model.v = optimizer.step(model.v, grads)
 
         # print current loss
-        print(f'Epoch: {epoch + 1:2d} --- Loss: {ivy.to_numpy(loss).item():.5f}')
+        print(f"Epoch: {epoch + 1:2d} --- Loss: {ivy.to_numpy(loss).item():.5f}")
 
-    print('Finished training!')
+    print("Finished training!")

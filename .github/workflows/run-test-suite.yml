@@ -108,7 +108,7 @@ jobs:
             persist-credentials: false
             submodules: "recursive"
             fetch-depth: 1
-        
+
         - name: Install ivy and fetch binaries
           run: |
             cd ivy
@@ -118,7 +118,7 @@ jobs:
             touch .ivy/key.pem
             echo -n ${{ secrets.USER_API_KEY }} > .ivy/key.pem
             cd ..
-        
+
         - name: Run README tests
           run: |
             cd demos
