@@ -38,6 +38,11 @@ Examples and Demos
         :link: examples_and_demos/dinov2_to_paddle.ipynb
 
         In this demo, we convert the DINOv2 model to PaddlePaddle
+    
+    .. grid-item-card:: Using TensorFlow Models in your PyTorch Projects
+        :link: examples_and_demos/convnext_to_torch.ipynb
+
+        In this demo, we convert the ConvNeXt model to PyTorch
 
 .. toctree::
     :hidden:
