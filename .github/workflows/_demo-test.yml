@@ -20,7 +20,10 @@ jobs:
           mmpretrain_to_jax,
           resnet_demo,
           torch_to_jax,
-          lstm_demo,
+          lstm_tensorflow_to_torch.ipynb,
+          lstm_torch_to_tensorflow.ipynb,
+          dinov2_to_paddle.ipynb,
+          convnext_to_torch.ipynb,
         ]
 
     steps:
