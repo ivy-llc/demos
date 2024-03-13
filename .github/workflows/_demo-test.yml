@@ -22,7 +22,7 @@ jobs:
           torch_to_jax,
           lstm_tensorflow_to_torch.ipynb,
           lstm_torch_to_tensorflow.ipynb,
-          dinov2_to_paddle.ipynb,
+          # dinov2_to_paddle.ipynb, # tests disabled until we get cuda installation working in the docker image
           convnext_to_torch.ipynb,
         ]
 
