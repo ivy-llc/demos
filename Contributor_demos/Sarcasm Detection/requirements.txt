@@ -1,4 +1,0 @@
-torch
-tensorflow
-ivy
-matplotlib
