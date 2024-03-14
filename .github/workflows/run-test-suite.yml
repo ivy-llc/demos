@@ -121,5 +121,4 @@ jobs:
 
         - name: Run README tests
           run: |
-            cd demos
-            docker run -v "$(pwd)"/demos:/ivy/demos -v "$(pwd)"/ivy:/ivy/ivy -itd unifyai/ivy:latest /bin/bash -c "cd demos; python3 -m pip install -r tests/requirements.txt; python3 -m pytest tests/test_README.py"
+            docker run -v "$(pwd)"/demos:/ivy/demos -v "$(pwd)"/ivy:/ivy/ivy unifyai/ivy:latest /bin/bash -c "cd demos; python3 -m pip install -r tests/requirements.txt; python3 -m pytest tests/test_README.py"
