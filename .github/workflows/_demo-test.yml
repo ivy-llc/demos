@@ -17,7 +17,7 @@ jobs:
           alexnet_demo,
           bert_demo,
           image_segmentation_with_ivy_unet,
-          mmpretrain_to_jax,
+          # mmpretrain_to_jax, # tests disabled until we get cuda installation working in the docker image
           resnet_demo,
           torch_to_jax,
           lstm_tensorflow_to_torch.ipynb,
