@@ -85,7 +85,7 @@ jobs:
     with:
       nightly_binaries: ${{ github.event_name == 'workflow_dispatch' && fromJson(github.event.inputs.nightly_binaries) || false}}
   
-  run-docs-tests:
+  run-readme-tests:
     name: run-readme-tests
     runs-on: ubuntu-latest
     env: 
@@ -122,5 +122,4 @@ jobs:
         - name: Run README tests
           run: |
             cd demos
-            docker run --name test_container -v "$(pwd)"/demos:/ivy/demos -v "$(pwd)"/ivy:/ivy/ivy -itd unifyai/ivy:latest python3 -m pip install -r demos/tests/requirements.txt
-            docker exec test_container python3 -m pytest demos/tests/test_README.py
+            docker run --name test_container -v "$(pwd)"/demos:/ivy/demos -v "$(pwd)"/ivy:/ivy/ivy -itd unifyai/ivy:latest /bin/bash -c "cd demos; python3 -m pip install -r tests/requirements.txt; python3 -m pytest tests/test_README.py"
