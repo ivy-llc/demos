@@ -24,6 +24,7 @@ jobs:
           lstm_torch_to_tensorflow,
           # dinov2_to_paddle, # tests disabled until we get cuda installation working in the docker image
           convnext_to_torch,
+          # xgboost_demo, # tests disabled until we get the csv files uploaded to drive for being used in the tests
         ]
 
     steps:
