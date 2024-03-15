@@ -110,16 +110,6 @@ jobs:
             submodules: "recursive"
             fetch-depth: 1
 
-        - name: Install ivy and fetch binaries
-          run: |
-            cd ivy
-            export VERSION=${{ env.VERSION }}
-            sudo pip3 install -e .
-            mkdir .ivy
-            touch .ivy/key.pem
-            echo -n ${{ secrets.USER_API_KEY }} > .ivy/key.pem
-            cd ..
-
         - name: Run README tests
           run: |
-            docker run -v "$(pwd)"/demos:/ivy/demos -v "$(pwd)"/ivy:/ivy/ivy unifyai/ivy:latest /bin/bash -c "cd demos; python3 -m pip install -r tests/requirements.txt; python3 -m pytest tests/test_README.py"
+            docker run -v "$(pwd)"/demos:/ivy/demos -v "$(pwd)"/ivy:/ivy/ivy unifyai/ivy:latest demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} readme ${{ inputs.nightly_binaries }} false

@@ -16,5 +16,10 @@ echo -n "$1" > .ivy/key.pem
 pip install -r requirements.txt >/dev/null 2>&1
 
 # run test
-echo "PATH : $2"
-python3 tests/main.py "$2"
+if [ $4 == true ]; then
+    echo "PATH : $2"
+    python3 tests/main.py "$2"
+else
+    echo "Running the README tests"
+    pip install -r tests/requirements.txt
+    python3 -m pytest tests/test_README.py
