@@ -15,7 +15,7 @@ jobs:
       matrix:
         modules: [
           alexnet_demo,
-          bert_demo,
+          # bert_demo, # tests disabled until the OOM issue is resolved
           image_segmentation_with_ivy_unet,
           # mmpretrain_to_jax, # tests disabled until we get cuda installation working in the docker image
           resnet_demo,
