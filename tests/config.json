@@ -42,14 +42,14 @@
             "install": [3]
         },
         "mmpretrain_to_jax.ipynb": {
-            "benchmark": [21, 22]
+            "benchmark": [22, 23]
         },
         "resnet_demo.ipynb": {
             "install": [4],
             "array_values": [27, 29, 41, 43]
         },
         "torch_to_jax.ipynb": {
-            "benchmark_x3": [18, 19]
+            "benchmark_x3": [19, 20]
         },
         "xgboost_demo.ipynb": {
             "value": [11, 21, 40, 57, 59],
