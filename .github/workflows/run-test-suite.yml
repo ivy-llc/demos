@@ -94,7 +94,8 @@ jobs:
         - name: Checkout Demos🛎
           uses: actions/checkout@v4
           with:
-            path: unifyai/demos
+            repository: unifyai/demos
+            path: demos
             persist-credentials: false
             submodules: "recursive"
             fetch-depth: 1
