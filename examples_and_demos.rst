@@ -56,3 +56,4 @@ Examples and Demos
     examples_and_demos/alexnet_demo.ipynb
     examples_and_demos/xgboost_demo.ipynb
     examples_and_demos/dinov2_to_paddle.ipynb
+    examples_and_demos/convnext_to_torch.ipynb
