@@ -1,0 +1,7 @@
+ivy
+xgboost 
+pandas 
+matplotlib 
+scikit-learn 
+torch 
+cryptography
