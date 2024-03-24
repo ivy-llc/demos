@@ -1,5 +1,6 @@
 ivy
 xgboost 
+numpy
 pandas 
 matplotlib 
 scikit-learn 
