@@ -6,3 +6,6 @@ matplotlib
 scikit-learn 
 torch 
 cryptography
+timeit
+functools
+tqdm
