@@ -3,6 +3,7 @@ xgboost
 numpy
 pandas 
 matplotlib 
+seaborn
 scikit-learn 
 torch 
 cryptography
