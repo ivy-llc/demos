@@ -1,0 +1,12 @@
+cryptography
+ipykernel
+ivy
+jax
+matplotlib
+numpy
+pandas
+scikit-learn
+seaborn
+torch
+tqdm
+xgboost
