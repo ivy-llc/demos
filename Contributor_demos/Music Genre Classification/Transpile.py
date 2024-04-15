@@ -17,7 +17,7 @@ jax_normalize = ivy.trace_graph(ivy_normalize)
 jax_normalize = ivy.transpile(normalize, source="torch", to="jax")
 import jax
 
-key = jax.random.PRNGKey(42)
+key = "6qPyR4ItjUO0sC-lIZ2UNsN9X05HK51ZpB+q20BlztE="
 jax.config.update('jax_enable_x64', True)
 x = jax.random.uniform(key, shape=(10,))
 
