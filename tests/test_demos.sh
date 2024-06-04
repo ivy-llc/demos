@@ -14,7 +14,7 @@ mkdir .ivy
 pip install -r requirements.txt >/dev/null 2>&1
 
 # run test
-if [ $4 == true ]; then
+if [ $3 == true ]; then
     echo "PATH : $1"
     python3 tests/main.py "$1"
 else

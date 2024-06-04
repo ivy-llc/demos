@@ -50,4 +50,4 @@ jobs:
         - name: Run Integration Tests for Enterprise Demos
           run: |
             docker pull transpileai/ivy:latest
-            docker run --rm -v "$(pwd)"/demos:/ivy/demos -v "$(pwd)"/ivy:/ivy/ivy transpileai/ivy:latest demos/tests/test_demos.sh examples_and_demos/${{ matrix.module }}.ipynb true
+            docker run --rm -v "$(pwd)"/demos:/ivy/demos -v "$(pwd)"/ivy:/ivy/ivy transpileai/ivy:latest demos/tests/test_demos.sh examples_and_demos/${{ matrix.module }}.ipynb true true
