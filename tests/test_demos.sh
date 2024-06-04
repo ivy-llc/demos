@@ -11,7 +11,7 @@ cd ../demos
 mkdir .ivy
 
 # install dependencies
-pip install -r requirements.txt
+pip install -r requirements.txt >/dev/null 2>&1
 
 # run test
 if [ $4 == true ]; then
