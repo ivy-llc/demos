@@ -1,0 +1,53 @@
+name: test-nightly-binaries
+on: 
+  workflow_dispatch:
+  push:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        modules: [
+          alexnet_demo,
+          # bert_demo, # tests disabled until the OOM issue is resolved
+          image_segmentation_with_ivy_unet,
+          # mmpretrain_to_jax, # tests disabled until we get cuda installation working in the docker image
+          resnet_demo,
+          torch_to_jax,
+          lstm_tensorflow_to_torch,
+          lstm_torch_to_tensorflow,
+          # dinov2_to_paddle, # tests disabled until we get cuda installation working in the docker image
+          convnext_to_torch,
+          # xgboost_demo, # tests disabled until we get the csv files uploaded to drive for being used in the tests
+        ]
+
+    steps:
+        - name: Clean repository
+          run:
+            sudo rm -fr $GITHUB_WORKSPACE && mkdir $GITHUB_WORKSPACE
+
+        - name: Checkout Demos🛎
+          uses: actions/checkout@v4
+          with:
+            repository: Transpile-AI/demos
+            path: demos
+            persist-credentials: false
+            submodules: "recursive"
+            fetch-depth: 1
+
+        - name: Checkout Ivy🛎
+          uses: actions/checkout@v4
+          with:
+            repository: Transpile-AI/ivy
+            ref: nightly
+            path: ivy
+            persist-credentials: false
+            submodules: "recursive"
+            fetch-depth: 1
+  
+        - name: Run Integration Tests for Enterprise Demos
+          run: |
+            docker pull transpileai/ivy:latest
+            docker run --rm -v "$(pwd)"/demos:/ivy/demos -v "$(pwd)"/ivy:/ivy/ivy transpileai/ivy:latest demos/tests/test_demos.sh examples_and_demos/${{ matrix.modules }}.ipynb true
