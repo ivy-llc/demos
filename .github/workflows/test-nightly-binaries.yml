@@ -31,7 +31,7 @@ jobs:
         - name: Checkout Demos🛎
           uses: actions/checkout@v4
           with:
-            repository: Transpile-AI/demos
+            repository: ivy-llc/demos
             path: demos
             persist-credentials: false
             submodules: "recursive"
@@ -40,7 +40,7 @@ jobs:
         - name: Checkout Ivy🛎
           uses: actions/checkout@v4
           with:
-            repository: Transpile-AI/ivy
+            repository: ivy-llc/ivy
             ref: nightly
             path: ivy
             persist-credentials: false
