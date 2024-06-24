@@ -23,3 +23,4 @@ else
     echo "Running the README tests"
     pip install -r tests/requirements.txt
     python3 -m pytest tests/test_README.py
+fi
