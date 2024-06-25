@@ -41,7 +41,6 @@ jobs:
           uses: actions/checkout@v4
           with:
             repository: ivy-llc/ivy
-            ref: nightly
             path: ivy
             persist-credentials: false
             submodules: "recursive"
