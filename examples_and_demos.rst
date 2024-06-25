@@ -43,6 +43,11 @@ Examples and Demos
         :link: examples_and_demos/convnext_to_torch.ipynb
 
         In this demo, we convert the ConvNeXt model to PyTorch
+    
+    .. grid-item-card:: Finetuning PyTorch Models in your TensorFlow Projects
+        :link: examples_and_demos/resnet_to_tensorflow.ipynb
+
+        In this demo, we finetune the PyTorch ResNet model in TensorFlow
 
 .. toctree::
     :hidden:
@@ -57,3 +62,4 @@ Examples and Demos
     examples_and_demos/xgboost_demo.ipynb
     examples_and_demos/dinov2_to_paddle.ipynb
     examples_and_demos/convnext_to_torch.ipynb
+    examples_and_demos/resnet_to_tensorflow.ipynb
