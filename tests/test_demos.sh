@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ $2 == true ]; then
-export VERSION=nightly
+export VERSION=main
 fi
 
 cd ivy
@@ -12,6 +12,13 @@ mkdir .ivy
 
 # install dependencies
 pip install -r requirements.txt >/dev/null 2>&1
+
+# get the binaries
+python3 << 'EOF'
+import ivy
+ivy.utils.cleanup_and_fetch_binaries(clean=True)
+EOF
+
 
 # run test
 if [ $3 == true ]; then
