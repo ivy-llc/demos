@@ -12,14 +12,14 @@ jobs:
         module: [
           alexnet_demo_cpu,
           # bert_demo, # tests disabled until the OOM issue is resolved
-          image_segmentation_with_ivy_unet_cpu,
+          #image_segmentation_with_ivy_unet_cpu, # tests disabled until we get cuda installation working in the docker image
           # mmpretrain_to_jax, # tests disabled until we get cuda installation working in the docker image
           resnet_demo_cpu,
-          torch_to_jax_cpu,
+          #torch_to_jax_cpu, # tests disabled until we get cuda installation working in the docker image
           lstm_tensorflow_to_torch_cpu,
           lstm_torch_to_tensorflow_cpu,
           # dinov2_to_paddle, # tests disabled until we get cuda installation working in the docker image
-          convnext_to_torch_cpu,
+          #convnext_to_torch_cpu, # tests disabled until we get cuda installation working in the docker image
           # xgboost_demo, # tests disabled until we get the csv files uploaded to drive for being used in the tests
         ]
 
