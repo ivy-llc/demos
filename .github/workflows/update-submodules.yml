@@ -12,7 +12,7 @@ jobs:
       - name: Checkout 🛎️ ivy
         uses: actions/checkout@v4
         with:
-          repository: unifyai/ivy
+          repository: ivy-llc/ivy
           token: ${{ secrets.DEV_BOT_GENERAL_PAT }}
           submodules: recursive
 
