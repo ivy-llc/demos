@@ -40,4 +40,4 @@ jobs:
       - name: Run Integration testing for Basic Demos
         id: tests
         run: |
-          docker run -v "$(pwd)"/demos:/ivy/demos -v "$(pwd)"/ivy:/ivy/ivy unifyai/ivy:latest demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} learn_the_basics/${{ matrix.mods }}.ipynb ${{ inputs.nightly_binaries }} true
+          docker run -v "$(pwd)"/demos:/ivy/demos -v "$(pwd)"/ivy:/ivy/ivy transpileai/ivy:latest demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} learn_the_basics/${{ matrix.mods }}.ipynb ${{ inputs.nightly_binaries }} true
