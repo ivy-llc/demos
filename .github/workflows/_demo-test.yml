@@ -35,7 +35,7 @@ jobs:
         - name: Checkout Demos🛎
           uses: actions/checkout@v4
           with:
-            repository: unifyai/demos
+            repository: ivy-llc/demos
             path: demos
             persist-credentials: false
             submodules: "recursive"
@@ -44,7 +44,7 @@ jobs:
         - name: Checkout Ivy🛎
           uses: actions/checkout@v4
           with:
-            repository: unifyai/ivy
+            repository: ivy-llc/ivy
             ref: ${{ inputs.nightly_binaries && 'nightly' || 'main' }}
             path: ivy
             persist-credentials: false
@@ -53,5 +53,5 @@ jobs:
   
         - name: Run Integration Tests for Enterprise Demos
           run: |
-            docker pull unifyai/ivy:latest-gpu
-            docker run --rm --gpus all -v "$(pwd)"/demos:/ivy/demos -v "$(pwd)"/ivy:/ivy/ivy unifyai/ivy:latest-gpu demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} examples_and_demos/${{ matrix.modules }}.ipynb ${{ inputs.nightly_binaries }} true
+            docker pull transpileai/ivy:latest-gpu
+            docker run --rm --gpus all -v "$(pwd)"/demos:/ivy/demos -v "$(pwd)"/ivy:/ivy/ivy transpileai/ivy:latest-gpu demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} examples_and_demos/${{ matrix.modules }}.ipynb ${{ inputs.nightly_binaries }} true

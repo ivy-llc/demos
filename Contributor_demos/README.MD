@@ -5,7 +5,7 @@ Welcome to the Contributor Demos section of our `unifyai/demos` repository! This
 ## Important Notes
 
 - **Single PR Acceptance:** For each issue, only one PR will be merged. We encourage collaboration and communication within the community to combine efforts and submit the best possible solution.
-- **Rising Contributors:** We're happy to welcome the contributors of the merged PR as Rising contributors [Rising Contributors](https://unify.ai/docs/ivy/overview/contributing/volunteer_program.html#rising-contributor) in our community. This status comes with recognition within our community and opportunities for further involvement in project development.
+- **Rising Contributors:** We're happy to welcome the contributors of the merged PR as Rising contributors [Rising Contributors](https://ivy.dev/docs/overview/contributing/volunteer_program.html#rising-contributor) in our community. This status comes with recognition within our community and opportunities for further involvement in project development.
 
 ## Getting Started
 
@@ -16,7 +16,7 @@ Before diving into the code, we ask all interested contributors to fill out a sh
 ### Step 2: Setting up Ivy
 
 Once you've filled out the form, you're ready to start contributing to the project of your choice. To get started, follow these steps:
-1. Fork the [unifyai/demos](https://github.com/unifyai/demos) repository to your GitHub account.
+1. Fork the [ivy-llc/demos](https://github.com/ivy-llc/demos) repository to your GitHub account.
 2. Clone the forked repository to your local machine using the following command:
    ```bash
    git clone <your-forked-repo-url>
@@ -29,17 +29,12 @@ Once you've filled out the form, you're ready to start contributing to the proje
     ```bash
     git checkout -b <branch-name>
     ```
-5. Create a virtual environment and install ivy(Alternatively, you can set up ivy in your local machine using the [official documentation](https://unify.ai/docs/ivy/overview/contributing/setting_up.html)):
+5. Create a virtual environment and install ivy(Alternatively, you can set up ivy in your local machine using the [official documentation](https://ivy.dev/docs/overview/contributing/setting_up.html)):
     ```bash
     python3 -m venv venv
     source venv/bin/activate
     pip install ivy
     ```
-6. Generating API key:
-    - Navigate to [UnifyAI Console](https://console.unify.ai)
-    - Sign up/Log in to your account and create a new key for `Ivy Transpiler`
-7. Create a new directory `.ivy` in the root of the project and create a file `key.pem` inside the `.ivy` directory.
-8. Paste the API key in the `key.pem` file and save it.
 If you have any issues with the setup, please feel free to ask for help on our [discord server](https://discord.gg/sg2QRAvY).
 
 ### Step 3: Solving an Issue
@@ -48,7 +43,7 @@ Start working on the issue you've chosen. Create a jupyter notebook under the di
 
 ### Step 4: Submitting Your Pull Request (PR)
 
-After developing your solution, it's time to submit a Pull Request (PR) to the `unifyai/demos` repository. Make sure to link the specific issue you're addressing by including `closes <#issue no>.` in your PR description. This notation will help us track which PRs aim to solve which issues.
+After developing your solution, it's time to submit a Pull Request (PR) to the `ivy-llc/demos` repository. Make sure to link the specific issue you're addressing by including `closes <#issue no>.` in your PR description. This notation will help us track which PRs aim to solve which issues.
 
 [Watch the Tutorial](https://drive.google.com/file/d/1pu4D3Qsf3o3VpqDfGzLF7hADDswxDfEF/view?usp=share_link)
 
