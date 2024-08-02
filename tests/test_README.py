@@ -70,7 +70,7 @@ def test_using_pytorch_any_model_from_tensorflow():
 
 def test_using_pytorch_any_model_from_jax():
     # Get a pretrained haiku model
-    # https://github.com/unifyai/demos/blob/15c235f/scripts/deepmind_perceiver_io.py
+    # https://github.com/ivy-llc/demos/blob/15c235f/scripts/deepmind_perceiver_io.py
 
     from deepmind_perceiver_io import key, perceiver_backbone
 
@@ -226,7 +226,7 @@ def test_using_tensorflow_any_model_from_pytorch():
 
 def test_using_tensorflow_any_model_from_jax():
     # Get a pretrained haiku model
-    # https://github.com/unifyai/demos/blob/15c235f/scripts/deepmind_perceiver_io.py
+    # https://github.com/ivy-llc/demos/blob/15c235f/scripts/deepmind_perceiver_io.py
     from deepmind_perceiver_io import key, perceiver_backbone
 
     # Transpile it into a tf.keras.Model with the corresponding parameters

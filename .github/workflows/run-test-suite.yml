@@ -94,7 +94,7 @@ jobs:
         - name: Checkout Demos🛎
           uses: actions/checkout@v4
           with:
-            repository: unifyai/demos
+            repository: ivy-llc/demos
             path: demos
             persist-credentials: false
             submodules: "recursive"
@@ -103,7 +103,7 @@ jobs:
         - name: Checkout Ivy🛎
           uses: actions/checkout@v4
           with:
-            repository: unifyai/ivy
+            repository: ivy-llc/ivy
             ref: ${{ env.VERSION }}
             path: ivy
             persist-credentials: false
@@ -112,4 +112,4 @@ jobs:
 
         - name: Run README tests
           run: |
-            docker run -v "$(pwd)"/demos:/ivy/demos -v "$(pwd)"/ivy:/ivy/ivy unifyai/ivy:latest demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} readme ${{ inputs.nightly_binaries }} false
+            docker run -v "$(pwd)"/demos:/ivy/demos -v "$(pwd)"/ivy:/ivy/ivy transpileai/ivy:latest demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} readme ${{ inputs.nightly_binaries }} false

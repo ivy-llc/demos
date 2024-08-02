@@ -1,8 +1,8 @@
 # Demos
 
 This repo holds all the jupyter notebook demos for the examples tab of Ivy's web. Relevant links:
-- [List of open tasks avilable](https://github.com/unifyai/demos/issues/2) 
-- [Open discussion to suggest new examples](https://github.com/unifyai/demos/issues/1)
+- [List of open tasks avilable](https://github.com/ivy-llc/demos/issues/2) 
+- [Open discussion to suggest new examples](https://github.com/ivy-llc/demos/issues/1)
 
 All of the examples should be as comprehensible as possible, using easy-to-follow and attractive visuals (graphs, nicely formatted results, etc.), and follow the general tone of Ivy (feel free to include emojis and don't keep things super serious!).
 
