@@ -112,4 +112,4 @@ jobs:
 
         - name: Run README tests
           run: |
-            docker run -v "$(pwd)"/demos:/ivy/demos -v "$(pwd)"/ivy:/ivy/ivy transpileai/ivy:latest demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} readme ${{ inputs.nightly_binaries }} false
+            docker run -v "$(pwd)"/demos:/ivy/demos -v "$(pwd)"/ivy:/ivy/ivy ivyllc/ivy:latest demos/tests/test_demos.sh ${{ secrets.USER_API_KEY }} readme ${{ inputs.nightly_binaries }} false

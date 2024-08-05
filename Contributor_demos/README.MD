@@ -1,6 +1,6 @@
 # Contributor Demos - README
 
-Welcome to the Contributor Demos section of our `unifyai/demos` repository! This folder contains the exciting ML demos that our community created using `ivy`. Below, you will find detailed instructions on how to getting involved in these projects, ranging from plant disease recognition to sarcasm detection, and everything in between.
+Welcome to the Contributor Demos section of our `ivy-llc/demos` repository! This folder contains the exciting ML demos that our community created using `ivy`. Below, you will find detailed instructions on how to getting involved in these projects, ranging from plant disease recognition to sarcasm detection, and everything in between.
 
 ## Important Notes
 
