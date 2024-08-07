@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ $2 == true ]; then
-export VERSION=main
+export VERSION=nightly
 fi
 
 cd ivy
