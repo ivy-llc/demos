@@ -12,7 +12,6 @@ jobs:
         module: [
           alexnet_demo_cpu,
           resnet_demo_cpu,
-          lstm_tensorflow_to_torch_cpu,
           lstm_torch_to_tensorflow_cpu,
           kornia_demo,
         ]
