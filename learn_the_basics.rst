@@ -9,6 +9,11 @@ Learn the basics
 
         Transpiling Kornia functions to TensorFlow.
 
+    .. grid-item-card:: Transpiling Models from PyTorch to TensorFlow
+        :link: learn_the_basics/torch_to_tf_models.ipynb
+
+        Transpiling PyTorch models to TensorFlow.
+
     .. grid-item-card:: Trace Code
         :link: learn_the_basics/03_trace_code.ipynb
 
@@ -29,6 +34,7 @@ Learn the basics
     :maxdepth: -1
 
     learn_the_basics/torch_to_tf_functions.ipynb
+    learn_the_basics/torch_to_tf_models.ipynb
     learn_the_basics/03_trace_code.ipynb
     learn_the_basics/05_lazy_vs_eager.ipynb
     learn_the_basics/06_how_to_use_decorators.ipynb
