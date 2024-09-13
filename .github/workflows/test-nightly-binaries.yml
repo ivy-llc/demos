@@ -42,5 +42,7 @@ jobs:
   
         - name: Run Integration Tests for Enterprise Demos
           run: |
-            docker pull ivyllc/ivy:latest
-            docker run --rm -v "$(pwd)"/demos:/ivy/demos -v "$(pwd)"/ivy:/ivy/ivy ivyllc/ivy:latest demos/tests/test_demos.sh examples_and_demos/${{ matrix.module }}.ipynb true true
+            pip install -e ivy_repo
+            pip install -r ivy_repo/requirements/requirements.txt
+            pip install -r ivy_repo/requirements/optional.txt
+            demos/tests/test_demos.sh examples_and_demos/${{ matrix.module }}.ipynb true true
