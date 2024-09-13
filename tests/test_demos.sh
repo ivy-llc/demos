@@ -14,10 +14,7 @@ mkdir .ivy
 pip install -r requirements.txt >/dev/null 2>&1
 
 # get the binaries
-python3 << 'EOF'
-import ivy
-ivy.utils.cleanup_and_fetch_binaries(clean=True)
-EOF
+VERSION=nightly python3 -c "import ivy; ivy.utils.cleanup_and_fetch_binaries(clean=True)"
 
 
 # run test
