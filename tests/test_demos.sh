@@ -4,10 +4,9 @@ if [ $2 == true ]; then
 export VERSION=nightly
 fi
 
-cd ivy
-pip install -e .
+mv ivy ivy_repo
+pip install -e ivy_repo
 
-cd ../demos
 mkdir .ivy
 
 # install dependencies
