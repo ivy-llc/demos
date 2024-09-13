@@ -4,7 +4,7 @@ if [ $2 == true ]; then
 export VERSION=nightly
 fi
 
-cd ivy
+cd ivy_repo
 pip install -e .
 
 cd ../demos
@@ -14,8 +14,10 @@ mkdir .ivy
 pip install -r requirements.txt >/dev/null 2>&1
 
 # get the binaries
-VERSION=nightly python3 -c "import ivy; ivy.utils.cleanup_and_fetch_binaries(clean=True)"
-
+python3 << 'EOF'
+import ivy
+ivy.utils.cleanup_and_fetch_binaries(clean=True)
+EOF
 
 # run test
 if [ $3 == true ]; then

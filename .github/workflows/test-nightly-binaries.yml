@@ -35,7 +35,7 @@ jobs:
           uses: actions/checkout@v4
           with:
             repository: ivy-llc/ivy
-            path: ivy
+            path: ivy_repo
             persist-credentials: false
             submodules: "recursive"
             fetch-depth: 1
