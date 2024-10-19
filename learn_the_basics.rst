@@ -1,4 +1,4 @@
-Learn the basics
+Learn the Basics
 ----------------
 
 .. grid:: 1 1 3 3
