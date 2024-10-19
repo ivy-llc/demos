@@ -22,12 +22,12 @@ Learn the basics
     .. grid-item-card:: Lazy vs Eager
         :link: learn_the_basics/05_lazy_vs_eager.ipynb
 
-        Understand the difference between eager and lazy tracing.
+        Understand the difference between eager & lazy tracing and transpilation.
 
     .. grid-item-card:: How to use decorators
         :link: learn_the_basics/06_how_to_use_decorators.ipynb
 
-        Learn about the different ways to use ivy's graph tracer.
+        Learn about the different ways to use ivy's graph tracer and transpiler.
 
 .. toctree::
     :hidden:
